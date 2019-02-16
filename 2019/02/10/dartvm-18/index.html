@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+经过这十几天的学习，我们差不多也了解了DartVM服务器的开发，所以，今天，我们来学习一下如何将Dart项目部署到云服务器上面
+
+1.起步
+经过几天的思考跟研究，终于决定入手一台云服务器，我买...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十八）-项目部署到云服务器 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十八）-项目部署到云服务器">
+            
+	            DartVM服务器开发（十八）-项目部署到云服务器
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>经过这十几天的学习，我们差不多也了解了DartVM服务器的开发，所以，今天，我们来学习一下如何将Dart项目部署到云服务器上面</p>
+</blockquote>
+<h2 id="1-起步"><a href="#1-起步" class="headerlink" title="1.起步"></a>1.起步</h2><blockquote>
+<p>经过几天的思考跟研究，终于决定入手一台云服务器，我买的是百度云的一个服务器，价格还可以，30元6个月的1核1G服务器，需要购买的同学，可以点击<a href="https://cloud.baidu.com/campaign/ABCSale-2018/index.html?track=cp:npinzhuan|pf:pc|pp:npinzhuan-biaoti|pu:wenzineirong|ci:yzfhdiscount|kw:2056444#1" target="_blank" rel="noopener">这里</a>，限量购，每天只有200台</p>
+</blockquote>
+<p>先购买一台云服务器，我选择的是<code>Ubuntu / 16.04 LTS amd64 (64bit)</code>操作系统<br><img src="https://upload-images.jianshu.io/upload_images/12805100-e22ff4fe184b5425.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="云服务器.png"></p>
+<p>然后连接上我们的服务器<br><img src="https://upload-images.jianshu.io/upload_images/12805100-5de6816bd8a9ee84.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="点击vnc远程.png"><br>点击上面的vnc远程，然后分别输入<code>用户名</code>(一般为root)、<code>密码</code><br>如果你是<code>mac</code>系统，打开<code>终端</code>，输入 <code>sudo ssh ip</code> ip为你的公网ip地址，点击回车键，首先，会提示你输入<code>mac密码</code>，然后输入<code>yes</code>，再输入你的<code>服务器密码</code>！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-a3d447964b8e5280.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="连接服务器.png"><br>这样，你就进入了服务器了</p>
+<h2 id="2-下载DartSDK"><a href="#2-下载DartSDK" class="headerlink" title="2. 下载DartSDK"></a>2. 下载DartSDK</h2><blockquote>
+<p>点击进入<a href="https://www.dartlang.org/tools/sdk#install" target="_blank" rel="noopener">官网</a>,因为我是<code>ubuntu</code>系统，所以，我选中linux平台</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-0006f873cab4f2a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Dart官网.png"><br>上面的那些命令行输入，我们都不要看，依据Q的尿性，你在服务器下面是不可能下载下来的了，我们直接看这里<br><img src="https://upload-images.jianshu.io/upload_images/12805100-1c9dc3464d61a8f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="手动安装.png"><br>红色框框住的两个渠道分别<code>稳定版</code>和<code>开发版</code>，我下载的是稳定版，点击就会开始下载<br><img src="https://upload-images.jianshu.io/upload_images/12805100-04f51483beed4bdb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>上面是我下载完成的，然后我们还需要下载<a href="https://filezilla-project.org/" target="_blank" rel="noopener"><code>FileZila</code></a>将文件上传到服务器上面<br>下载完成后，我们按照下面的方式连接上服务器<br><img src="https://upload-images.jianshu.io/upload_images/12805100-eb269b1fa655ba06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="FileZila.png"><br>输入完后点击快速连接会提示该对话框点击确定<br><img src="https://upload-images.jianshu.io/upload_images/12805100-e8e9cfbb27016fa1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="点击确定.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-e5619d7109a8db7b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="拉到这下面.png"><br>将刚下载的DartSDK文件拉到上面的红框处，然后它就会自动的将文件上传上去，我们等它上传完毕<br><img src="https://upload-images.jianshu.io/upload_images/12805100-2e56000b12003c4b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>上传成功后，我们转到<code>终端</code>下，运行下面语句<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@instance-he62tlhf:~# sudo apt-get update</span><br><span class="line">root@instance-he62tlhf:~# sudo dpkg -i dart_2.0.0-1_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p>然后等待安装完成后输入<code>dart --version</code>  可以看到下面内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dart VM version: 2.0.0 (Unknown timestamp) on &quot;linux_x64&quot;</span><br></pre></td></tr></table></figure></p>
+<p>设置代理<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PUB_HOSTED_URL=https://pub.flutter-io.cn</span><br></pre></td></tr></table></figure></p>
+<p>设置dart环境（这里因为要用到pub命令，所以需要配置）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/usr/lib/dart/bin</span><br></pre></td></tr></table></figure></p>
+<p>如果需要设置系统变量，我们使用命令打开<code>sudo vim /etc/profile</code><br>在后面追加下面内容<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PUB_HOSTED_URL=https://pub.flutter-io.cn</span><br><span class="line">export PATH=$PATH:/usr/lib/dart/bin</span><br></pre></td></tr></table></figure></p>
+<p>然后运行命令<code>source /etc/profile</code>即可，下次就不用重新设置环境变量了</p>
+<h2 id="3-安装PostgresSQL"><a href="#3-安装PostgresSQL" class="headerlink" title="3. 安装PostgresSQL"></a>3. 安装PostgresSQL</h2><p>安装PostgresSQl，我们可以使用命令<code>sudo apt-get install postgresql</code><br><img src="https://upload-images.jianshu.io/upload_images/12805100-188de91ec45b2bab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>等待上面输出完成，然后<br>输入命令<code>sudo su postgres -c psql template1</code>进入数据库<br>创建数据库<code>create database rhymedb</code>(rhymedb)为你要的数据库名，记得后面加个<code>;</code>号<br><img src="https://upload-images.jianshu.io/upload_images/12805100-893225a10ba74854.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建数据库.png"><br>修改数据库角色密码，输入命令<code>ALTER USER postgres WITH PASSWORD &#39;123456&#39;;</code><br>123456为你要修改的密码<br><img src="https://upload-images.jianshu.io/upload_images/12805100-d2f69f0c5fd1454a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="修改密码.png"></p>
+<h2 id="4-运行项目"><a href="#4-运行项目" class="headerlink" title="4.运行项目"></a>4.运行项目</h2><blockquote>
+<p>将你的项目拉到<code>FileZila</code>进行上传，我是拉到root目录下</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-208a8be2b83abc59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>然后<code>cd jaguarProject</code>切换到该项目下面，运行<code>pub get</code>等待完成后，运行命令<code>dart bin/main.dart</code>就ok了<br><img src="https://upload-images.jianshu.io/upload_images/12805100-22c034c1f5c9bf94.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pub get.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-66a4abee131018d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="dart bin/main.dart.png"></p>
+<p>最后，我们输入<a href="http://ip:8080" target="_blank" rel="noopener">http://ip:8080</a> ip为你的公网ip请求一下<br><img src="https://upload-images.jianshu.io/upload_images/12805100-95aa6d7f5ead6913.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br>PS：上面的这个界面使用的是<a href="http://x.xuebingsi.com/" target="_blank" rel="noopener">X-Admin</a>的后台模版<br>如果你要关闭服务器，可以直接按<code>ctrl+c</code>或者输入命令<code>ps -c</code>查看所有进程找到<code>dart</code>输入<code>sudo kill 1234</code>（1234为进程号码）<br>好了，今天的内容就到这里了，我们明天见!</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-19/" class="pre-post btn btn-default" title="DartVM服务器开发（十九）-jaguar_reflect使用Controller">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十九）-jaguar_reflect使用Controller</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-17/" class="next-post btn btn-default" title="DartVM服务器开发（十七）-Jaguar_websocket结合Flutter搭建简单聊天室">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十七）-Jaguar_websocket结合Flutter搭建简单聊天室</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-起步"><span class="toc-text">1.起步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-下载DartSDK"><span class="toc-text">2. 下载DartSDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-安装PostgresSQL"><span class="toc-text">3. 安装PostgresSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-运行项目"><span class="toc-text">4.运行项目</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

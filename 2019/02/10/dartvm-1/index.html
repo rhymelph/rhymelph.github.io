@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+学习了Flutter，感觉很有必要用基于dart这个语言做一个服务器，好吧，我们现在就开始做一个服务器吧！
+
+1. Dart环境搭建
+因为大家都知道的墙问题，所以，在官网上面是很难下载下来的，...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（一）-Hello World! | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（一）-Hello World!">
+            
+	            DartVM服务器开发（一）-Hello World!
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>学习了Flutter，感觉很有必要用基于dart这个语言做一个服务器，好吧，我们现在就开始做一个服务器吧！</p>
+</blockquote>
+<h2 id="1-Dart环境搭建"><a href="#1-Dart环境搭建" class="headerlink" title="1. Dart环境搭建"></a>1. Dart环境搭建</h2><blockquote>
+<p>因为大家都知道的墙问题，所以，在<a href="https://www.dartlang.org/install" target="_blank" rel="noopener">官网</a>上面是很难下载下来的，所以我们可以先到<a href="https://flutter.io/sdk-archive/" target="_blank" rel="noopener">Flutter</a>上面先下载Flutter，个人建议使用dev版本，下载完成进行解压，可以到<strong>flutter\bin\cache\dart-sdk</strong>找到我们需要的sdk</p>
+</blockquote>
+<h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><ul>
+<li>DART_HOME<ul>
+<li>C:\flutter\bin\cache\dart-sdk(这里根据自己的路径来)</li>
+</ul>
+</li>
+<li>PATH<ul>
+<li>PATH;DART_HOME\bin;(PATH为之前内容)</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-打开WebStorm"><a href="#2-打开WebStorm" class="headerlink" title="2. 打开WebStorm"></a>2. 打开WebStorm</h2><p><img src="https://upload-images.jianshu.io/upload_images/12805100-96d15bb571153872.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="选择Create New Project.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-72fb9eb200ce571b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="按照上面的内容来.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-64fe562183b915a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建完后什么都没有.png"></p>
+<h2 id="3-编写一个服务器"><a href="#3-编写一个服务器" class="headerlink" title="3. 编写一个服务器"></a>3. 编写一个服务器</h2><p>首先我们<strong>右键</strong>点击项目名字，new-Dart File<br>输入main<br><img src="https://upload-images.jianshu.io/upload_images/12805100-d26c8692382dc172.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>然后在main.dart这个文件输入下面代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">main() <span class="keyword">async</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> requestServer=<span class="keyword">await</span> HttpServer.bind(InternetAddress.loopbackIPv4, <span class="number">8080</span>);</span><br><span class="line"><span class="comment">//HttpServer.bind(主机地址，端口号)  </span></span><br><span class="line"><span class="comment">//主机地址：InternetAddress.loopbackIPv4和InternetAddress.loopbackIPv6都可以监听到</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'监听 localhost地址，端口号为<span class="subst">$&#123;requestServer.port&#125;</span>'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//监听请求</span></span><br><span class="line">  <span class="keyword">await</span> <span class="keyword">for</span>(HttpRequest request <span class="keyword">in</span> requestServer)&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//监听到请求后response回复它一个Hello World!然后关闭这个请求</span></span><br><span class="line">    request.response..write(<span class="string">'Hello World!'</span>)</span><br><span class="line">        ..close();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>填写完上面代码后，我们右键点击main.dart，然后选择<strong>Run main.dart</strong><br><img src="https://upload-images.jianshu.io/upload_images/12805100-0155a7fe745e0864.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>然后打开浏览器，输入<a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a><br>就会看到下面的Hello World！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-c907b5dd28aee963.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Hello World！.png"><br>最后我们的第一个dart服务器就完成了！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-2/" class="pre-post btn btn-default" title="DartVM服务器开发（二）-处理请求">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二）-处理请求</span>
+        </a>
+    
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Dart环境搭建"><span class="toc-text">1. Dart环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#设置环境变量"><span class="toc-text">设置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-打开WebStorm"><span class="toc-text">2. 打开WebStorm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-编写一个服务器"><span class="toc-text">3. 编写一个服务器</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

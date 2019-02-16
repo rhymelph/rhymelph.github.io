@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+在之前学习中，我们已经学习了如何使用jaguar_query_postgres对实体类进行绑定生成一个bean类，使用该bean类对数据库进行操作，那么，如果是涉及到多个表进行查询，就显得有点...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（二十五）-使用SQl语句 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（二十五）-使用SQl语句">
+            
+	            DartVM服务器开发（二十五）-使用SQl语句
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>在之前学习中，我们已经学习了如何使用<code>jaguar_query_postgres</code>对实体类进行绑定生成一个<code>bean</code>类，使用该<code>bean</code>类对数据库进行操作，那么，如果是涉及到多个表进行查询，就显得有点疲软了,所以今天我们来学习一下如何使用sql语句进行查询!</p>
+</blockquote>
+<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><blockquote>
+<p>使用<code>jaguar_query_postgres</code>其实是基于<code>jaguar_postgres</code>库进行封装的，所以，我们只要是集成了<code>jaguar_query_postgres</code>都可以使用SQL语句进行查询</p>
+</blockquote>
+<h2 id="2-使用SQl"><a href="#2-使用SQl" class="headerlink" title="2. 使用SQl"></a>2. 使用SQl</h2><blockquote>
+<p> 我们通过对<code>PgAdapter</code>这个类的进一步追逐，可以发现<code>pg.PostgreSQLConnection</code>这个类，通过<code>PgAdapter.connection</code>去获取，该类就是主要执行SQL语句的，可以使用<code>pg.PostgreSQLConnection.execute(SQL)</code>去执行，该方法是返回的是一个<code>Future&lt;int&gt;</code>，我们来试一下吧</p>
+</blockquote>
+<p>首先，我们的数据库中的<code>_chat</code>表有一条数据,现在我们通过SQL语句对他进行删除<br><img src="https://upload-images.jianshu.io/upload_images/12805100-c08773a92bb3ae6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_query_postgres/jaguar_query_postgres.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> PgAdapter pgAdapter = <span class="keyword">new</span> PgAdapter(</span><br><span class="line">    <span class="string">'rhymedb'</span>,</span><br><span class="line">    username: <span class="string">'postgres'</span>,</span><br><span class="line">    password: <span class="string">'123456'</span>);</span><br><span class="line"></span><br><span class="line">main() <span class="keyword">async</span>&#123;</span><br><span class="line">  <span class="keyword">await</span> pgAdapter.connect();</span><br><span class="line">  <span class="built_in">int</span> i=<span class="keyword">await</span> pgAdapter.connection.execute(<span class="string">"DELETE FROM  _chat WHERE id='1' "</span>);</span><br><span class="line">  <span class="built_in">print</span>(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们运行一下<br><img src="https://upload-images.jianshu.io/upload_images/12805100-c50f8d4a8c42a096.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>可以看到，我们已经成功的输出了<code>1</code>来看看数据库<br><img src="https://upload-images.jianshu.io/upload_images/12805100-64b0951b0de4e91e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>数据已经被我删除掉了<br>这里，我们来解释一下，该<code>execute(SQL)</code>方法只能对数据库进行<code>增</code>，<code>删</code>，<code>改</code>，来了解一下，它还有两个参数</p>
+<ul>
+<li><code>Map&lt;String, dynamic&gt; substitutionValues</code>替代值，可替换SQL语句中的key到对应的值,默认为空</li>
+<li><code>int timeoutInSeconds</code>超时时间，单位为秒，默认30秒</li>
+</ul>
+<p>接下来，我们来了解一下如何使用查询语句吧，将通过SQl语句查询到对应的值出来，我们可以使用<code>pgAdapter.connection.mappedResultsQuery(SQL)</code>方法<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> PgAdapter pgAdapter = <span class="keyword">new</span> PgAdapter(</span><br><span class="line">    <span class="string">'rhymedb'</span>,</span><br><span class="line">    username: <span class="string">'postgres'</span>,</span><br><span class="line">    password: <span class="string">'123456'</span>);</span><br><span class="line"></span><br><span class="line">main() <span class="keyword">async</span>&#123;</span><br><span class="line">  <span class="keyword">await</span> pgAdapter.connect();</span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="keyword">dynamic</span>&gt;&gt;&gt; map=<span class="keyword">await</span> pgAdapter.connection.mappedResultsQuery(<span class="string">'SELECT * FROM _chat'</span>);</span><br><span class="line">  <span class="built_in">print</span>(map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>查询到的是一个map数组，该数组可以通过窗口输出，这里先添加一条数据，然后再查询看一下<br><img src="https://upload-images.jianshu.io/upload_images/12805100-086f79e92c7b6dea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-67ffbd7be23d064e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>可以看到，输出了一个map数据，该数据是通过以表名作为一个键，然后我们再添加一条数据查询看看<br><img src="https://upload-images.jianshu.io/upload_images/12805100-be12f06f92d4ca17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-b8e1d9a069d117a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>ok，很明显，都是通过表明作为键，对应的值作为值</p>
+<p>很明显的看到，这样就实现了使用了SQL语句进行查询了。</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/Android-屏幕适配/" class="pre-post btn btn-default" title="Android-屏幕适配">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Android-屏幕适配</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-24/" class="next-post btn btn-default" title="DartVM服务器开发（二十四）--用户验证(jaguar_session_jwt)">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十四）--用户验证(jaguar_session_jwt)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-介绍"><span class="toc-text">1. 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-使用SQl"><span class="toc-text">2. 使用SQl</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

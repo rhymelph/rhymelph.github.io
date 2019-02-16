@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+在之前的文章中，我们学习了如何建立一个DartVM服务器，在我对Flutter群分享时，有些群友会疑问，学习这个还不如学习golang，Dart服务器有什么用….等等，我这里先说明一下，就目前...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（六）-利用注解处理请求 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（六）-利用注解处理请求">
+            
+	            DartVM服务器开发（六）-利用注解处理请求
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>在之前的文章中，我们学习了如何建立一个DartVM服务器，在我对Flutter群分享时，有些群友会疑问，学习这个还不如学习golang，Dart服务器有什么用….等等，我这里先说明一下，就目前来说确实没什么用，dart服务器运行的是语言VM，而像java服务器运行的是jvm，我们简单来讲一下什么是语言VM跟JVM，语言VM是专门针对某种语言去开发，而JVM是一个字节码VM，这个字节码VM是规定了一个规则，只要是遵守它的规则，无论你是什么语言都可以开发，但前提是根据这个规则转换为字节码，所以说：JVM相对性能没有语言VM要好，但适用范围广泛，语言VM因为根据该语言设计的，所以，是可以通过该语言完全的操控VM，可以两个类似的相比较，<strong>JVM跟语言VM就好比万能驱动与原配驱动</strong>，当然这是类似的比较，不用太较真！好了，巴拉巴拉，说了一大堆，总结：<strong>目前Flutter基于dart语言，学习DartVM开发有助于打好Dart基础，基础打好了，开发Flutter的骚操作也就更多！同样也适合走Dart web开发的同学</strong></p>
+</blockquote>
+<p>下面，如果你跟着仔细操作，你将学会如何使用注解，使用反射获取注解、通过反射调用方法。<br><img src="http://upload-images.jianshu.io/upload_images/12805100-950efd8abe10adbe.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<h2 id="1-定义注解（dart叫元数据）"><a href="#1-定义注解（dart叫元数据）" class="headerlink" title="1. 定义注解（dart叫元数据）"></a>1. 定义注解（dart叫元数据）</h2><blockquote>
+<p>在java中，如果自定义一个注解，需要添加<strong>@Target</strong>作用域注解，<strong>@Retention</strong>注解类型注解，添加<strong>@interface</strong>,然后定义注解参数，那么现在告诉你，在dart都不用,我们只需要定义实体类一样就可以了，代码如下<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Controller</span></span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> path;</span><br><span class="line"><span class="comment">//构造方法定义为编译时常量</span></span><br><span class="line">  <span class="keyword">const</span> Controller(&#123;<span class="keyword">this</span>.path&#125;);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt;<span class="string">'Controller'</span>;<span class="comment">//这里是区别其它注解</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>要注意的是构造方法需要添加一个const修饰，定义为编译时常量，然后下面就是使用<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span>(path: <span class="string">'/user'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们以Controller标识过的作为该Controller的第一段请求路径，如果没有path，就不定义path，<br>接下来我们再定义一个@Request注解<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span></span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> path;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> method;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> Request(&#123;<span class="keyword">this</span>.path,<span class="keyword">this</span>.method&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt;<span class="string">'Request'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面定义了一个第二段请求路径，跟一个请求方法，然后我们根据这个Request再弄Get跟Post的注解<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Get extends Request&#123;</span><br><span class="line">  final String path;</span><br><span class="line"></span><br><span class="line">  const Get(&#123;this.path&#125;) : super(path : path,method: &apos;GET&apos;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  String toString() =&gt;&apos;Get&apos;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Post extends Request&#123;</span><br><span class="line">  final String path;</span><br><span class="line"></span><br><span class="line">  const Post(&#123;this.path&#125;) : super(path : path, method: &apos;POST&apos;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  String toString() =&gt;&apos;Get&apos;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到Get跟Post注解都继承了Request，传递了特定的请求方法<br>现在我们都准备好了这些注解，我们用这些注解写一下请求<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span>(path: <span class="string">'/user'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span></span>&#123;</span><br><span class="line">  <span class="meta">@Get</span>(path: <span class="string">'/login'</span>)</span><br><span class="line">  <span class="keyword">void</span> login(HttpRequest request) &#123;</span><br><span class="line">    request.response</span><br><span class="line">      ..statusCode = HttpStatus.ok</span><br><span class="line">      ..writeln(<span class="string">'LoginSuccess'</span>)</span><br><span class="line">      ..close();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Post</span>(path: <span class="string">'/logout'</span>)</span><br><span class="line">  <span class="keyword">void</span> logout(HttpRequest request)&#123;</span><br><span class="line">    request.response</span><br><span class="line">      ..statusCode = HttpStatus.ok</span><br><span class="line">      ..writeln(<span class="string">'logoutSuccess'</span>)</span><br><span class="line">      ..close();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Request</span>(path: <span class="string">'/delete'</span>, method: <span class="string">'DELETE'</span>)</span><br><span class="line">  <span class="keyword">void</span> editUser(HttpRequest request)&#123;</span><br><span class="line">    request.response</span><br><span class="line">      ..statusCode = HttpStatus.ok</span><br><span class="line">      ..writeln(<span class="string">'DeleteSuccess'</span>)</span><br><span class="line">      ..close();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>好了请求写完了，那么，我们怎么去关联这些注解呢，下面就要用到反射了！</p>
+<h2 id="2-使用反射解析注解类"><a href="#2-使用反射解析注解类" class="headerlink" title="2.使用反射解析注解类"></a>2.使用反射解析注解类</h2><blockquote>
+<p>dart里面含有一个镜子包<strong>dart:mirrors</strong>，这个包可以通过传入的类，去解析元数据（即注解），并可以通过镜子传递参数去调用方法，为了统一管理这些Controller，我们定义一个BaseController，让处理请求的Controller都继承这个类<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//抽象类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseController</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>上面这个方法是一个空方法，我们不添加任何东西，然后让UserController继承这个类<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span>(path: <span class="string">'/user'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">BaseController</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Get</span>(path: <span class="string">'/login'</span>)</span><br><span class="line">  <span class="keyword">void</span> login(HttpRequest request) &#123;</span><br><span class="line">    request.response</span><br><span class="line">      ..statusCode = HttpStatus.ok</span><br><span class="line">      ..writeln(<span class="string">'LoginSuccess'</span>)</span><br><span class="line">      ..close();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Post</span>(path: <span class="string">'/logout'</span>)</span><br><span class="line">  <span class="keyword">void</span> logout(HttpRequest request)&#123;</span><br><span class="line">    request.response</span><br><span class="line">      ..statusCode = HttpStatus.ok</span><br><span class="line">      ..writeln(<span class="string">'logoutSuccess'</span>)</span><br><span class="line">      ..close();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Request</span>(path: <span class="string">'/delete'</span>, method: <span class="string">'DELETE'</span>)</span><br><span class="line">  <span class="keyword">void</span> editUser(HttpRequest request)&#123;</span><br><span class="line">    request.response</span><br><span class="line">      ..statusCode = HttpStatus.ok</span><br><span class="line">      ..writeln(<span class="string">'DeleteSuccess'</span>)</span><br><span class="line">      ..close();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面，我们导入镜子包<strong>dart:mirrors</strong>，新建一个ControllerManager，用来去管理Controller<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:mirrors'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ControllerManager</span></span>&#123;</span><br><span class="line">  <span class="keyword">static</span> ControllerManager manager=<span class="keyword">new</span> ControllerManager();</span><br><span class="line"></span><br><span class="line"><span class="comment">//该list用于判断Controller是否已经被添加</span></span><br><span class="line">  <span class="built_in">List</span>&lt;BaseController&gt; controllers=[];</span><br><span class="line"><span class="comment">//这是一个map，对应的是请求链接，跟对应的controller信息</span></span><br><span class="line">  <span class="built_in">Map</span>&lt;<span class="built_in">String</span>,ControllerInfo&gt; urlToMirror=<span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//添加控制器</span></span><br><span class="line">  <span class="keyword">void</span> addController(BaseController controller)&#123;</span><br><span class="line"><span class="comment">//判断当前是否已经添加过控制器</span></span><br><span class="line">    <span class="keyword">if</span>(!controllers.contains(controller))&#123;</span><br><span class="line">      controllers.add(controller);</span><br><span class="line"><span class="comment">//添加map</span></span><br><span class="line">      urlToMirror.addAll(getRequestInfo(controller));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//该controllerManager处理请求的方法</span></span><br><span class="line">  <span class="keyword">void</span> requestServer(HttpRequest request)&#123;</span><br><span class="line">    <span class="comment">//当前请求的路径</span></span><br><span class="line">    <span class="built_in">String</span> path=request.uri.toString();</span><br><span class="line">    <span class="comment">//当前请求的方法</span></span><br><span class="line">    <span class="built_in">String</span> method=request.method;</span><br><span class="line">   </span><br><span class="line">  <span class="comment">//判断map中是否包含该请求地址</span></span><br><span class="line">    <span class="keyword">if</span>(urlToMirror.containsKey(path))&#123;</span><br><span class="line">      ControllerInfo info=urlToMirror[path];</span><br><span class="line"><span class="comment">//获取到该请求，传递路径、请求方法跟请求</span></span><br><span class="line">      info.invoke(path, method, request);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line"><span class="comment">//没有该地址返回一个404</span></span><br><span class="line">     request.response</span><br><span class="line">       ..statusCode=HttpStatus.notFound</span><br><span class="line">       ..write(<span class="string">'''&#123;</span></span><br><span class="line"><span class="string">	"code": 404,</span></span><br><span class="line"><span class="string">	"msg": "链接不存在！"</span></span><br><span class="line"><span class="string">&#125;'''</span>)</span><br><span class="line">     ..close();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的思路是，在初始化时，将所有的Controller都添加到map中以请求路径为key去查找，当请求时，请求地址在map中查找到，就为它处理请求，如果查找不到，就给它丢一个404的信息,下面是ControllerInfo<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ControllerInfo</span></span>&#123;</span><br><span class="line"><span class="comment">//请求地址对应Controller中的方法，Symbol包含方法标识</span></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>,<span class="built_in">Symbol</span>&gt; urlToMethod;</span><br><span class="line"><span class="comment">//该参数包含通过类初始化得到的实例镜子，可以通过该参数调用方法</span></span><br><span class="line">  <span class="keyword">final</span> InstanceMirror instanceMirror;</span><br><span class="line">  </span><br><span class="line"><span class="comment">//构造方法</span></span><br><span class="line">  ControllerInfo(<span class="keyword">this</span>.instanceMirror,<span class="keyword">this</span>.urlToMethod);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//调用请求方法</span></span><br><span class="line">  <span class="keyword">void</span> invoke(<span class="built_in">String</span> url,<span class="built_in">String</span> method,HttpRequest request)&#123;</span><br><span class="line">  <span class="comment">//判断是否该请求地址是对应的请求方法</span></span><br><span class="line">    <span class="keyword">if</span>(urlToMethod.containsKey(<span class="string">'<span class="subst">$url</span>#<span class="subst">$method</span>'</span>))&#123;</span><br><span class="line"><span class="comment">//调用方法</span></span><br><span class="line">      instanceMirror.invoke(urlToMethod[<span class="string">'<span class="subst">$url</span>#<span class="subst">$method</span>'</span>], [request]);</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line"><span class="comment">//请求方法不对，返回一个错误</span></span><br><span class="line">      request.response</span><br><span class="line">        ..statusCode=HttpStatus.methodNotAllowed</span><br><span class="line">        ..write(<span class="string">'''&#123;</span></span><br><span class="line"><span class="string">	"code": 405,</span></span><br><span class="line"><span class="string">	"msg": "请求出错！"</span></span><br><span class="line"><span class="string">&#125;'''</span>)</span><br><span class="line">        ..close();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>主要的是Symbol、InstanceMirror这两个类，通过instanceMirror.invoke(Symbol,[传递的参数])，就能调用对应的方法了<br>我们在ControllerManager中还有一个添加Controller到map的方法<strong>getRequestInfo(controller)</strong>没有介绍，这个就是获取InstanceMirror跟Symbol的关键，下面介绍获取InstanceMirror跟Symbol<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传递一个Controller进去</span></span><br><span class="line"><span class="built_in">Map</span>&lt;<span class="built_in">String</span>,ControllerInfo&gt; getRequestInfo(BaseController controller) &#123;</span><br><span class="line"><span class="comment">// 实际返回的Map</span></span><br><span class="line">  <span class="built_in">Map</span>&lt;<span class="built_in">String</span>,ControllerInfo&gt; info=<span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line"><span class="comment">//请求地址对应的方法</span></span><br><span class="line">  <span class="built_in">Map</span>&lt;<span class="built_in">String</span>,<span class="built_in">Symbol</span>&gt; urlToMethod=<span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line"><span class="comment">// 获取Controller实例的镜子</span></span><br><span class="line">  InstanceMirror im = reflect(controller);</span><br><span class="line"><span class="comment">//获取Controller运行时类型的镜子</span></span><br><span class="line">  ClassMirror classMirror = im.type;</span><br><span class="line"><span class="comment">//请求的根路径</span></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; path = [];</span><br><span class="line"><span class="comment">//该Controller的所有接收的请求地址</span></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; urlList=[];</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取元数据,就是获取@Controller(path: xxx)中的xxx</span></span><br><span class="line">  classMirror.metadata.forEach((medate) &#123;</span><br><span class="line">    path.add(medate.reflectee.path);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//获取该类的所有方法</span></span><br><span class="line">  classMirror.declarations.forEach((symbol, declarationMirror) &#123;</span><br><span class="line">    <span class="comment">//将自身的构造方法剔除</span></span><br><span class="line">    <span class="keyword">if</span> (symbol.toString() != classMirror.simpleName.toString()) &#123;</span><br><span class="line">    <span class="comment">//获取方法的元数据，就是@Get(path： path)</span></span><br><span class="line">      declarationMirror.metadata.forEach((medate) &#123;</span><br><span class="line">        <span class="comment">//请求的地址</span></span><br><span class="line">        <span class="built_in">String</span> requestPath = path.join() + medate.reflectee.path;</span><br><span class="line">        <span class="comment">//请求的类型</span></span><br><span class="line">        <span class="built_in">String</span> method = medate.reflectee.method;</span><br><span class="line"></span><br><span class="line"><span class="comment">//        print('请求地址为：$requestPath,请求方法为：$method');</span></span><br><span class="line">    <span class="comment">//添加到请求地址集合</span></span><br><span class="line">        urlList.add(requestPath);</span><br><span class="line"><span class="comment">//添加到请求地址对应方法的集合</span></span><br><span class="line">        urlToMethod.putIfAbsent(<span class="string">'<span class="subst">$requestPath</span>#<span class="subst">$method</span>'</span>, ()=&gt;symbol);</span><br><span class="line">      &#125;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//实例化一个Controller信息</span></span><br><span class="line">  ControllerInfo controllerInfo=<span class="keyword">new</span> ControllerInfo(im, urlToMethod);</span><br><span class="line"></span><br><span class="line"><span class="comment">//循环添加到实际需要的Map，对应请求地址根ControllerInfo信息</span></span><br><span class="line">  urlList.forEach((url)&#123;</span><br><span class="line">    info.putIfAbsent(url, ()=&gt;controllerInfo);</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="comment">//返回需要的map</span></span><br><span class="line">  <span class="keyword">return</span> info;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的注释已经写的很明细了，如果不清楚，我再讲解下：</p>
+<ul>
+<li>reflect(controller)  &gt;&gt;&gt;&gt;  InstanceMirror(含有Controller的实例，可调用方法)</li>
+<li>InstanceMirror.type &gt;&gt;&gt;&gt; ClassMirror(为了获取类的注解)</li>
+<li>classMirror. metadata  &gt;&gt;&gt;&gt;&gt; 获取类的元数据</li>
+<li>classMirror.declarations &gt;&gt;&gt;&gt; (symbol, declarationMirror) 获取该类的所有方法名（用于调用方法），镜子（用于获取元数据）</li>
+<li>declarationMirror.metadata &gt;&gt;&gt;&gt; 获取方法的元数据<br>好了，基本上讲完，然后我们去使用该ControllerManager</li>
+</ul>
+<h2 id="3-使用ControllerManager"><a href="#3-使用ControllerManager" class="headerlink" title="3. 使用ControllerManager"></a>3. 使用ControllerManager</h2><blockquote>
+<p>首先我们需要在运行服务器之前，将我们需要的Controller添加到ControllerManager中（这个比较笨的方法，如果有大佬知道怎么自动去扫描Controller添加到ControllerManager，请告知小弟，谢谢!）<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//添加控制器</span></span><br><span class="line">ControllerManager.manager.addController(<span class="keyword">new</span> UserController());</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>然后将我们之前的 handleMessage(request)方法替换为<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//....</span></span><br><span class="line">          ControllerManager.manager.requestServer(request);</span><br><span class="line"><span class="comment">//....</span></span><br></pre></td></tr></table></figure></p>
+<p>当所有操作完成之后，我们休息一会，然后点击绿色按钮，启动我们的服务器，并输入<a href="http://localhost:8080/user/login" target="_blank" rel="noopener">http://localhost:8080/user/login</a><br>见证奇迹！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-fa371f77f2f7901b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br>可以看到，我们成功的利用注解处理请求！<br>今天的内容基本上是这些了，如果你仔细学习了该文章，对于Flutter开发也可以使用注解去登陆，去请求数据，好了，谢谢！我们明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-7/" class="pre-post btn btn-default" title="DartVM服务器开发（七）-WebSocket">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（七）-WebSocket</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-5/" class="next-post btn btn-default" title="DartVM服务器开发（五）-日志工具">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（五）-日志工具</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-定义注解（dart叫元数据）"><span class="toc-text">1. 定义注解（dart叫元数据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-使用反射解析注解类"><span class="toc-text">2.使用反射解析注解类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-使用ControllerManager"><span class="toc-text">3. 使用ControllerManager</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+今天我们来学习一下如何通过jaguar_session_jwt进行用户的验证！
+
+1.导包在我们的pubspec.yaml文件下添加下面代码12dependencies:  jaguar_se...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（二十四）--用户验证(jaguar_session_jwt) | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（二十四）--用户验证(jaguar_session_jwt)">
+            
+	            DartVM服务器开发（二十四）--用户验证(jaguar_session_jwt)
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>今天我们来学习一下如何通过jaguar_session_jwt进行用户的验证！</p>
+</blockquote>
+<h2 id="1-导包"><a href="#1-导包" class="headerlink" title="1.导包"></a>1.导包</h2><p>在我们的<code>pubspec.yaml</code>文件下添加下面代码<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line"><span class="attr">  jaguar_session_jwt:</span> <span class="string">^2.2.1</span></span><br></pre></td></tr></table></figure></p>
+<p>然后执行<code>pub get</code>命令<br><img src="https://upload-images.jianshu.io/upload_images/12805100-01a30d285a9277ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pub get.png"><br>导入文件<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_session_jwt/jaguar_session_jwt.dart'</span>;</span><br></pre></td></tr></table></figure></p>
+<p><strong>这里要注意，使用该包，需要配合<code>jaguar_jwt</code>，<code>jaguar_auth</code>这两个包使用</strong></p>
+<h2 id="2-使用"><a href="#2-使用" class="headerlink" title="2,使用"></a>2,使用</h2><ul>
+<li><h3 id="1-对用户模型进行处理，让用户模型实现PasswordUser接口"><a href="#1-对用户模型进行处理，让用户模型实现PasswordUser接口" class="headerlink" title="1.对用户模型进行处理，让用户模型实现PasswordUser接口"></a>1.对用户模型进行处理，让用户模型实现<code>PasswordUser</code>接口</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">PasswordUser</span></span>&#123;</span><br><span class="line">  <span class="meta">@PrimaryKey</span>()</span><br><span class="line">  <span class="built_in">String</span> id;<span class="comment">//id号</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">20</span>,isNullable: <span class="keyword">false</span>)</span><br><span class="line">  <span class="built_in">String</span> username;<span class="comment">//用户名</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">30</span>,isNullable: <span class="keyword">false</span>)</span><br><span class="line">  <span class="built_in">String</span> password;<span class="comment">//密码</span></span><br><span class="line">  <span class="meta">@Column</span>(isNullable: <span class="keyword">false</span>)</span><br><span class="line">  <span class="built_in">bool</span> isUse;<span class="comment">//是否可用</span></span><br><span class="line">  <span class="built_in">String</span> created;</span><br><span class="line">  <span class="meta">@HasOne</span>(AvatarBean)</span><br><span class="line">  Avatar avatar;<span class="comment">//头像</span></span><br><span class="line">  <span class="meta">@Column</span>(isNullable: <span class="keyword">true</span>)</span><br><span class="line">  <span class="built_in">String</span> role;</span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">11</span>,isNullable: <span class="keyword">true</span>)</span><br><span class="line">  <span class="built_in">String</span> phoneNumber;<span class="comment">//电话号码</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">30</span>,isNullable: <span class="keyword">true</span>)</span><br><span class="line">  <span class="built_in">String</span> email;<span class="comment">//邮箱</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">200</span>,isNullable: <span class="keyword">true</span>)</span><br><span class="line">  <span class="built_in">String</span> sign;<span class="comment">//签名</span></span><br><span class="line">  <span class="meta">@Column</span>(isNullable: <span class="keyword">true</span>)</span><br><span class="line">  <span class="built_in">String</span> city;<span class="comment">//城市</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//表名</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> tableName=<span class="string">'_user'</span>;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">  <span class="meta">@override</span><span class="comment">//授权身份验证</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> authorizationId =&gt; id;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面就是我今天用到的一个用户模型，内容还是很丰富的，可以注意到一个点，就是需要实现获取<code>authorizationId</code>，我传入的是用户的<code>id</code> ，<code>PasswordUser</code>还有一个<code>password</code>需要实现，但是我已经定义好了，所以，不用再实现了，</p>
+</li>
+<li><h3 id="2-定义一个用户提取器"><a href="#2-定义一个用户提取器" class="headerlink" title="2.定义一个用户提取器"></a>2.定义一个用户提取器</h3><p>该用户取样器，是当用户登陆时，会通过该取样器去校验是否正确</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:async'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar/jaguar.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DummyUserFetcher</span> <span class="keyword">implements</span> <span class="title">UserFetcher</span>&lt;<span class="title">User</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> UserBean userBean;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> DummyUserFetcher(UserBean userBean,)</span><br><span class="line">      : userBean = userBean ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//身份验证</span></span><br><span class="line">  Future&lt;User&gt; byAuthenticationId(Context ctx, <span class="built_in">String</span> authenticationId) <span class="keyword">async</span> =&gt;</span><br><span class="line">      <span class="keyword">await</span> userBean.findOneWhere(userBean.username.eq(authenticationId));</span><br><span class="line"></span><br><span class="line"><span class="comment">//授权书</span></span><br><span class="line">  Future&lt;User&gt; byAuthorizationId(Context ctx, <span class="built_in">String</span> sessionId) <span class="keyword">async</span> =&gt;</span><br><span class="line">      <span class="keyword">await</span> userBean.find(sessionId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面通过两个地方进行对用户的校验，一个是用户名，一个是用户id，用户id一般存在session里面,有小伙伴可能会对<code>authenticationId</code>跟<code>authorizationId</code>混淆，仔细看是两个东西来的，一个是<code>认证id</code>，一个是<code>授权id</code><br>ok，我们已经定义好了，下面是配置<code>jwt</code></p>
+<ul>
+<li><h3 id="3-配置jwt"><a href="#3-配置jwt" class="headerlink" title="3.配置jwt"></a>3.配置jwt</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> JwtConfig config=<span class="keyword">const</span> JwtConfig(key);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面传入一个key，一般为27位秘钥，自己定义好就行，什么都可以，<code>JwtConfig</code>还可以传入下面的字段</p>
+<ul>
+<li>String Issuer 发行人</li>
+<li>List<string> audience  受众</string></li>
+<li>Duration maxAge 过期时间，默认一天</li>
+</ul>
+<p>像这样使用<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> JwtConfig config=<span class="keyword">const</span> JwtConfig(</span><br><span class="line">    key</span><br><span class="line">    ,issuer: <span class="string">'rhyme'</span></span><br><span class="line">    ,audience: [<span class="string">'ben'</span>,<span class="string">'jack'</span>]</span><br><span class="line">    ,maxAge: <span class="built_in">Duration</span>(days: <span class="number">7</span>));</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="4-配置服务器"><a href="#4-配置服务器" class="headerlink" title="4. 配置服务器"></a>4. 配置服务器</h3>将上面已经配置好的jwt配置到服务器<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">main&#123;</span><br><span class="line">   dbmg.init();</span><br><span class="line">  <span class="keyword">new</span> Jaguar(sessionManager: JwtSession(config,io: SessionIoCookie()),)</span><br><span class="line"> ..userFetchers[User]=DummyUserFetcher(<span class="keyword">new</span> UserBean(dbmg.pgAdapter))</span><br><span class="line"> ..add((reflect(UserController(dbmg.pgAdapter,cache))))</span><br><span class="line"> ..serve(logRequests: <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果有看过我之前的文章应该知道<code>UserBean</code>,<code>pgAdapter</code>,<code>cache</code>是什么吧，分别是<code>User</code>的<code>dao</code>类,<code>数据库持有类</code>,<code>缓存</code> ，我们来重点讲一下<code>JwtSession</code>吧</p>
+<ul>
+<li><code>config</code>上面jwt配置</li>
+<li><code>io</code> 该参数可以传入<code>SessionIoCookie()</code>令牌存在cookie, <code>SessionIoAuthHeader()</code>令牌在授权头,<code>SessionIoHeader</code>令牌在头(请求头与应答头)</li>
+<li><code>validationConfig</code> 该参数为验证配置，用于验证令牌中的发行人与受众，所以，需要传入发行人与受众</li>
+</ul>
+<p>详细说明一下<code>io</code>这个参数吧</p>
+<ul>
+<li><p><code>SessionIoCookie(cookieName: &#39;token&#39;,cookiePath: &#39;/he&#39;)</code>，令牌自动放入到<code>token</code>这个键对应的值中，<code>/he</code>为路径，一般用于网页<br><img src="https://upload-images.jianshu.io/upload_images/12805100-2be46d733f45145b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+<li><p><code>SessionIoAuthHeader(scheme: &#39;rhyme&#39;)</code>,令牌放入到应答头中的<code>authorization</code>，<code>rhyme</code>拼接令牌<br><img src="https://upload-images.jianshu.io/upload_images/12805100-ea583a89b607458e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+<li><code>SessionIoHeader(name: &#39;token&#39;)</code>，令牌放入到应答头中对应传入的键中<br><img src="https://upload-images.jianshu.io/upload_images/12805100-89d10802d6b52e58.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+<h2 id="5-登陆用户"><a href="#5-登陆用户" class="headerlink" title="5.登陆用户"></a>5.登陆用户</h2><p>下面我们来写一个登陆接口<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  <span class="meta">@Post</span>(path: <span class="string">'/login'</span>)</span><br><span class="line">  loginx(Context ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">  <span class="comment">//验证用户，并给予令牌</span></span><br><span class="line">    <span class="keyword">final</span> User user=<span class="keyword">await</span> FormAuth.authenticate&lt;User&gt;(ctx);</span><br><span class="line"><span class="comment">//返回用户信息</span></span><br><span class="line">    <span class="keyword">return</span> Response.json((restful.ok_r()</span><br><span class="line">      ..data=user).toMap(<span class="keyword">new</span> UserSerializer()));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>也可以这样写<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Post</span>(path: <span class="string">'/login'</span>)</span><br><span class="line"><span class="meta">@Intercept</span>(<span class="keyword">const</span> [<span class="keyword">const</span> FormAuth&lt;User&gt;()])</span><br><span class="line">loginx(Context ctx) &#123;</span><br><span class="line">  <span class="keyword">final</span> User user=ctx.getVariable&lt;User&gt;();</span><br><span class="line">  <span class="keyword">return</span> Response.json((restful.ok_r()</span><br><span class="line">    ..data=user).toMap(<span class="keyword">new</span> UserSerializer()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>FormAuth用于验证表单请求，编码题必须为<code>application/x-www-form-urlencoded</code><br>FormAuth()构造方法可传入下面的参数</p>
+<ul>
+<li><code>UserFetcher&lt;UserModel&gt; userFetcher</code> 用户提取器，跟上面一样，默认使用服务器配置的</li>
+<li><code>String authorizationIdKey</code> 授权字段，默认为<code>id</code></li>
+<li><code>bool manageSession</code>如果为<code>false</code>，则需要手动完成会话的创建,默认为<code>true</code></li>
+<li><code>Hasher hasher</code>用于密码校验，默认为<code>NoHasher()</code>不需要校验</li>
+</ul>
+<p>重点讲解下 <code>Hasher hasher</code>,当服务器接收到用户名<code>username</code>跟密码<code>password</code>，如果密码是加密过的，就可以使用该参数,它支持的参数</p>
+<ul>
+<li><code>NoHasher()</code>不需要进行校验</li>
+<li><code>MD5Hasher(salt)</code> md5校验，<code>salt</code>为盐值</li>
+<li><code>Sha1Hasher(salt)</code> Sha1校验，<code>salt</code>为盐值</li>
+<li><code>Sha256Hasher(salt)</code>Sha256校验，<code>salt</code>为盐值</li>
+</ul>
+<p>同样的，还可以支持下面的请求</p>
+<h3 id="基本认证"><a href="#基本认证" class="headerlink" title="基本认证"></a>基本认证</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Post</span>(path: <span class="string">'/login'</span>)</span><br><span class="line">loginb(Context ctx) <span class="keyword">async</span> =&gt; <span class="keyword">await</span> BasicAuth.authenticate&lt;User&gt;(ctx);</span><br></pre></td></tr></table></figure>
+<p>上面的请求是将<code>username</code>和<code>password</code>经过:username:password拼接后通过base64加密放入到<br>请求头的<code>authorization</code>对应的<code>Basic</code>键中</p>
+<h3 id="json认证"><a href="#json认证" class="headerlink" title="json认证"></a>json认证</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostJson</span>(path: <span class="string">'/login'</span>)</span><br><span class="line">  <span class="meta">@Intercept</span>(<span class="keyword">const</span> [<span class="keyword">const</span> JsonAuth&lt;User&gt;()])</span><br><span class="line">  User login(Context ctx) =&gt; ctx.getVariable&lt;User&gt;();</span><br></pre></td></tr></table></figure>
+<h2 id="6-授权访问"><a href="#6-授权访问" class="headerlink" title="6.授权访问"></a>6.授权访问</h2><p>当用户登陆后，我们需要登陆后才能操作<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Post</span>(path: <span class="string">'/hello'</span>)</span><br><span class="line"><span class="meta">@Intercept</span>(<span class="keyword">const</span> [Authorizer&lt;User&gt;()])</span><br><span class="line">hello(Context ctx)&#123;</span><br><span class="line">  <span class="keyword">return</span> Response.json(<span class="string">'hello'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们这里如果是用户没有登陆，会提示用户去进行登陆,登陆过后，柴可以访问hello接口</p>
+<h2 id="7-退出登录"><a href="#7-退出登录" class="headerlink" title="7.退出登录"></a>7.退出登录</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Post</span>(path: <span class="string">'/logout'</span>)</span><br><span class="line">logout(Context ctx)<span class="keyword">async</span>&#123;</span><br><span class="line"> (<span class="keyword">await</span> ctx.sessions).clear();</span><br><span class="line">  <span class="keyword">return</span> Response.json(<span class="string">'退出成功'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>退出登录我们只要清理一下跟该客户端的sessions就可以退出了</p>
+<p>ok，今天的内容就到这里，我们明天见!</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-25/" class="pre-post btn btn-default" title="DartVM服务器开发（二十五）-使用SQl语句">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十五）-使用SQl语句</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-23/" class="next-post btn btn-default" title="DartVM服务器开发（二十三）-缓存层(jaguar_cache)">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十三）-缓存层(jaguar_cache)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-导包"><span class="toc-text">1.导包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-使用"><span class="toc-text">2,使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-对用户模型进行处理，让用户模型实现PasswordUser接口"><span class="toc-text">1.对用户模型进行处理，让用户模型实现PasswordUser接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-定义一个用户提取器"><span class="toc-text">2.定义一个用户提取器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-配置jwt"><span class="toc-text">3.配置jwt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-配置服务器"><span class="toc-text">4. 配置服务器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-登陆用户"><span class="toc-text">5.登陆用户</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本认证"><span class="toc-text">基本认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json认证"><span class="toc-text">json认证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-授权访问"><span class="toc-text">6.授权访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-退出登录"><span class="toc-text">7.退出登录</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

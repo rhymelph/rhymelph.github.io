@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇文章我们详细说明了如何使用JWT，今天，我们来使用websocket做一个简单的聊天室！那就开始吧！
+
+1.定义消息
+在开始建立webSocket之前，我们需要定义消息，如：发送人，发送...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十七）-Jaguar_websocket结合Flutter搭建简单聊天室 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十七）-Jaguar_websocket结合Flutter搭建简单聊天室">
+            
+	            DartVM服务器开发（十七）-Jaguar_websocket结合Flutter搭建简单聊天室
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇文章我们详细说明了如何使用JWT，今天，我们来使用websocket做一个简单的聊天室！那就开始吧！</p>
+</blockquote>
+<h2 id="1-定义消息"><a href="#1-定义消息" class="headerlink" title="1.定义消息"></a>1.定义消息</h2><blockquote>
+<p>在开始建立webSocket之前，我们需要定义消息，如：发送人，发送时间，发送人id等..<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:convert'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatMessageData</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> id;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> msg;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">DateTime</span> created;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> role;</span><br><span class="line">  ChatMessageData(</span><br><span class="line">    <span class="keyword">this</span>.id,</span><br><span class="line">    <span class="keyword">this</span>.msg,</span><br><span class="line">    <span class="keyword">this</span>.name,</span><br><span class="line">    <span class="keyword">this</span>.role,</span><br><span class="line">    <span class="keyword">this</span>.created,</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">static</span> ChatMessageData formMap(<span class="built_in">Map</span> map) =&gt; ChatMessageData(</span><br><span class="line">      map[<span class="string">'id'</span>],</span><br><span class="line">      map[<span class="string">'msg'</span>],</span><br><span class="line">      map[<span class="string">'name'</span>],</span><br><span class="line">      map[<span class="string">'role'</span>],</span><br><span class="line">      <span class="built_in">DateTime</span>.fromMicrosecondsSinceEpoch(map[<span class="string">'created'</span>]));</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Map</span> toMap() =&gt; &#123;</span><br><span class="line">        <span class="string">"id"</span>: id,</span><br><span class="line">        <span class="string">"msg"</span>: msg,</span><br><span class="line">        <span class="string">"name"</span>: name,</span><br><span class="line">        <span class="string">"role"</span>:role,</span><br><span class="line">        <span class="string">"created"</span>: created.millisecondsSinceEpoch</span><br><span class="line">      &#125;;</span><br><span class="line">  <span class="built_in">String</span> toJson() =&gt; jsonEncode(toMap());</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt; toMap().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>我们这里定义了一个<code>ChatMessageData</code>，如果你想需要更多字段，可以再添加</p>
+<h2 id="2-添加消息订阅"><a href="#2-添加消息订阅" class="headerlink" title="2.添加消息订阅"></a>2.添加消息订阅</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//控制消息的发送</span></span><br><span class="line"><span class="keyword">final</span> pub = StreamController&lt;ChatMessageData&gt;();</span><br><span class="line"><span class="comment">//当pub调用add(data)方法，该sub的listen会监听到</span></span><br><span class="line"><span class="keyword">final</span> Stream&lt;ChatMessageData&gt; sub = pub.stream.asBroadcastStream();</span><br></pre></td></tr></table></figure>
+<h2 id="3-定义接口"><a href="#3-定义接口" class="headerlink" title="3. 定义接口"></a>3. 定义接口</h2><p>这里我们定义两个接口，一个用于连接的接口，一个用于发送消息的接口</p>
+<ul>
+<li><code>/mini/login</code> 提交用户的信息，如果不正确，返回相关的信息,不给连接</li>
+<li><code>/min/connect</code> 连接websocket，该接口获取到websocket对象，然后可以使用该对象进行发送消息<br>登陆接口<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">..post(<span class="string">'/mini/login'</span>, (ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">      User user=<span class="keyword">await</span> ctx.bodyAsJson(convert: User.forMap);</span><br><span class="line">      <span class="built_in">String</span> username = user.username;</span><br><span class="line">      <span class="built_in">String</span> password = user.password;</span><br><span class="line">      <span class="keyword">if</span> (username.isEmpty || password.isEmpty) &#123;</span><br><span class="line">        <span class="keyword">return</span> Response.json(apiJson.errorMsgA(<span class="number">-1</span>, <span class="string">'用户名或密码为空！'</span>).toMap());</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        User user = <span class="keyword">await</span> userBean.findOneWhere(userBean.username.eq(username));</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span> || user.password != password) &#123;</span><br><span class="line">          <span class="keyword">return</span> Response.json(apiJson.errorMsgA(<span class="number">-2</span>, <span class="string">'用户名或密码不正确！'</span>).toMap());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">'用户：<span class="subst">$username</span>登陆成功'</span>);</span><br><span class="line">          <span class="keyword">return</span> Response.json(apiJson.successA().toMap());</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>连接接口<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">..ws(</span><br><span class="line">      <span class="string">'/mini/connect'</span>,</span><br><span class="line">      onConnect: (ctx, ws) &#123;</span><br><span class="line">        <span class="keyword">var</span> subscription = sub.listen((ChatMessageData data) &#123;</span><br><span class="line">          <span class="built_in">print</span>(data.toJson());</span><br><span class="line">          ws.add(data.toJson());</span><br><span class="line">        &#125;);</span><br><span class="line">        ws.done.then((_) &#123;</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">'用户已退出聊天房'</span>);</span><br><span class="line">          subscription.cancel();</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">//连接上之后返回一条信息</span></span><br><span class="line">        ws.add(<span class="keyword">new</span> ChatMessageData(<span class="string">'1'</span>, <span class="string">'欢迎登陆'</span>, <span class="string">'服务器'</span>, <span class="number">1</span>, <span class="built_in">DateTime</span>.now()).toJson());</span><br><span class="line">      &#125;,</span><br><span class="line">      handler: (data) &#123;</span><br><span class="line">        <span class="comment">//获取用户发送的消息</span></span><br><span class="line">        ChatMessageData msg=ChatMessageData.formMap(json.decode(data));</span><br><span class="line">        <span class="built_in">print</span>(msg.toJson());</span><br><span class="line">        <span class="comment">//广播一条消息</span></span><br><span class="line">        pub.add(msg);</span><br><span class="line">      &#125;,</span><br><span class="line">    )</span><br></pre></td></tr></table></figure></p>
+<p>ok，我们已经搭建好一个简单的聊天接口了，下面，我们使用Flutter简单的编辑一下客户端平台</p>
+<h2 id="4-Flutter建立一个简单的聊天室"><a href="#4-Flutter建立一个简单的聊天室" class="headerlink" title="4.Flutter建立一个简单的聊天室"></a>4.Flutter建立一个简单的聊天室</h2><blockquote>
+<p>这部分代码为Flutter下，可简单的编辑一个聊天室<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br></pre></td><td class="code"><pre><span class="line">mport <span class="string">'package:flutter/cupertino.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/foundation.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(<span class="keyword">new</span> FriendlychatApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> ThemeData kIOSTheme = <span class="keyword">new</span> ThemeData(</span><br><span class="line">  primarySwatch: Colors.orange,</span><br><span class="line">  primaryColor: Colors.grey[<span class="number">100</span>],</span><br><span class="line">  primaryColorBrightness: Brightness.light,</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> ThemeData kDefaultTheme = <span class="keyword">new</span> ThemeData(</span><br><span class="line">  primarySwatch: Colors.purple,</span><br><span class="line">  accentColor: Colors.orangeAccent[<span class="number">400</span>],</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">String</span> _name = <span class="string">"Your Name"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FriendlychatApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line"> <span class="meta">@override</span></span><br><span class="line"> Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> MaterialApp(</span><br><span class="line">      title: <span class="string">"Friendlychat"</span>,</span><br><span class="line">      theme: defaultTargetPlatform == TargetPlatform.iOS</span><br><span class="line">        ? kIOSTheme</span><br><span class="line">        : kDefaultTheme,</span><br><span class="line">      home: <span class="keyword">new</span> ChatScreen(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatMessage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  ChatMessage(&#123;<span class="keyword">this</span>.text, <span class="keyword">this</span>.animationController&#125;);</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> text;</span><br><span class="line">  <span class="keyword">final</span> AnimationController animationController;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> SizeTransition(</span><br><span class="line">      sizeFactor: <span class="keyword">new</span> CurvedAnimation(</span><br><span class="line">        parent: animationController,</span><br><span class="line">        curve: Curves.easeOut</span><br><span class="line">      ),</span><br><span class="line">      axisAlignment: <span class="number">0.0</span>,</span><br><span class="line">      child: <span class="keyword">new</span> Container(</span><br><span class="line">        margin: <span class="keyword">const</span> EdgeInsets.symmetric(vertical: <span class="number">10.0</span>),</span><br><span class="line">        child: <span class="keyword">new</span> Row(</span><br><span class="line">          crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">            <span class="keyword">new</span> Container(</span><br><span class="line">              margin: <span class="keyword">const</span> EdgeInsets.only(right: <span class="number">16.0</span>),</span><br><span class="line">              child: <span class="keyword">new</span> CircleAvatar(child: <span class="keyword">new</span> Text(_name[<span class="number">0</span>])),</span><br><span class="line">            ),</span><br><span class="line">            <span class="keyword">new</span> Expanded(</span><br><span class="line">              child: <span class="keyword">new</span> Column(</span><br><span class="line">                crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">                children: &lt;Widget&gt;[</span><br><span class="line">                  <span class="keyword">new</span> Text(_name, style: Theme.of(context).textTheme.subhead),</span><br><span class="line">                  <span class="keyword">new</span> Container(</span><br><span class="line">                    margin: <span class="keyword">const</span> EdgeInsets.only(top: <span class="number">5.0</span>),</span><br><span class="line">                    child: <span class="keyword">new</span> Text(text),</span><br><span class="line">                  ),</span><br><span class="line">                ],</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      )</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatScreen</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State createState() =&gt; <span class="keyword">new</span> ChatScreenState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatScreenState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChatScreen</span>&gt; <span class="title">with</span> <span class="title">TickerProviderStateMixin</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">List</span>&lt;ChatMessage&gt; _messages = &lt;ChatMessage&gt;[];</span><br><span class="line">  <span class="keyword">final</span> TextEditingController _textController = <span class="keyword">new</span> TextEditingController();</span><br><span class="line">  <span class="built_in">bool</span> _isComposing = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _handleSubmitted(<span class="built_in">String</span> text) &#123;</span><br><span class="line">    _textController.clear();</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      _isComposing = <span class="keyword">false</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">    ChatMessage message = <span class="keyword">new</span> ChatMessage(</span><br><span class="line">      text: text,</span><br><span class="line">      animationController: <span class="keyword">new</span> AnimationController(</span><br><span class="line">        duration: <span class="keyword">new</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">700</span>),</span><br><span class="line">        vsync: <span class="keyword">this</span>,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      _messages.insert(<span class="number">0</span>, message);</span><br><span class="line">    &#125;);</span><br><span class="line">    message.animationController.forward();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    <span class="keyword">for</span> (ChatMessage message <span class="keyword">in</span> _messages)</span><br><span class="line">      message.animationController.dispose();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">   Widget _buildTextComposer() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> IconTheme(</span><br><span class="line">      data: <span class="keyword">new</span> IconThemeData(color: Theme.of(context).accentColor),</span><br><span class="line">      child: <span class="keyword">new</span> Container(</span><br><span class="line">          margin: <span class="keyword">const</span> EdgeInsets.symmetric(horizontal: <span class="number">8.0</span>),</span><br><span class="line">          child: <span class="keyword">new</span> Row(children: &lt;Widget&gt;[</span><br><span class="line">            <span class="keyword">new</span> Flexible(</span><br><span class="line">              child: <span class="keyword">new</span> TextField(</span><br><span class="line">                controller: _textController,</span><br><span class="line">                onChanged: (<span class="built_in">String</span> text) &#123;</span><br><span class="line">                  setState(() &#123;</span><br><span class="line">                    _isComposing = text.length &gt; <span class="number">0</span>;</span><br><span class="line">                  &#125;);</span><br><span class="line">                &#125;,</span><br><span class="line">                onSubmitted: _handleSubmitted,</span><br><span class="line">                decoration:</span><br><span class="line">                    <span class="keyword">new</span> InputDecoration.collapsed(hintText: <span class="string">"Send a message"</span>),</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">            <span class="keyword">new</span> Container(</span><br><span class="line">                margin: <span class="keyword">new</span> EdgeInsets.symmetric(horizontal: <span class="number">4.0</span>),</span><br><span class="line">                child: Theme.of(context).platform == TargetPlatform.iOS</span><br><span class="line">                    ? <span class="keyword">new</span> CupertinoButton(</span><br><span class="line">                        child: <span class="keyword">new</span> Text(<span class="string">"Send"</span>),</span><br><span class="line">                        onPressed: _isComposing</span><br><span class="line">                            ? () =&gt; _handleSubmitted(_textController.text)</span><br><span class="line">                            : <span class="keyword">null</span>,</span><br><span class="line">                      )</span><br><span class="line">                    : <span class="keyword">new</span> IconButton(</span><br><span class="line">                        icon: <span class="keyword">new</span> Icon(Icons.send),</span><br><span class="line">                        onPressed: _isComposing</span><br><span class="line">                            ? () =&gt; _handleSubmitted(_textController.text)</span><br><span class="line">                            : <span class="keyword">null</span>,</span><br><span class="line">                      )),</span><br><span class="line">          ]),</span><br><span class="line">          decoration: Theme.of(context).platform == TargetPlatform.iOS</span><br><span class="line">              ? <span class="keyword">new</span> BoxDecoration(</span><br><span class="line">                  border:</span><br><span class="line">                      <span class="keyword">new</span> Border(top: <span class="keyword">new</span> BorderSide(color: Colors.grey[<span class="number">200</span>])))</span><br><span class="line">              : <span class="keyword">null</span>),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      appBar: <span class="keyword">new</span> AppBar(</span><br><span class="line">        title: <span class="keyword">new</span> Text(<span class="string">"Friendlychat"</span>),</span><br><span class="line">        elevation:</span><br><span class="line">            Theme.of(context).platform == TargetPlatform.iOS ? <span class="number">0.0</span> : <span class="number">4.0</span></span><br><span class="line">      ),</span><br><span class="line">      body: <span class="keyword">new</span> Container(</span><br><span class="line">        child: <span class="keyword">new</span> Column(</span><br><span class="line">          children: &lt;Widget&gt;[</span><br><span class="line">          <span class="keyword">new</span> Flexible(</span><br><span class="line">            child: <span class="keyword">new</span> ListView.builder(</span><br><span class="line">              padding: <span class="keyword">new</span> EdgeInsets.all(<span class="number">8.0</span>),</span><br><span class="line">              reverse: <span class="keyword">true</span>,</span><br><span class="line">              itemBuilder: (_, <span class="built_in">int</span> index) =&gt; _messages[index],</span><br><span class="line">              itemCount: _messages.length,</span><br><span class="line">            )</span><br><span class="line">          ),</span><br><span class="line">          <span class="keyword">new</span> Divider(height: <span class="number">1.0</span>),</span><br><span class="line">          <span class="keyword">new</span> Container(</span><br><span class="line">            decoration: <span class="keyword">new</span> BoxDecoration(</span><br><span class="line">              color: Theme.of(context).cardColor),</span><br><span class="line">            child: _buildTextComposer(),</span><br><span class="line">          ),</span><br><span class="line">         ]</span><br><span class="line">       ),</span><br><span class="line">       decoration: Theme.of(context).platform == TargetPlatform.iOS ? <span class="keyword">new</span> BoxDecoration(border: <span class="keyword">new</span> Border(top: <span class="keyword">new</span> BorderSide(color: Colors.grey[<span class="number">200</span>]))) : <span class="keyword">null</span>),<span class="comment">//new</span></span><br><span class="line">   );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>上面就是简单的聊天界面，我们还有主要跟服务器交互的方法<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">WebSocket socket;</span><br><span class="line"><span class="keyword">void</span> login() &#123;</span><br><span class="line">    httpManager.post(</span><br><span class="line">        url: <span class="string">'http://192.168.1.101:8080/mini/login'</span>,</span><br><span class="line">        body: json.encode(&#123;</span><br><span class="line">          <span class="string">"username"</span>: <span class="string">"rhyme"</span>,</span><br><span class="line">          <span class="string">"password"</span>: <span class="string">"123456"</span>,</span><br><span class="line">        &#125;),</span><br><span class="line">        onSend: () &#123;</span><br><span class="line"><span class="comment">//key为scaffold的key</span></span><br><span class="line">          scaffoldKey?.currentState</span><br><span class="line">              ?.showSnackBar(<span class="keyword">new</span> SnackBar(content: Text(<span class="string">'发送请求，连接服务器'</span>)));</span><br><span class="line">        &#125;,</span><br><span class="line">        onSuccess: (data) &#123;</span><br><span class="line">          WebSocket.connect(<span class="string">'ws://192.168.1.101:8080/mini/connect'</span>)</span><br><span class="line">              .then((socket) &#123;</span><br><span class="line">            <span class="keyword">this</span>.socket = socket;</span><br><span class="line">            socket.listen((data) &#123;</span><br><span class="line"><span class="comment">//该方法接收服务器信息</span></span><br><span class="line">              <span class="built_in">print</span>(data);</span><br><span class="line">              <span class="built_in">Map</span> map = json.decode(data);</span><br><span class="line">              ChatMessageData msg=ChatMessageData.formMap(map);</span><br><span class="line">              <span class="keyword">if</span>(msg.id!=widget.user.uuid)&#123;</span><br><span class="line">                _handleGetMessage(msg);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            socket.done.then((e)&#123;</span><br><span class="line"><span class="comment">//当与服务器连接中断调用</span></span><br><span class="line">              scaffoldKey.currentState.showSnackBar(<span class="keyword">new</span> SnackBar(content: Text(<span class="string">'连接服务器中断!'</span>)));</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">        onError: (error) &#123;</span><br><span class="line">          <span class="built_in">print</span>(error);</span><br><span class="line">          scaffoldKey.currentState.showSnackBar(</span><br><span class="line">              <span class="keyword">new</span> SnackBar(content: Text(<span class="string">'连接失败!<span class="subst">$&#123;error.toString()&#125;</span>'</span>)));</span><br><span class="line">        &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们发送消息给服务端<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket.add(<span class="keyword">new</span> ChatMessageData(widget.user.uuid, value, widget.user.userName, widget.user.role, <span class="built_in">DateTime</span>.now()).toJson());</span><br></pre></td></tr></table></figure></p>
+<p>最后我们来尝试一下吧!<br><img src="https://upload-images.jianshu.io/upload_images/12805100-3aecbc95b7b02808.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-8aa829b6b77352e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>ok，我们是成功的！今天就到这里了，我们明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-18/" class="pre-post btn btn-default" title="DartVM服务器开发（十八）-项目部署到云服务器">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十八）-项目部署到云服务器</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-16/" class="next-post btn btn-default" title="DartVM服务器开发（十六）-Jaguar使用JWT">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十六）-Jaguar使用JWT</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-定义消息"><span class="toc-text">1.定义消息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-添加消息订阅"><span class="toc-text">2.添加消息订阅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-定义接口"><span class="toc-text">3. 定义接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Flutter建立一个简单的聊天室"><span class="toc-text">4.Flutter建立一个简单的聊天室</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

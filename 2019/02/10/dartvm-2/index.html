@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上篇文章中，我们完成了第一个dart服务器，输出了Hello World！今天，我们来学习处理请求，获取请求方法，获取请求参数，获取请求头，那开始学习吧！
+
+1. 处理请求在上一节中，我们对所...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（二）-处理请求 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（二）-处理请求">
+            
+	            DartVM服务器开发（二）-处理请求
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上篇文章中，我们完成了第一个dart服务器，输出了Hello World！今天，我们来学习处理请求，获取请求方法，获取请求参数，获取请求头，那开始学习吧！</p>
+</blockquote>
+<h2 id="1-处理请求"><a href="#1-处理请求" class="headerlink" title="1. 处理请求"></a>1. 处理请求</h2><p>在上一节中，我们对所有请求都回复它一个Hello World！这个信息，我们现在改变一下，添加一个方法，传入request，把Hello World！这一条注释掉<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">//....</span></span><br><span class="line">  <span class="comment">//监听请求</span></span><br><span class="line">  <span class="keyword">await</span> <span class="keyword">for</span>(HttpRequest request <span class="keyword">in</span> requestServer)&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//监听到请求后response回复它一个Hello World!然后关闭这个请求</span></span><br><span class="line"><span class="comment">//    request.response..write('Hello World!')</span></span><br><span class="line"><span class="comment">//      ..close();</span></span><br><span class="line">    handleMessage(request);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> handleMessage(HttpRequest request)&#123;</span><br><span class="line"><span class="comment">//在这个方法里面处理请求</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一般情况下，我们是不知道别人要对我们服务器做什么的，如果服务器出现异常而崩溃掉，就会影响其它用户的访问，所以，我们需要try..catch里面处理请求，以防止客户端恶意请求</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//....</span></span><br><span class="line"><span class="keyword">void</span> handleMessage(HttpRequest request)&#123;</span><br><span class="line">  <span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">//在这里处理请求</span></span><br><span class="line">  &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'出现了一个异常，异常为：<span class="subst">$e</span>'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'请求被处理了'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-请求方法"><a href="#2-请求方法" class="headerlink" title="2. 请求方法"></a>2. 请求方法</h2><p>  request这个对象里面，有一个method变量，这个变量就是请求的方法了，我们是可以通过<strong>request.method</strong>获取，请求方法有下面几种！<br>| 请求类型|含义|<br>| - | - |<br>| request.method==’GET’ | 当前为GET请求（一般为访问资源） |<br>| request.method==’POST’ | 当前为POST请求 （一般为提交数据）|<br>| request.method==’PUT’ | 当前为PUT请求（一般为特定位置上传资源） |<br>| request.method==’DELETE’ | 当前为DELETE请求（一般为删除资源） |<br>| request.method==’TRACE’ | 当前为TRACE请求（一般用于测试或诊断） |<br>| request.method==’CONNECT’ | 当前为CONNECT请求 （一般为代理服务）|<br>| request.method==’HEAD’ | 当前为HEAD请求 （一般获取响应消息头）|<br>| request.method==’OPTIONS’ | 当前为OPTIONS请求 （一般获取服务器支持的请求方法）|<br>好了，我们知道了可以使用request.method来获取请求方法，那么对于一般服务器来说，只用到GET或者POST，所以，我们对不是GET或者POST的请求回应不支持该请求<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> handleMessage(HttpRequest request)&#123;</span><br><span class="line">  <span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(request.method==<span class="string">'GET'</span>)&#123;</span><br><span class="line">      <span class="comment">//获取到GET请求</span></span><br><span class="line">      handleGET(request);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(request.method==<span class="string">'POST'</span>)&#123;</span><br><span class="line">      <span class="comment">//获取到POST请求</span></span><br><span class="line">      handlePOST(request);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="comment">//其它的请求方法暂时不支持，回复它一个状态</span></span><br><span class="line">      request.response..statusCode=HttpStatus.methodNotAllowed</span><br><span class="line">          ..write(<span class="string">'对不起，不支持<span class="subst">$&#123;request.method&#125;</span>方法的请求！'</span>)</span><br><span class="line">          ..close();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'出现了一个异常，异常为：<span class="subst">$e</span>'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'请求被处理了'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> handleGET(HttpRequest request)&#123;</span><br><span class="line">  <span class="comment">//处理GET请求</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> handlePOST(HttpRequest request)&#123;</span><br><span class="line">  <span class="comment">//处理POST请求</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面我们看到了一个新的东西，就是request.response..statusCode ，这个变量呢，是对客户端返回一个状态码，我们熟悉的状态码有200（ok），404（链接不存在）等等，下面，我们学习一下dart内置的状态码有哪些(有同学可能会疑问，为什么使用“ <strong>..</strong> ”而不是使用“ <strong>.</strong> ”呢，这个就是dart的一个语法，通过” .. “ 我们可以不断的调用第一次“ .. ”的那个对象的方法，简直爱死这个操作有没有，有点语法糖的味道)</p>
+<h2 id="3-状态码"><a href="#3-状态码" class="headerlink" title="3. 状态码"></a>3. 状态码</h2><p> <strong>HttpStatus</strong>这个类是一个抽象类，里面定义的一连串的状态码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpStatus</span> </span>&#123;</span><br><span class="line"><span class="comment">//继续</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> continue_ = <span class="number">100</span>;</span><br><span class="line"><span class="comment">//交换协议</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> switchingProtocols = <span class="number">101</span>;</span><br><span class="line"><span class="comment">//可以</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> ok = <span class="number">200</span>;</span><br><span class="line"><span class="comment">//已创建</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> created = <span class="number">201</span>;</span><br><span class="line"><span class="comment">//认可的</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> accepted = <span class="number">202</span>;</span><br><span class="line"><span class="comment">//非授权信息</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> nonAuthoritativeInformation = <span class="number">203</span>;</span><br><span class="line"><span class="comment">//没有内容</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> noContent = <span class="number">204</span>;</span><br><span class="line"><span class="comment">//重置内容</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> resetContent = <span class="number">205</span>;</span><br><span class="line"><span class="comment">//部分内容</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> partialContent = <span class="number">206</span>;</span><br><span class="line"><span class="comment">//多项选择</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> multipleChoices = <span class="number">300</span>;</span><br><span class="line"><span class="comment">//永久迁移</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> movedPermanently = <span class="number">301</span>;</span><br><span class="line"><span class="comment">//已发现</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> found = <span class="number">302</span>;</span><br><span class="line"><span class="comment">//临时迁移</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> movedTemporarily = <span class="number">302</span>; <span class="comment">// Common alias for found.</span></span><br><span class="line"><span class="comment">//查看其它</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> seeOther = <span class="number">303</span>;</span><br><span class="line"><span class="comment">//未修改的</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> notModified = <span class="number">304</span>;</span><br><span class="line"><span class="comment">//使用代理</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> useProxy = <span class="number">305</span>;</span><br><span class="line"><span class="comment">//暂时重定向</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> temporaryRedirect = <span class="number">307</span>;</span><br><span class="line"><span class="comment">//请求失败</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> badRequest = <span class="number">400</span>;</span><br><span class="line"><span class="comment">//没有授权</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> unauthorized = <span class="number">401</span>;</span><br><span class="line"><span class="comment">//要求付款</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> paymentRequired = <span class="number">402</span>;</span><br><span class="line"><span class="comment">//被禁止</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> forbidden = <span class="number">403</span>;</span><br><span class="line"><span class="comment">//未找到</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> notFound = <span class="number">404</span>;</span><br><span class="line"><span class="comment">//请求方法不允许</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> methodNotAllowed = <span class="number">405</span>;</span><br><span class="line"><span class="comment">//不接受</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> notAcceptable = <span class="number">406</span>;</span><br><span class="line"><span class="comment">//需要代理身份认证</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> proxyAuthenticationRequired = <span class="number">407</span>;</span><br><span class="line"><span class="comment">//请求超时</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> requestTimeout = <span class="number">408</span>;</span><br><span class="line"><span class="comment">//冲突</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> conflict = <span class="number">409</span>;</span><br><span class="line"><span class="comment">//过去了</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> gone = <span class="number">410</span>;</span><br><span class="line"><span class="comment">//长度要求</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> lengthRequired = <span class="number">411</span>;</span><br><span class="line"><span class="comment">//先决条件失败</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> preconditionFailed = <span class="number">412</span>;</span><br><span class="line"><span class="comment">//请求实体过大</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> requestEntityTooLarge = <span class="number">413</span>;</span><br><span class="line"><span class="comment">//请求地址过长</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> requestUriTooLong = <span class="number">414</span>;</span><br><span class="line"><span class="comment">//非支持的媒体类型</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> unsupportedMediaType = <span class="number">415</span>;</span><br><span class="line"><span class="comment">//请求范围不可满足</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> requestedRangeNotSatisfiable = <span class="number">416</span>;</span><br><span class="line"><span class="comment">//期望失败</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> expectationFailed = <span class="number">417</span>;</span><br><span class="line"><span class="comment">//升级要求</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> upgradeRequired = <span class="number">426</span>;</span><br><span class="line"><span class="comment">//内部服务器错误</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> internalServerError = <span class="number">500</span>;</span><br><span class="line"><span class="comment">//未实现</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> notImplemented = <span class="number">501</span>;</span><br><span class="line"><span class="comment">//网关坏了</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> badGateway = <span class="number">502</span>;</span><br><span class="line"><span class="comment">//服务不可用</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> serviceUnavailable = <span class="number">503</span>;</span><br><span class="line"><span class="comment">//网关超时</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> gatewayTimeout = <span class="number">504</span>;</span><br><span class="line"><span class="comment">//http版本不支持</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> httpVersionNotSupported = <span class="number">505</span>;</span><br><span class="line"><span class="comment">// 连接超时</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">int</span> networkConnectTimeoutError = <span class="number">599</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-获取请求的参数"><a href="#4-获取请求的参数" class="headerlink" title="4.获取请求的参数"></a>4.获取请求的参数</h2><p>当接收到请求时，客户端传递一个参数给我，我们应该怎样去获取呢？<br>这里我们需要用到 request.uri 这个变量，这个变量主要包含了请求的资源，例如：主机，地址，端口，查询字符串等等，那么现在，我们定义一个变量为id，当接收到这个id时，返回一个字符串为’当前查询的id为：$id’<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> handleGET(HttpRequest request)&#123;</span><br><span class="line">  <span class="comment">//获取一个参数</span></span><br><span class="line">  <span class="keyword">var</span> id=request.uri.queryParameters[<span class="string">'id'</span>];<span class="comment">//查询id的值</span></span><br><span class="line">  request.response</span><br><span class="line">  ..statusCode=HttpStatus.ok<span class="comment">//回复它一个ok状态，说明我收到请求啦</span></span><br><span class="line">  ..write(<span class="string">'当前查询的id为<span class="subst">$id</span>'</span>)<span class="comment">//显示到浏览器的内容</span></span><br><span class="line">  ..close();<span class="comment">//我已经回复你了，所以关闭这个请求</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>好了，我们按照之前的方法，启动服务器吧！然后到浏览器输入 <a href="http://localhost:8080?id=123" target="_blank" rel="noopener">http://localhost:8080?id=123</a><br>（这里因为是GET请求，所以，可以直接在链接上面传入查询参数，一般以 <strong>链接?key=value</strong> 的形式传入，key 对应为 id ,value对应为id的值，我们有不同的参数，就以 <strong>链接?key1=value1&amp;key2=value2</strong> 这种形式传入）<br><img src="https://upload-images.jianshu.io/upload_images/12805100-12468234dc4d3982.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="传入id.png"><br>可以看到，我们很成功的获取到id的值。</p>
+<h2 id="5-请求头"><a href="#5-请求头" class="headerlink" title="5.请求头"></a>5.请求头</h2><p>获取请求头，我们也是很容易就可以获取到的，可以通过<br><strong>request.headers</strong>获取到<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">request.headers.forEach((key,values)&#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'key:<span class="subst">$key</span>'</span>);</span><br><span class="line">  <span class="keyword">for</span>(<span class="built_in">String</span> value <span class="keyword">in</span> values)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'value:<span class="subst">$value</span>'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>上面代码，可以打印出客户端请求的详细请求头<br><img src="https://upload-images.jianshu.io/upload_images/12805100-fbfbadd2cf233a47.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="请求头返回的信息.png"></p>
+<p>今天我们学习了如何处理请求，获取请求方法，获取请求参数，获取请求头，好了，明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-3/" class="pre-post btn btn-default" title="DartVM服务器开发（三）-pub管理器、返回html页面">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（三）-pub管理器、返回html页面</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-1/" class="next-post btn btn-default" title="DartVM服务器开发（一）-Hello World!">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（一）-Hello World!</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-处理请求"><span class="toc-text">1. 处理请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-请求方法"><span class="toc-text">2. 请求方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-状态码"><span class="toc-text">3. 状态码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-获取请求的参数"><span class="toc-text">4.获取请求的参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-请求头"><span class="toc-text">5.请求头</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

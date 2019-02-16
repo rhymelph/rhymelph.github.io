@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+ 上一篇文章我们讲解了如何搭建aqueduct环境如何搭建，哈哈！其实搭建不成功，啥都没讲，不知道怎么回事，我使用win系统跟mac系统都是报同样的错误！今天我们来一起搭建jaguar环境吧！...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十）-Jaguar环境搭建 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十）-Jaguar环境搭建">
+            
+	            DartVM服务器开发（十）-Jaguar环境搭建
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p> 上一篇文章我们讲解了如何搭建aqueduct环境如何搭建，哈哈！其实搭建不成功，啥都没讲，不知道怎么回事，我使用win系统跟mac系统都是报同样的错误！今天我们来一起搭建jaguar环境吧！</p>
+</blockquote>
+<h2 id="1-创建jaguar环境项目"><a href="#1-创建jaguar环境项目" class="headerlink" title="1.创建jaguar环境项目"></a>1.创建jaguar环境项目</h2><p>我们打开WebStrom，点击new Project ，然后选中dart，在右边输入自己的项目名字，点击Create<br><img src="https://upload-images.jianshu.io/upload_images/12805100-0f161d9946b2e64f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建.png"><br>按照之前的步骤在项目里新建一个<code>pubspec.yaml</code>文件，然后输入<code>name</code>、<code>descript</code>、<code>version</code>、<code>environment</code> 对应的值<br><img src="https://upload-images.jianshu.io/upload_images/12805100-d3fe6a68be8a1c31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="环境.png"><br>我们来讲一下<code>environment</code>是什么吧，它是在dart2之后需要添加的，说明当前环境在一个大概的版本，如果你使用dart2的外部包，就需要添加，不然就会报错，我的环境添加了jaguar的依赖，说明使用jaguar这个框架，最后，我们在下面的终端中输入<code>pub get</code>获取依赖包<br><img src="https://upload-images.jianshu.io/upload_images/12805100-4d32cfb4d3f67c28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功获取.png"><br>可以看到，我们成功的添加了依赖，然后我们按照之前的添加main.dart、bin文件夹，lilb文件夹,static文件夹<br><img src="https://upload-images.jianshu.io/upload_images/12805100-0f1e4b16920541c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="项目结构.png"><br>然后我们在main.dart文件中添加下面代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar/jaguar.dart'</span>;</span><br><span class="line"></span><br><span class="line">main()=&gt;<span class="keyword">new</span> Jaguar()</span><br><span class="line">    ..staticFile(<span class="string">'/'</span>, <span class="string">'static/index.html'</span>)</span><br><span class="line">    ..staticFiles(<span class="string">'/static/*'</span>, <span class="string">'static'</span>)</span><br><span class="line">    ..log.onRecord.listen(<span class="built_in">print</span>)</span><br><span class="line">    ..serve(logRequests: <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></p>
+<p>这里解释一下<br>  new Jaguar()<br>可传入</p>
+<ul>
+<li>address<ul>
+<li>监听的ip地址，默认为localhost(如果手机可访问，请监听自己网络ip4或ip6的ip地址）</li>
+</ul>
+</li>
+<li>port<ul>
+<li>端口号，默认为8080</li>
+</ul>
+</li>
+<li>multiThread<ul>
+<li>是否端口有多个服务</li>
+</ul>
+</li>
+<li>securityContext <ul>
+<li>使用https支持</li>
+</ul>
+</li>
+<li>autoCompress <ul>
+<li>是否自动压缩响应</li>
+</ul>
+</li>
+<li>basePath <ul>
+<li>默认为空，添加后所有路径都要加这个前缀</li>
+</ul>
+</li>
+<li>errorWriter <ul>
+<li>当请求发生错误，添加错误页</li>
+</ul>
+</li>
+<li>sessionManager <ul>
+<li>自定义会话管理</li>
+</ul>
+</li>
+</ul>
+<p>..staticFile(‘/‘, ‘static/index.html’)  根目录返回一个index.html文件<br>..staticFiles(‘/static/<em>‘, ‘static’) 当请求路径为`/static/</em><code>返回根目录下的</code>static<code>目录下的文件
+..log.onRecord.listen(print) 监听</code>print<code>打印的信息
+..serve(logRequests: true); 启动服务器，</code>logRequests<code>为</code>true`时打印请求信息</p>
+<blockquote>
+<p>好了，我们启动一下服务器，然后请求一下地址<a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a></p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-935f5e733af5b9da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-791dfec1130c02a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br>主页html<br><img src="https://upload-images.jianshu.io/upload_images/12805100-d8db0709b2e5c229.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="html.png"></p>
+<p>ok我们的环境基本上搭建完了，可以看到，使用jaguar框架还是比较爽的，接收请求的方式是链式路由，非常方便！今天的环境搭建就到这里了！我们明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-11/" class="pre-post btn btn-default" title="DartVM服务器开发（十一）-Jaguar处理请求">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十一）-Jaguar处理请求</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-9/" class="next-post btn btn-default" title="DartVM服务器开发（九）-Aqueduct环境搭建">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（九）-Aqueduct环境搭建</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-创建jaguar环境项目"><span class="toc-text">1.创建jaguar环境项目</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

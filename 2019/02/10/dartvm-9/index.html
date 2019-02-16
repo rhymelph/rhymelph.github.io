@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+昨天我们知道了dartVM服务器开发有什么框架，今天，我们开始搭建一下第一个框架Aqueduct水道
+
+
+1.安装命令
+我们第一次安装该框架模版，需要运行命令pub global activa...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（九）-Aqueduct环境搭建 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（九）-Aqueduct环境搭建">
+            
+	            DartVM服务器开发（九）-Aqueduct环境搭建
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>昨天我们知道了dartVM服务器开发有什么框架，今天，我们开始搭建一下第一个框架<strong>Aqueduct</strong>水道</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-a37b70c9ed1eee6d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="水道.png"></p>
+<h2 id="1-安装命令"><a href="#1-安装命令" class="headerlink" title="1.安装命令"></a>1.安装命令</h2><blockquote>
+<p>我们第一次安装该框架模版，需要运行命令<code>pub global activate aqueduct</code>以激活水道,在运行该命令之前，我们先看一下我的dart版本:mac可以运行命令<code>brew info dart</code>，如果是win系统，可以运行<code>dart --version</code><br>请尽量使用最新版本的dart</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-b7325b3ce4c5d687.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="我的dart版本为2.1.0-dev.3.0.png"></p>
+<p>运行<code>pub global activate aqueduct</code>命令（运行之前，请确保科学上网或设置代理）<br><img src="https://upload-images.jianshu.io/upload_images/12805100-b54fa2f7ea116a31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="运行aqueduct命令.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-e1310d0400887051.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="运行成功.png"><br>运行成功，我们可以看到，它给了一个警告给我，说需要配置<code>pub-cache/bin</code>环境变量，这个环境变量配置完成之后，可以使用<code>aqueduct</code>命令,现在我们设置一下环境变量,mac下输入命令<code>vim ~/.bash_profile</code>，win系统下设置一下环境变量。<br>点击回车键后，mac按下a键，然后进入插入模式，在后面追加<code>export PATH=$PATH:${HOME}/.pub-cache/bin</code><br><img src="https://upload-images.jianshu.io/upload_images/12805100-ce74b385ceb2439d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="环境变量值.png"><br>然后按下<code>esc</code>键，再按下<code>shift+：</code>输入<code>wq</code>，回车，输入<code>source ~/.bash_profile</code>刷新环境变量，ok<br>现在可以输入<code>aqueduct</code>命令了<br><img src="https://upload-images.jianshu.io/upload_images/12805100-ca52490e5b5cd9b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="aqueduct命令.png"><br>可以看到当前框架的版本号，还有一些其它的命令，ok，我们试一下创建一个框架项目<br>输入 <code>aqueduct create 项目名</code>命令<br><img src="https://upload-images.jianshu.io/upload_images/12805100-090cb59e69c7a0a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="异常.png"><br>好吧！我已经研究了一天了，这个东西总是创建不了，有知道的大佬，可以在评论下留言告知小弟。<br>感兴趣的可以看下这位外国大佬的项目<br>项目地址：<a href="https://github.com/timsneath/aqueduct3-heroes" target="_blank" rel="noopener">https://github.com/timsneath/aqueduct3-heroes</a></p>
+<p>剧终…</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-10/" class="pre-post btn btn-default" title="DartVM服务器开发（十）-Jaguar环境搭建">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十）-Jaguar环境搭建</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-8/" class="next-post btn btn-default" title="DartVM服务器开发（八）-http服务端框架">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（八）-http服务端框架</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-安装命令"><span class="toc-text">1.安装命令</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

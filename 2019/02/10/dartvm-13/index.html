@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇文章我们成功的通过请求获取内容，今天我们来学习一下Jaguar如何使用ORM，我们先来了解一下什么是ORM?
+
+1.什么是ORM
+ORM（Object Relational Mappin...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十三)-Jaguar使用ORM | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十三)-Jaguar使用ORM">
+            
+	            DartVM服务器开发（十三)-Jaguar使用ORM
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇文章我们成功的通过请求获取内容，今天我们来学习一下Jaguar如何使用ORM，我们先来了解一下什么是ORM?</p>
+</blockquote>
+<h2 id="1-什么是ORM"><a href="#1-什么是ORM" class="headerlink" title="1.什么是ORM"></a>1.什么是ORM</h2><blockquote>
+<p>ORM（Object Relational Mapping）对象关系映射，是一种程序设计技术，用于实现面向对象编程语言里不同类型系统的数据之间转换，从效果上说，它其实是创建了一个可以在编程语言里使用的“虚拟对象数据库”<br>–维基百科<br>  <strong>简单的说：就是将数据库中的表对应成对象（实体类）</strong></p>
+</blockquote>
+<h2 id="2-Jaguar中的ORM"><a href="#2-Jaguar中的ORM" class="headerlink" title="2.Jaguar中的ORM"></a>2.Jaguar中的ORM</h2><p>目前支持</p>
+<ul>
+<li>关系<ul>
+<li>✅一对一</li>
+<li>✅一对多</li>
+<li>✅多对多</li>
+</ul>
+</li>
+<li>❌预载</li>
+<li>❌级联<ul>
+<li>❌级联插入</li>
+<li>❌级联更新</li>
+<li>❌级联删除</li>
+</ul>
+</li>
+<li>❌迁移</li>
+<li>❌多态关系</li>
+<li>❌复合主键</li>
+<li>❌复合外键</li>
+</ul>
+<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3.开始使用"></a>3.开始使用</h2><ul>
+<li><h3 id="添加JaguarORM依赖"><a href="#添加JaguarORM依赖" class="headerlink" title="添加JaguarORM依赖"></a>添加JaguarORM依赖</h3>到<code>pubpec.yaml</code>文件下添加<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line"><span class="string">//...</span></span><br><span class="line"><span class="attr">  jaguar_orm:</span> <span class="string">^2.2.1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>使用<code>pub get</code>命令同步一下<br><img src="https://upload-images.jianshu.io/upload_images/12805100-412c2456bbe70dde.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="get成功.png"></p>
+<ul>
+<li><h3 id="添加一个实体类"><a href="#添加一个实体类" class="headerlink" title="添加一个实体类"></a>添加一个实体类</h3><p>在<code>lib</code>文件夹下面新建一个<code>entity</code>文件夹，添加一个<code>user.dart</code>文件<br><img src="https://upload-images.jianshu.io/upload_images/12805100-f5d53d1d1d686b55.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="user.dart.png"><br>添加下面代码到user.dart</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_orm/jaguar_orm.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'dart:async'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">  <span class="meta">@PrimaryKey</span>()</span><br><span class="line">  <span class="built_in">String</span> id;<span class="comment">//id号</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> username;<span class="comment">//用户名</span></span><br><span class="line">  <span class="built_in">String</span> password;<span class="comment">//密码</span></span><br><span class="line">  <span class="built_in">String</span> role;<span class="comment">//角色</span></span><br><span class="line">  <span class="built_in">String</span> phoneNumber;<span class="comment">//电话号码</span></span><br><span class="line">  <span class="built_in">String</span> email;<span class="comment">//邮箱</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">50</span>)</span><br><span class="line">  <span class="built_in">String</span> avatar;<span class="comment">//头像地址</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">50</span>)</span><br><span class="line">  <span class="built_in">String</span> avatarPath;<span class="comment">//文件路径</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> tableName=<span class="string">'_user'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt;<span class="string">"User(<span class="subst">$id</span>,<span class="subst">$username</span>,<span class="subst">$password</span>,<span class="subst">$role</span>,<span class="subst">$phoneNumber</span>,<span class="subst">$email</span>,<span class="subst">$avatar</span>,<span class="subst">$avatarPath</span>)"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="添加bean"><a href="#添加bean" class="headerlink" title="添加bean"></a>添加bean</h3><p>添加一个<code>bean</code>，该<code>bean</code>为对数据库的操作</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GenBean</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBean</span> <span class="keyword">extends</span> <span class="title">Bean</span>&lt;<span class="title">User</span>&gt; <span class="title">with</span> <span class="title">_UserBean</span></span>&#123; <span class="comment">//这里有个_UserBean先不管</span></span><br><span class="line">  UserBean(Adapter adapter) : <span class="keyword">super</span>(adapter);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span><span class="comment">//对应表的名字</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> tableName =&gt; User.tableName;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="使用脚本生成-Bean"><a href="#使用脚本生成-Bean" class="headerlink" title="使用脚本生成_Bean"></a>使用脚本生成_Bean</h3><p>添加脚本生成工具依赖<br><code>pubpec.yaml</code>文件下添加</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line"><span class="attr">  build_runner:</span></span><br><span class="line"><span class="attr">  jaguar_orm_gen:</span></span><br></pre></td></tr></table></figure>
+<p>使用<code>pub get</code>命令同步<br><img src="https://upload-images.jianshu.io/upload_images/12805100-00c846ae26eac9a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="同步脚本工具.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-3d9722998b3df054.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="同步成功.png"><br>然后使用命令<code>pub run build_runner build</code>生成<code>user.jorm.dart</code>(该命令会自动扫描项目下的添加了<code>@GenBean</code>注解文件)<br><img src="https://upload-images.jianshu.io/upload_images/12805100-00087d4016917211.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="生成.png"><br>这里的警告说明我们还需要添加<code>part user.jorm.dart</code>到<code>user.dart</code>里面，可以看到在<code>user.dart</code>文件同目录下生成了一个<code>user.jorm.dart</code>文件<br><img src="https://upload-images.jianshu.io/upload_images/12805100-104837da868b379f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="生成了user.jorm.dart文件.png"><br>来看一下我的<code>user.dart</code>文件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_orm/jaguar_orm.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'dart:async'</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">'user.jorm.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">  <span class="meta">@PrimaryKey</span>()</span><br><span class="line">  <span class="built_in">String</span> id;<span class="comment">//id号</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> username;<span class="comment">//用户名</span></span><br><span class="line">  <span class="built_in">String</span> password;<span class="comment">//密码</span></span><br><span class="line">  <span class="built_in">String</span> role;<span class="comment">//角色</span></span><br><span class="line">  <span class="built_in">String</span> phoneNumber;<span class="comment">//电话号码</span></span><br><span class="line">  <span class="built_in">String</span> email;<span class="comment">//邮箱</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">50</span>)</span><br><span class="line">  <span class="built_in">String</span> avatar;<span class="comment">//头像地址</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">50</span>)</span><br><span class="line">  <span class="built_in">String</span> avatarPath;<span class="comment">//文件路径</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> tableName=<span class="string">'_user'</span>;<span class="comment">//这里需要注意的是表名开头必须是_否则识别不了</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt;<span class="string">"User(<span class="subst">$id</span>,<span class="subst">$username</span>,<span class="subst">$password</span>,<span class="subst">$role</span>,<span class="subst">$phoneNumber</span>,<span class="subst">$email</span>,<span class="subst">$avatar</span>,<span class="subst">$avatarPath</span>)"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GenBean</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBean</span> <span class="keyword">extends</span> <span class="title">Bean</span>&lt;<span class="title">User</span>&gt; <span class="title">with</span> <span class="title">_UserBean</span></span>&#123;</span><br><span class="line">  UserBean(Adapter adapter) : <span class="keyword">super</span>(adapter);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> tableName =&gt; User.tableName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>然后再次运行一下命令<code>pub run build_runner build</code><br><img src="https://upload-images.jianshu.io/upload_images/12805100-f9777d32cc51f423.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功了.png"><br>成功了！</p>
+<ul>
+<li><h3 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h3><blockquote>
+<p>数据库上我们可以使用<a href="https://www.postgresql.org/download/" target="_blank" rel="noopener">postgresql</a>（关系型数据库管理系统），使用<a href="https://www.jetbrains.com/datagrip/" target="_blank" rel="noopener">DataGrip</a>做为我们的可视化工具</p>
+</blockquote>
+</li>
+</ul>
+<p>在连接之前，我们先创建一个数据库这里我命名为<code>rhymedb</code><br>然后回到项目上，在<code>pubspec.yaml</code>文件添加<code>Jaguar</code>操作数据库的依赖，然后运行<code>pub get</code><br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line"><span class="attr">  jaguar_query_postgres:</span> <span class="string">^2.2.2</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-472137e59973875a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>成功后导入包<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_query_postgres/jaguar_query_postgres.dart'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>连接上我们的数据库<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//new PgAdater(数据库名,</span></span><br><span class="line"><span class="comment">//            username:用户名,</span></span><br><span class="line"><span class="comment">//            password:密码,</span></span><br><span class="line"><span class="comment">//            host:地址默认localhost,</span></span><br><span class="line"><span class="comment">//            port:默认为5432)</span></span><br><span class="line"><span class="keyword">final</span> PgAdapter pgAdapter=<span class="keyword">new</span> PgAdapter(<span class="string">'rhymedb'</span>,username: <span class="string">'postgres'</span>,password: <span class="string">'123456'</span>)</span><br><span class="line"><span class="keyword">await</span> pgAdapter.connect();</span><br></pre></td></tr></table></figure></p>
+<p>然后我们来创建<code>User</code>这个类对应的表吧！<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line"><span class="keyword">await</span> userBean.createTable();<span class="comment">//创建表</span></span><br></pre></td></tr></table></figure></p>
+<p>插入一条数据<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line">        User newUser=<span class="keyword">new</span> User();</span><br><span class="line">        newUser.id=<span class="string">'1'</span>;</span><br><span class="line">        newUser.username=<span class="string">'rhyme'</span>;</span><br><span class="line">        newUser.password=<span class="string">'123456'</span>;</span><br><span class="line">        newUser.avatarPath=<span class="string">'static/admin.png'</span>;</span><br><span class="line">        newUser.avatar=<span class="string">'http:/localhost:8080/static/admin.png'</span>;</span><br><span class="line">        newUser.email=<span class="string">'708959817@qq.com'</span>;</span><br><span class="line">        newUser.role=<span class="string">'0'</span>;</span><br><span class="line">        newUser.phoneNumber=<span class="string">'159xxxxxxxx'</span>;</span><br><span class="line">        <span class="keyword">await</span> userBean.insert(newUser);</span><br></pre></td></tr></table></figure></p>
+<p>查询一条数据<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line"> User selectOne=<span class="keyword">await</span> userBean.find(<span class="string">'1'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>然后我们合并在一起<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">..<span class="keyword">get</span>(<span class="string">'/api/UserInfo'</span>, (ctx)<span class="keyword">async</span> &#123;</span><br><span class="line"><span class="comment">//连接数据库</span></span><br><span class="line">        <span class="keyword">await</span> pgAdapter.connect();</span><br><span class="line"><span class="comment">// 实例化UserBean对象</span></span><br><span class="line">        UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line"><span class="comment">//创建表</span></span><br><span class="line">        <span class="keyword">await</span> userBean.createTable();</span><br><span class="line"><span class="comment">//插入一条数据</span></span><br><span class="line">        User newUser=<span class="keyword">new</span> User();</span><br><span class="line">        newUser.id=<span class="string">'1'</span>;</span><br><span class="line">        newUser.username=<span class="string">'rhyme'</span>;</span><br><span class="line">        newUser.password=<span class="string">'123456'</span>;</span><br><span class="line">        newUser.avatarPath=<span class="string">'static/admin.png'</span>;</span><br><span class="line">        newUser.avatar=<span class="string">'http:/localhost:8080/static/admin.png'</span>;</span><br><span class="line">        newUser.email=<span class="string">'rhymelph#gmail.com'</span>;<span class="comment">//这里不能使用@，会自动变为格式化字符串</span></span><br><span class="line">        newUser.role=<span class="string">'0'</span>;</span><br><span class="line">        newUser.phoneNumber=<span class="string">'159xxxxxxxx'</span>;</span><br><span class="line">        <span class="keyword">await</span> userBean.insert(newUser);</span><br><span class="line"><span class="comment">//查询一条数据</span></span><br><span class="line">        User selectOne=<span class="keyword">await</span> userBean.find(<span class="string">'1'</span>);</span><br><span class="line"><span class="comment">//返回查询的数据到页面</span></span><br><span class="line">        <span class="keyword">return</span> Response(selectOne.toString());</span><br><span class="line">      &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>最后我们来请求一下吧！<a href="http://localhost:8080/api/UserInfo" target="_blank" rel="noopener">http://localhost:8080/api/UserInfo</a><br><img src="https://upload-images.jianshu.io/upload_images/12805100-7ebdce86c80a34e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br>可以看到我们成功查询到id为1的用户，我们来看一下数据库吧<br><img src="https://upload-images.jianshu.io/upload_images/12805100-c9e009fb3a2b98a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br>可以看到，成功的新建了表，插入了一条数据！</p>
+<p>ok，今天就到这里了，就目前体验来说，坑还是不少，在开发的过程中踩了好几个坑-_-!!，我们明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-14/" class="pre-post btn btn-default" title="DartVM服务器开发（十四）-Jaguar_ORM增删查改">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十四）-Jaguar_ORM增删查改</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-12/" class="next-post btn btn-default" title="DartVM服务器开发（十二）-Jaguar获取请求内容">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十二）-Jaguar获取请求内容</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是ORM"><span class="toc-text">1.什么是ORM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Jaguar中的ORM"><span class="toc-text">2.Jaguar中的ORM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-开始使用"><span class="toc-text">3.开始使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加JaguarORM依赖"><span class="toc-text">添加JaguarORM依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加一个实体类"><span class="toc-text">添加一个实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加bean"><span class="toc-text">添加bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用脚本生成-Bean"><span class="toc-text">使用脚本生成_Bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连接数据库"><span class="toc-text">连接数据库</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+经过三天，大家已经对DartVM服务器开发有了一个基本的认识，可能有人会说，处理请求这么乱的吗？今天就来优化一下代码！
+
+优化请求
+上一篇文章中，我们通过依赖第三方http_server这个包...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（四）-代码优化 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（四）-代码优化">
+            
+	            DartVM服务器开发（四）-代码优化
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>经过三天，大家已经对DartVM服务器开发有了一个基本的认识，可能有人会说，处理请求这么乱的吗？今天就来优化一下代码！</p>
+</blockquote>
+<h2 id="优化请求"><a href="#优化请求" class="headerlink" title="优化请求"></a>优化请求</h2><blockquote>
+<p>上一篇文章中，我们通过依赖第三方http_server这个包实现将html页面返回给浏览器，但是一般的服务器都包含请求html，json格式的传递，这样就有可能造成了混乱，下面我们使用http_server这个包进行优化吧！</p>
+</blockquote>
+<p>在上一篇文章中，有人问了相对路径在不同的系统的表现是不一样的，那么，我们今天使用绝对路径，获取当前项目的绝对路径是很容易的,通过下面代码获取<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webPath=Platform.script.toFilePath();</span><br></pre></td></tr></table></figure></p>
+<p>这里有一个Platform类,这个类主要提供有关计算机和操作系统的信息，而PlatForm.script主要获取当前运行脚本的绝对Uri，Uri内容为File://地址，然后toFilePath()就是获取当前Uri的地址<br>我们来输出运行一下看看吧！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-a637b54d8ddc349c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pathToBuild的值.png"><br>然后，我的html路径为<br>/Users/rhyme/WebstormProjects/ServerApp/webApp<br>那么我们怎么改为该路径呢,下面是我的代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:path/path.dart'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> webPath=dirname(dirname(Platform.script.toFilePath()))+<span class="string">'/webApp'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，我导入了path.dart这个文件，这个文件中有一个方法<strong>dirname()</strong>.该方法可以知道，获取目录的名字，我获取了两次目录的名字，就是当前项目的根目录，然后就是拼接上”/webApp”这个字符串，就是html的存放位置了，我们来看一下现在的值吧！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-4eb6bd27cba42713.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>可以看到成功的获取到了，这个就是我的html存放路径，如果你是win系统，也可以通过该方法去试着获取到html存放路径，下面就将该路径传入到http_server这个包的一个类中,在此之前，我们昨天有人可能对下面这一段代码有点疑问<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">main() <span class="keyword">async</span> &#123;</span><br><span class="line">  VirtualDirectory staticFiles=<span class="keyword">new</span> VirtualDirectory(<span class="string">'.'</span>);</span><br><span class="line"><span class="comment">//.....</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对的，这里的VirtualDirectory构造方法中，我们传入了一个“ . ”这个点就是要传入我们的html目录路径了，我们一定要记得，这里需要传入绝对路径，下面就是拼接的代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webPath=dirname(dirname(Platform.script.toFilePath()))+<span class="string">'/webApp'</span>;</span><br><span class="line"></span><br><span class="line">VirtualDirectory staticFiles=<span class="keyword">new</span> VirtualDirectory(webPath);</span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们要让VirtualDirectory这个类去接管收到的请求，并根据路径访问html页面<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webPath=dirname(dirname(Platform.script.toFilePath()))+<span class="string">'/webApp'</span>;</span><br><span class="line"></span><br><span class="line">  VirtualDirectory staticFiles=<span class="keyword">new</span> VirtualDirectory(webPath);</span><br><span class="line">  <span class="comment">//允许目录监听,按照目录去请求</span></span><br><span class="line">  staticFiles.allowDirectoryListing=<span class="keyword">true</span>;</span><br><span class="line"><span class="comment">//目录处理，当请求根目录时，会返回该地址</span></span><br><span class="line">  staticFiles.directoryHandler=(dir,request)&#123;</span><br><span class="line">    <span class="keyword">var</span> indexUri=<span class="keyword">new</span> <span class="built_in">Uri</span>.file(dir.path,).resolve(<span class="string">'index.html'</span>);</span><br><span class="line">    staticFiles.serveFile(<span class="keyword">new</span> File(indexUri.toFilePath()), request);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> requestServer = <span class="keyword">await</span> HttpServer.bind(InternetAddress.loopbackIPv6, <span class="number">8080</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'监听 localhost地址，端口号为<span class="subst">$&#123;requestServer.port&#125;</span>'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//监听请求</span></span><br><span class="line">  <span class="keyword">await</span> <span class="keyword">for</span> (HttpRequest request <span class="keyword">in</span> requestServer) &#123;</span><br><span class="line"><span class="comment">//交给staticFiles处理了</span></span><br><span class="line">    staticFiles.serveRequest(request);</span><br><span class="line"><span class="comment">//    logUtils.writeHeaders(request);</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//    if(request.uri.toString()=='/'||request.uri.toString().endsWith('.html'))&#123;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//    &#125;else&#123;</span></span><br><span class="line"><span class="comment">//      handleMessage(request);</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后，我们在webApp下面添加几个页面<br><img src="https://upload-images.jianshu.io/upload_images/12805100-af904fcf8f13db24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加几个页面.png"></p>
+<p>接下来我们根据路径请求一下服务器<br><img src="https://upload-images.jianshu.io/upload_images/12805100-caa8c482bfa8fe8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="页面一.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-c466afe9c567ce4d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="页面二.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-c8ead142016f2836.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="关于页面.png"><br>我们试着去请求一个不存在的页面<br><img src="https://upload-images.jianshu.io/upload_images/12805100-fb94f58ea187bee3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="可以看到不存在.png"></p>
+<p>我们为没有找到的页面进行定制一下<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">staticFiles.errorPageHandler=(request)&#123;</span><br><span class="line">  <span class="keyword">if</span>(request.uri.pathSegments.last.contains(<span class="string">'.html'</span>))&#123;</span><br><span class="line">    staticFiles.serveFile(<span class="keyword">new</span> File(webPath+<span class="string">'/404.html'</span>), request);</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    handleMessage(request);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这里我们判断请求地址最后请求的文件是否为一个html页面，如果是，就为它返回一个404的页面，如果不是，就去处理消息<br><img src="https://upload-images.jianshu.io/upload_images/12805100-f7958a911190aca8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="404页面png"><br>启动服务器，我们重新请求之前找不到的地址，看看有什么变化<br><img src="https://upload-images.jianshu.io/upload_images/12805100-2a35e98f9ad10aa1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="可以看到，返回了404的页面.png"><br>接下来，我们优化一下代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">//获取文件根目录</span></span><br><span class="line">  <span class="keyword">var</span> webPath=dirname(dirname(Platform.script.toFilePath()))+<span class="string">'/webApp'</span>;</span><br><span class="line">  VirtualDirectory staticFiles=<span class="keyword">new</span> VirtualDirectory(webPath);</span><br><span class="line">  <span class="comment">//允许目录监听</span></span><br><span class="line">  staticFiles.allowDirectoryListing=<span class="keyword">true</span>;</span><br><span class="line">  <span class="comment">//处理访问根目录</span></span><br><span class="line">  staticFiles.directoryHandler=(dir,request)&#123;</span><br><span class="line">    <span class="keyword">var</span> indexUri=<span class="keyword">new</span> <span class="built_in">Uri</span>.file(dir.path,).resolve(<span class="string">'index.html'</span>);</span><br><span class="line">    staticFiles.serveFile(<span class="keyword">new</span> File(indexUri.toFilePath()), request);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">//处理访问不存在的页面</span></span><br><span class="line">  staticFiles.errorPageHandler=(request)&#123;</span><br><span class="line">    <span class="keyword">if</span>(request.uri.pathSegments.last.contains(<span class="string">'.html'</span>))&#123;</span><br><span class="line">      staticFiles.serveFile(<span class="keyword">new</span> File(webPath+<span class="string">'/404.html'</span>), request);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      handleMessage(request);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> requestServer = <span class="keyword">await</span> HttpServer.bind(InternetAddress.loopbackIPv6, <span class="number">8080</span>);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'监听 localhost地址，端口号为<span class="subst">$&#123;requestServer.port&#125;</span>'</span>);</span><br><span class="line">  <span class="comment">//监听请求</span></span><br><span class="line">  <span class="keyword">await</span> requestServer.forEach(staticFiles.serveRequest);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面就是优化的代码了！<br>今天虽然没有太多的知识，但是一个好的代码环境，是我们继续维护的动力，好了！今天就到此结束了，明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-5/" class="pre-post btn btn-default" title="DartVM服务器开发（五）-日志工具">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（五）-日志工具</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-3/" class="next-post btn btn-default" title="DartVM服务器开发（三）-pub管理器、返回html页面">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（三）-pub管理器、返回html页面</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#优化请求"><span class="toc-text">优化请求</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

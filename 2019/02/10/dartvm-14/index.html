@@ -1,0 +1,385 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇文章我们讲解了如何使用ORM今天，我们来学习在数据库中通过ORM实现增删查改！让我们来一起学习吧！
+
+1.回顾内容回顾一下上一篇的内容，主要有
+
+jaguar_orm: ^2.2.1依赖...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十四）-Jaguar_ORM增删查改 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十四）-Jaguar_ORM增删查改">
+            
+	            DartVM服务器开发（十四）-Jaguar_ORM增删查改
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇文章我们讲解了如何使用ORM今天，我们来学习在数据库中通过ORM实现增删查改！让我们来一起学习吧！</p>
+</blockquote>
+<h2 id="1-回顾内容"><a href="#1-回顾内容" class="headerlink" title="1.回顾内容"></a>1.回顾内容</h2><p>回顾一下上一篇的内容，主要有</p>
+<ul>
+<li><code>jaguar_orm: ^2.2.1</code>依赖</li>
+<li>新建实体类<code>User</code>并使用<code>@PrimaryKey()</code>标识主键,<code>@Column(length:长度)</code>定义字符串长度</li>
+<li>新建Bean类使用<code>@GenBean()</code>标识构建脚本</li>
+<li><p>添加脚本生成工具依赖</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line"><span class="attr">  build_runner:</span></span><br><span class="line"><span class="attr">  jaguar_orm_gen:</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行脚本生成命令<code>pub run build_runner build</code>，自动创建<code>实体类.porm.dart</code>文件</p>
+</li>
+<li>在实体类中添加<code>part &#39;user.jorm.dart&#39;</code>重新运行脚本生成命令</li>
+<li>添加<code>jaguar_query_postgres: ^2.2.2</code>依赖连接数据库</li>
+<li>实例化连接数据库对象<code>final PgAdapter pgAdapter=new PgAdapter(&#39;数据库名&#39;,username: &#39;用户名&#39;,password: &#39;密码&#39;)</code></li>
+<li>数据库建立连接<code>await pgAdapter.connect();</code></li>
+<li>创建实体类对应的表<code>bean.createTable();</code>该方法如果表存在的情况下会异常<br>ok，上面的就是上一篇文章的主要内容，今天我们来重点讲解一下增删改查</li>
+</ul>
+<h2 id="2-添加数据"><a href="#2-添加数据" class="headerlink" title="2.添加数据"></a>2.添加数据</h2><ul>
+<li><h3 id="添加一条数据"><a href="#添加一条数据" class="headerlink" title="添加一条数据"></a>添加一条数据</h3>添加一条数据，我们可以通过<code>bean.insert(model)</code>方式添加<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">User newUser=<span class="keyword">new</span> User();</span><br><span class="line">newUser.id=<span class="string">'1'</span>;</span><br><span class="line">newUser.username=<span class="string">'rhyme'</span>;</span><br><span class="line">newUser.password=<span class="string">'123456'</span>;</span><br><span class="line">newUser.avatarPath=<span class="string">'static/admin.png'</span>;</span><br><span class="line">newUser.avatar=<span class="string">'http:/localhost:8080/static/admin.png'</span>;</span><br><span class="line">newUser.email=<span class="string">'rhymelph#gmail.com'</span>;</span><br><span class="line">newUser.role=<span class="string">'0'</span>;</span><br><span class="line">newUser.phoneNumber=<span class="string">'159xxxxxxxx'</span>;</span><br><span class="line"><span class="keyword">await</span> userBean.insert(newUser);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这里需要注意，添加之前如果该数据已经存在（根据主键判断）,会报异常，异常如下<br><img src="https://upload-images.jianshu.io/upload_images/12805100-e0fe8ec8a99d025b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="异常.png"><br>正确做法，是先通过<code>bean.find(primaryKey)</code>查询该数据是否已经存在，然后再进行添加<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">await</span> userBean.find(<span class="string">'1'</span>)==<span class="keyword">null</span>)&#123;</span><br><span class="line">User newUser=<span class="keyword">new</span> User();</span><br><span class="line">newUser.id=<span class="string">'1'</span>;</span><br><span class="line">newUser.username=<span class="string">'rhyme'</span>;</span><br><span class="line">newUser.password=<span class="string">'123456'</span>;</span><br><span class="line">newUser.avatarPath=<span class="string">'static/admin.png'</span>;</span><br><span class="line">newUser.avatar=<span class="string">'http:/localhost:8080/static/admin.png'</span>;</span><br><span class="line">newUser.email=<span class="string">'rhymelph#gmail.com'</span>;</span><br><span class="line">newUser.role=<span class="string">'0'</span>;</span><br><span class="line">newUser.phoneNumber=<span class="string">'159xxxxxxxx'</span>;</span><br><span class="line"><span class="keyword">await</span> userBean.insert(newUser);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="添加多条数据-未实现"><a href="#添加多条数据-未实现" class="headerlink" title="添加多条数据(未实现)"></a>添加多条数据(未实现)</h3>有时候可能需要添加多条记录到数据库，我们可以使用<code>bean.inserMany(List&lt;Model&gt;)</code><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line"><span class="built_in">List</span>&lt;User&gt; users=[];</span><br><span class="line"><span class="keyword">for</span>(<span class="built_in">int</span> i <span class="keyword">in</span> [<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])&#123;</span><br><span class="line">  User user=<span class="keyword">new</span> User();</span><br><span class="line">  user.id=i.toString();</span><br><span class="line">  user.username=<span class="string">'rhyme'</span>;</span><br><span class="line">  user.password=<span class="string">'123456'</span>;</span><br><span class="line">  user.avatarPath=<span class="string">'static/admin.png'</span>;</span><br><span class="line">  user.avatar=<span class="string">'http:/localhost:8080/static/admin.png'</span>;</span><br><span class="line">  user.email=<span class="string">'rhymelph#gmail.com'</span>;</span><br><span class="line">  user.role=<span class="string">'0'</span>;</span><br><span class="line">  user.phoneNumber=<span class="string">'159xxxxxxxx'</span>;</span><br><span class="line">  users.add(user);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">await</span> userBean.insertMany(users);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-删除数据"><a href="#3-删除数据" class="headerlink" title="3. 删除数据"></a>3. 删除数据</h2><ul>
+<li><h3 id="根据主键删除数据"><a href="#根据主键删除数据" class="headerlink" title="根据主键删除数据"></a>根据主键删除数据</h3><p>根据主键删除数据我们可以使用<code>bean.remove(primaryKey)</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">userBean.remove(<span class="string">'1'</span>);<span class="comment">//删除id为1的数据</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="删除表里所有的数据"><a href="#删除表里所有的数据" class="headerlink" title="删除表里所有的数据"></a>删除表里所有的数据</h3><p>这个可能需求没那么大，删除表里所有数据可以使用<code>bean.removeAll()</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">userBean.removeAll();</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="删除多条数据"><a href="#删除多条数据" class="headerlink" title="删除多条数据"></a>删除多条数据</h3><p>删除多条数据我们可以使用<code>bean.removeMany(List&lt;Model&gt;)</code>，如果数据不存在也不会包异常</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">userBean.removeMany(&lt;User&gt;[</span><br><span class="line">  newUser1,</span><br><span class="line">  newUser2,</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="根据条件删除数据"><a href="#根据条件删除数据" class="headerlink" title="根据条件删除数据"></a>根据条件删除数据</h3><p>根据条件删除数据，我们可以使用的条件有</p>
+<ul>
+<li>eq 等于</li>
+<li>ne不等于</li>
+<li>gt  大于</li>
+<li>gtEq 大于等于</li>
+<li>lt  小于</li>
+<li>ltEq 小于等于</li>
+<li>between 在…之间</li>
+<li>更多<br>使用如下:<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean userBean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line"><span class="keyword">await</span> bean.removeWhere(bean.id.eq(<span class="string">'1'</span>));<span class="comment">//删除id为1的数据</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-查询数据"><a href="#4-查询数据" class="headerlink" title="4. 查询数据"></a>4. 查询数据</h2><ul>
+<li><h3 id="根据主键查询一条数据"><a href="#根据主键查询一条数据" class="headerlink" title="根据主键查询一条数据"></a>根据主键查询一条数据</h3><p>如果实体类里面使用<code>@PrimaryKey()</code>标识字段，就会在使用<code>pub run build_runner build</code>之后多生成一个方法<code>find(key)</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean bean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">User user=<span class="keyword">await</span> bean.find(<span class="string">'1'</span>);<span class="comment">//查询id为1的User</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="根据其他条件查询一条数据"><a href="#根据其他条件查询一条数据" class="headerlink" title="根据其他条件查询一条数据"></a>根据其他条件查询一条数据</h3><p>如果你不想通过主键去查询，可以根据其它字段去查一条数据，如果有多条与查询字段相同的数据，会查询到比较靠前的一条，我们可以通过<code>bean.findOne(find)</code>查询</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean bean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">User user=<span class="keyword">await</span> bean.findOne(bean.finder.eq(<span class="string">'username'</span>, <span class="string">'rhyme'</span>));</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>我们还可以使用<code>bean.findOneWhere(exp)</code>查询<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean bean=<span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">User user=<span class="keyword">await</span> bean.findOneWhere(bean.id.eq(<span class="string">'1'</span>));</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="根据条件查询多条数据"><a href="#根据条件查询多条数据" class="headerlink" title="根据条件查询多条数据"></a>根据条件查询多条数据</h3><p>根据条件查询多条数据，我们可以使用<code>bean.findWhere(exp)</code>查询</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean bean=<span class="keyword">new</span> UserBean( pgAdapter);</span><br><span class="line"><span class="built_in">List</span>&lt;User&gt; users=<span class="keyword">await</span> bean.findWhere(bean.sex.gtEq(<span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>###　查询表中所有数据<br>查询表中所有数据，我们可以使用<code>bean.getAll()</code>查询</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UserBean bean=<span class="keyword">new</span> UserBean( pgAdapter);</span><br><span class="line"><span class="built_in">List</span>&lt;User&gt; users=<span class="keyword">await</span> bean.getAll();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="5-更新数据"><a href="#5-更新数据" class="headerlink" title="5.更新数据"></a>5.更新数据</h2><ul>
+<li><h3 id="更新一条数据"><a href="#更新一条数据" class="headerlink" title="更新一条数据"></a>更新一条数据</h3><p>更新一条数据我们可以使用<code>bean.update(model,only:Set&lt;String&gt;)</code><br>这里要注意的是，该更新根据主键更新，所以<code>model</code>必须主键有赋值,<code>only</code>里面添加的是字段名，表示只更新里面包含的字段，<strong>不添加<code>only</code>默认更新该条数据的全部字段</strong></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//更新id为1的username字段</span></span><br><span class="line">    <span class="keyword">await</span> bean.update(<span class="keyword">new</span> User()</span><br><span class="line">    ..id=<span class="string">'1'</span></span><br><span class="line">    ..username=<span class="string">'rhyme_lph'</span>,</span><br><span class="line">    only: <span class="keyword">new</span> <span class="built_in">Set</span>()</span><br><span class="line">    ..add(<span class="string">'username'</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="更新多条数据-未实现"><a href="#更新多条数据-未实现" class="headerlink" title="更新多条数据(未实现)"></a>更新多条数据(未实现)</h3><p>我们可以使用<code>bean.updateMany(List&lt;Model&gt;)</code>更新多条数据</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">UserBean bean=<span class="keyword">new</span> UserBean( pgAdapter);</span><br><span class="line"><span class="keyword">await</span> bean.updateMany(&lt;User&gt;[</span><br><span class="line">    <span class="keyword">new</span> User()</span><br><span class="line">    ..id=<span class="string">'1'</span></span><br><span class="line">    ..username=<span class="string">'rhyme1'</span></span><br><span class="line">    ..password=<span class="string">'123'</span></span><br><span class="line">    ..sex=<span class="number">3</span></span><br><span class="line">    ..phoneNumber=<span class="string">'1597551'</span></span><br><span class="line">    ..role=<span class="number">3</span>,</span><br><span class="line">    <span class="keyword">new</span> User()</span><br><span class="line">    ..id=<span class="string">'2'</span></span><br><span class="line">    ..username=<span class="string">'rhyme1'</span></span><br><span class="line">    ..password=<span class="string">'123'</span></span><br><span class="line">    ..sex=<span class="number">3</span></span><br><span class="line">    ..phoneNumber=<span class="string">'1597551'</span></span><br><span class="line">    ..role=<span class="number">3</span>,</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>ok，上面就是今天的内容，我们明天见吧!</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-15/" class="pre-post btn btn-default" title="DartVM服务器开发（十五）-Jaguar_ORM一对一">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十五）-Jaguar_ORM一对一</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-13/" class="next-post btn btn-default" title="DartVM服务器开发（十三)-Jaguar使用ORM">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十三)-Jaguar使用ORM</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-回顾内容"><span class="toc-text">1.回顾内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-添加数据"><span class="toc-text">2.添加数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加一条数据"><span class="toc-text">添加一条数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加多条数据-未实现"><span class="toc-text">添加多条数据(未实现)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-删除数据"><span class="toc-text">3. 删除数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#根据主键删除数据"><span class="toc-text">根据主键删除数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除表里所有的数据"><span class="toc-text">删除表里所有的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除多条数据"><span class="toc-text">删除多条数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根据条件删除数据"><span class="toc-text">根据条件删除数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-查询数据"><span class="toc-text">4. 查询数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#根据主键查询一条数据"><span class="toc-text">根据主键查询一条数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根据其他条件查询一条数据"><span class="toc-text">根据其他条件查询一条数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根据条件查询多条数据"><span class="toc-text">根据条件查询多条数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-更新数据"><span class="toc-text">5.更新数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#更新一条数据"><span class="toc-text">更新一条数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新多条数据-未实现"><span class="toc-text">更新多条数据(未实现)</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇文章中主要介绍了如何处理请求，获取请求方法，获取请求参数，获取请求头，今天我们学习一下添加pub包管理器、规划项目结构、使用第三方库、返回html页面、记录请求日志，那我们开始学习吧！
+...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（三）-pub管理器、返回html页面 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（三）-pub管理器、返回html页面">
+            
+	            DartVM服务器开发（三）-pub管理器、返回html页面
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇文章中主要介绍了如何处理请求，获取请求方法，获取请求参数，获取请求头，今天我们学习一下添加pub包管理器、规划项目结构、使用第三方库、返回html页面、记录请求日志，那我们开始学习吧！</p>
+</blockquote>
+<h2 id="1-添加pub包管理器"><a href="#1-添加pub包管理器" class="headerlink" title="1.添加pub包管理器"></a>1.添加pub包管理器</h2><p>右键点击项目名，New–File，命名为：<strong>pubspec.yaml</strong><br>并在文件里面输入下面内容<br>(因为在使用外部包时，首先你应该是一个包，所以下面这个内容是描述你的包是什么)<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">你的web应用名</span></span><br><span class="line"><span class="attr">descript:</span> <span class="string">你的web应用介绍</span></span><br></pre></td></tr></table></figure></p>
+<p>在控制台输入命令<strong>pub get</strong>(使用该命令前提，需要在该教程的第一天配置好dart环境)<br>下面这个是成功的例子，当刷新一下项目文件是会多了两个文件<br><img src="https://upload-images.jianshu.io/upload_images/12805100-7f2ed941442c56b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pub get success.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-9a5b2af7f33fd4b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文件结构.png"><br>如果提示下面内容，说明你的环境变量还没有配置好！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-5fd99eca0e942388.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="环境未好.png"><br>下面这部分内容，我会认为你已经运行<strong>pub get</strong>命令成功，未成功，或不知道怎么解决，可以私信给我，我会在空闲的时间帮你解决</p>
+<blockquote>
+<p>生成的内容解释</p>
+<ul>
+<li>.packages<ul>
+<li>当前项目内部包的路径，这个就相当于flutter里面写代码的地方，通常该文件生成出来以<strong>/lib</strong>为路径<br><img src="https://upload-images.jianshu.io/upload_images/12805100-e865c62f6d7d715b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=".packages内容.png"></li>
+</ul>
+</li>
+<li>pubspec.lock<ul>
+<li>当前项目外部包的路径，这个文件一般情况下不用编辑，通过<strong>pub get</strong>根据pubspec.yaml自动记录，一般记录使用外部包的名字、版本号等<br><img src="https://upload-images.jianshu.io/upload_images/12805100-646538003e13fe1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pubspec.lock内容.png"></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="2-规划项目结构"><a href="#2-规划项目结构" class="headerlink" title="2. 规划项目结构"></a>2. 规划项目结构</h2><p>在.packages文件中已经说明，我们还需要添加一个lib文件夹到根目录<br>一般情况下，我们会把main.dart文件移动到bin文件夹下，以显示该应用的主要dart文件<br><img src="https://upload-images.jianshu.io/upload_images/12805100-481fa1c0d6b28429.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="项目结构.png"><br>如果你需要新建一个其它的dart文件，以引入到main文件，我们可以在<strong>lib</strong>文件下新建<br><img src="https://upload-images.jianshu.io/upload_images/12805100-7d5dbf0a05875627.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="新建dart.png"><br>在main.dart中引入User.dart<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:ServerApp/entity/User.dart'</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-使用外部包"><a href="#3-使用外部包" class="headerlink" title="3. 使用外部包"></a>3. 使用外部包</h2><blockquote>
+<p>我们今天使用http_server这个包，在<strong>pubspec.yaml</strong>文件下添加下面代码<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#....</span></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line"><span class="attr">  http_server:</span> <span class="string">^0.9.8</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>然后运行<strong>pub get</strong>命令，将这个包依赖下来<br><img src="https://upload-images.jianshu.io/upload_images/12805100-6b5d089dee01d19a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="可以看到成功依赖下来了.png"><br>再看看我们的<strong>pubspec.lock</strong>文件，发生了改变<br><img src="https://upload-images.jianshu.io/upload_images/12805100-dfd7ea22cfe77531.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="pubspec.lock文件.png"><br>使用http_server这个库，我们打开main.dart文件，输入下面代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:http_server/http_server.dart'</span>;</span><br><span class="line"><span class="comment">//main() async &#123;</span></span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure></p>
+<p>现在我们可以使用http_server这个包了</p>
+<h2 id="4-返回html页面"><a href="#4-返回html页面" class="headerlink" title="4.返回html页面"></a>4.返回html页面</h2><blockquote>
+<p>在返回html页面之前，我们需要准备一个html页面吧，在项目根目录下新建一个文件夹，以webApp为命名，说明这个是前端页面，然后新建一个index.html文件,输入下面内容<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的第一个页面<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-8ef87be0b766cb46.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="html文件目录.png"></p>
+<p>那么，我们怎样将这个页面绑定到服务器上面呢，在刚才，我们依赖了http_server这个包，我们可以使用这个包去返回这个html页面<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">main() <span class="keyword">async</span> &#123;</span><br><span class="line">  VirtualDirectory staticFiles=<span class="keyword">new</span> VirtualDirectory(<span class="string">'.'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> requestServer = <span class="keyword">await</span> HttpServer.bind(InternetAddress.loopbackIPv6, <span class="number">8080</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'监听 localhost地址，端口号为<span class="subst">$&#123;requestServer.port&#125;</span>'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//监听请求</span></span><br><span class="line">  <span class="keyword">await</span> <span class="keyword">for</span> (HttpRequest request <span class="keyword">in</span> requestServer) &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这个可以先不添加，下面介绍到</span></span><br><span class="line">    writeHeaders(request);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(request.uri.toString()==<span class="string">'/'</span>||request.uri.toString()==<span class="string">'/index.html'</span>)&#123;</span><br><span class="line"><span class="comment">//当我们收到请求根目录或者请求/index.html页面时，返回我们的刚刚写好的html页面</span></span><br><span class="line"><span class="comment">//因为http_server这个包已经为我们处理好了，所以如果html不存在，也不会让服务器奔溃掉，而是返回未找到页面</span></span><br><span class="line">      staticFiles.serveFile(<span class="keyword">new</span> File(<span class="string">'../webApp/index.html'</span>), request);<span class="comment">//这里是mac系统下的代码</span></span><br><span class="line"><span class="comment">//    staticFiles.serveFile(new File('webApp/index.html'), request);//win系统使用该代码</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line"><span class="comment">//如果不是请求该页面，交回给get，post去处理</span></span><br><span class="line">      handleMessage(request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>点击运行，我们来看一下请求结果吧<br><img src="https://upload-images.jianshu.io/upload_images/12805100-b59c48e4db432d74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="请求成功.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-1d7d633bc7160cd9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="请求成功.png"></p>
+<h2 id="4-记录请求日志"><a href="#4-记录请求日志" class="headerlink" title="4. 记录请求日志"></a>4. 记录请求日志</h2><blockquote>
+<p>首先我们需要了解两个类</p>
+<ul>
+<li>Directory 目录</li>
+<li>File 文件<br>我们来写一个根据昨天获取请求头，将请求头写入到文件中的操作吧！<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> writeHeaders(HttpRequest request)&#123;</span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; headers=[];</span><br><span class="line">  request.headers.forEach((key, values) &#123;</span><br><span class="line">    <span class="built_in">String</span> header=<span class="string">'<span class="subst">$key</span>：'</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">String</span> value <span class="keyword">in</span> values) &#123;</span><br><span class="line">      header +=<span class="string">'<span class="subst">$value</span> , '</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    headers.add(header.substring(<span class="number">0</span>,header.length<span class="number">-2</span>));</span><br><span class="line">  &#125;);</span><br><span class="line">  writeLog(<span class="string">'<span class="subst">$&#123;headers.join(<span class="string">'\n'</span>)&#125;</span>'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> writeLog(<span class="built_in">String</span> log) <span class="keyword">async</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> date=<span class="built_in">DateTime</span>.now();</span><br><span class="line">  <span class="keyword">var</span> year=date.year;</span><br><span class="line">  <span class="keyword">var</span> month=date.month;</span><br><span class="line">  <span class="keyword">var</span> day=date.day;</span><br><span class="line">  <span class="keyword">var</span> hour=date.hour;</span><br><span class="line">  <span class="keyword">var</span> minute=date.minute;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//如果recursive为true，会创建命名目录及父级目录</span></span><br><span class="line">  Directory directory=<span class="keyword">await</span> <span class="keyword">new</span> Directory(<span class="string">'log/<span class="subst">$year</span>-<span class="subst">$month</span>-<span class="subst">$day</span>'</span>).create(recursive: <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">  File file = <span class="keyword">new</span> File(<span class="string">'<span class="subst">$&#123;directory.path&#125;</span>/<span class="subst">$hour</span>:<span class="subst">$minute</span>.log'</span>);</span><br><span class="line">  file.exists().then((isExists)&#123;</span><br><span class="line">    <span class="built_in">String</span> logAddTime=<span class="string">'time：<span class="subst">$&#123;date.toIso8601String()&#125;</span>\n<span class="subst">$log</span>'</span>;</span><br><span class="line">     file.writeAsString(isExists?<span class="string">'\n\n<span class="subst">$logAddTime</span>'</span>:logAddTime, mode: FileMode.append);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>我们根据当前时间年月日，生成一个文件夹，根据小时跟分钟生成日志文件，这样就能记录下客户端的请求头了，我们还可以使用writeLog方法记录异常信息，下面就是请求时记录的文件<br><img src="https://upload-images.jianshu.io/upload_images/12805100-4c0b26a5563d3966.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="日志文件.png"><br>大家有没有发现，如果我们没有使用../xx/xx的格式去生成文件，而是根据xx/xx去生成，会把文件生成在bin目录下，因为main.dart文件所在的位置就是当前文件的根路径<strong>（这里补充一下，该现象出现在mac系统中，如果是win系统xx/xx是在项目的根目录下）</strong></p>
+<p>好了，今天学习了如何添加pub包管理器，规划项目结构，使用第三方库，返回html页面，记录请求日志，那么，大家都对dartVM服务器开发都有一个认识了吧，经验老道的程序员，可能在今天起就会尝试着自己去继续完善DartVM服务器项目，那么，我们明天见吧！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-4/" class="pre-post btn btn-default" title="DartVM服务器开发（四）-代码优化">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（四）-代码优化</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-2/" class="next-post btn btn-default" title="DartVM服务器开发（二）-处理请求">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二）-处理请求</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-添加pub包管理器"><span class="toc-text">1.添加pub包管理器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-规划项目结构"><span class="toc-text">2. 规划项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-使用外部包"><span class="toc-text">3. 使用外部包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-返回html页面"><span class="toc-text">4.返回html页面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-记录请求日志"><span class="toc-text">4. 记录请求日志</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

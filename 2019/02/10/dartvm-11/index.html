@@ -1,0 +1,384 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+ 我们昨天学会了如何搭建jaguar这个框架，并且成功的返回了一个html页面，可以知道，Jaguar框架真的是十分的方便好用，如果大家都感觉好用可以多多到Jaguar给一个大大的star，好...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十一）-Jaguar处理请求 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十一）-Jaguar处理请求">
+            
+	            DartVM服务器开发（十一）-Jaguar处理请求
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p> 我们昨天学会了如何搭建jaguar这个框架，并且成功的返回了一个html页面，可以知道，Jaguar框架真的是十分的方便好用，如果大家都感觉好用可以多多到<a href="https://github.com/Jaguar-dart/jaguar" target="_blank" rel="noopener">Jaguar</a>给一个大大的star，好了，今天我们来学习一下Jaguar处理请求</p>
+</blockquote>
+<h2 id="1-方法请求"><a href="#1-方法请求" class="headerlink" title="1.方法请求"></a>1.方法请求</h2><blockquote>
+<p>通过new 一个Jaguar对象，然后调用它封装好的方法处理请求，然后调用.serve()方法开启服务器</p>
+</blockquote>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">main()=&gt;<span class="keyword">new</span> Jaguar()</span><br><span class="line">  ..<span class="keyword">get</span>(<span class="string">'/api/doGet'</span>, (ctx) =&gt;<span class="string">'Hello'</span>)</span><br><span class="line">  ..getJson(<span class="string">'/api/doGetJson'</span>, (ctx)=&gt;<span class="string">'&#123;"id":3221&#125;'</span>)</span><br><span class="line">  ..post(<span class="string">'/api/doPost'</span>, (ctx) =&gt;ctx.bodyAsJson())</span><br><span class="line">  ..postJson(<span class="string">'/api/doPostJson'</span>, (ctx)=&gt;<span class="string">'&#123;"id":4234&#125;'</span>)</span><br><span class="line">  ..delete(<span class="string">'/api/doDelete'</span>, (ctx)=&gt;<span class="string">'delete'</span>)</span><br><span class="line">  ..deleteJson(<span class="string">'/api/doDelete'</span>, (ctx) =&gt;<span class="string">'&#123;"id":253&#125;'</span>)</span><br><span class="line">  ..put(<span class="string">'/api/doPut'</span>, (ctx)=&gt;<span class="string">'put'</span>)</span><br><span class="line">  ..putJson(<span class="string">'/api/doPutJson'</span>, (ctx)=&gt;<span class="string">'&#123;"id":2343&#125;'</span>)</span><br><span class="line">  ..options(<span class="string">'/api/doOptions'</span>, (ctx)=&gt;<span class="string">'options'</span>)</span><br><span class="line">  ..patch(<span class="string">'/api/doPatch'</span>, (ctx)=&gt;<span class="string">'Patch'</span>)</span><br><span class="line">  ..html(<span class="string">'api/doHtml'</span>, (ctx)=&gt;<span class="string">'''&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;html lang="en"&gt;</span></span><br><span class="line"><span class="string">&lt;head&gt;</span></span><br><span class="line"><span class="string">    &lt;meta charset="UTF-8"&gt;</span></span><br><span class="line"><span class="string">    &lt;title&gt;Title&lt;/title&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">Body</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;'''</span>)</span><br><span class="line">  ..json(<span class="string">'/api/doJson'</span>, (ctx)=&gt;<span class="string">'&#123;"id":123&#125;'</span>)</span><br><span class="line">  ..serve(logRequests: <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<p>上面就是Jaguar处理请求的所有方法，我们来分析一下这些方法吧！</p>
+<ul>
+<li>get/post/delete/put/options/patch<ul>
+<li>method=get/post/delete/put/options/patch<ul>
+<li>getJson/postJson/deleteJson/putJson</li>
+<li>method=get/post/delete/put</li>
+<li>headers.mimeType=MimeTypes.json 即应答头类型为<code>application/json</code></li>
+<li>html</li>
+<li>method=get</li>
+<li>headers.mimeType = MimeTypes.html 即应答头类型为<code>text/html</code></li>
+<li>json</li>
+<li>method=get/post/pub/delete</li>
+<li>headers.mimeType=MimeTypes.json 即应答头类型为<code>application/json</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>OK 上面就是解释这些方法的接收请求方法跟返回的应答头</p>
+<h2 id="2-处理请求参数分析"><a href="#2-处理请求参数分析" class="headerlink" title="2.处理请求参数分析"></a>2.处理请求参数分析</h2><p>我们再来分析一下一个方法里面的所有参数吧！<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get</span>(<span class="built_in">String</span> path, RouteHandler handler,</span><br><span class="line">      &#123;<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt; pathRegEx,</span><br><span class="line">      ResponseProcessor responseProcessor,</span><br><span class="line">      <span class="built_in">List</span>&lt;RouteInterceptor&gt; after,</span><br><span class="line">      <span class="built_in">List</span>&lt;RouteInterceptor&gt; before,</span><br><span class="line">      <span class="built_in">List</span>&lt;ExceptionHandler&gt; onException&#125;)</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>参数</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>path</td>
+<td>请求的相对地址</td>
+</tr>
+<tr>
+<td>RouteHandle</td>
+<td>handle</td>
+<td>路由处理使用为(ctx){}这里含有一个Context(ctx)参数</td>
+</tr>
+<tr>
+<td>Map&lt;String, String&gt;</td>
+<td>pathRegEx</td>
+<td>请求路径上使用正则例如:path：<code>/:value/hello</code> pathRegEx: <code>{&#39;value&#39;:r&#39;^[0-9]*$&#39;}</code> 那么value必须是一个数字，否则不接收该请求</td>
+</tr>
+<tr>
+<td>ResponseProcessor</td>
+<td>responseProcessor</td>
+<td>应答处理，含有一个<code>Response&lt;dynamic&gt;</code>类型的参数</td>
+</tr>
+<tr>
+<td>List<routeinterceptor></routeinterceptor></td>
+<td>before</td>
+<td>拦截器列表，在处理请求之前拦截</td>
+</tr>
+<tr>
+<td>List<routeinterceptor></routeinterceptor></td>
+<td>after</td>
+<td>拦截器列表，在处理请求之后拦截</td>
+</tr>
+<tr>
+<td>List<exceptionhandler></exceptionhandler></td>
+<td>onException</td>
+<td>异常处理列表，在请求发生异常时处理</td>
+</tr>
+</tbody>
+</table>
+<p>使用：<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">..<span class="keyword">get</span>(<span class="string">'/api/doGet/:ls'</span>, (ctx) =&gt; <span class="string">'Hello'</span>, pathRegEx: &#123;</span><br><span class="line">        <span class="string">'ls'</span>: <span class="string">r'^[0-9]*$'</span></span><br><span class="line">      &#125;, responseProcessor: (process)&#123;</span><br><span class="line">        <span class="built_in">print</span>(process.statusCode);</span><br><span class="line">      &#125;,before: &lt;RouteInterceptor&gt;[</span><br><span class="line">        (ctx) &#123;</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">'before:<span class="subst">$&#123;ctx.path&#125;</span>'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      ], after: &lt;RouteInterceptor&gt;[</span><br><span class="line">        (ctx) &#123;</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">'after:<span class="subst">$&#123;ctx.path&#125;</span>'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      ], onException: &lt;ExceptionHandler&gt;[</span><br><span class="line">        (ctx, error, stack) &#123;</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">'异常信息:<span class="subst">$error</span>,堆栈:<span class="subst">$stack</span>'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      ])</span><br></pre></td></tr></table></figure></p>
+<p>我们来请求一次吧：<br><img src="https://upload-images.jianshu.io/upload_images/12805100-44919fbdc3a99b86.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="请求.png"><br>可以看到，我没有出现异常，按照正常的来走，先运行before后是responseProcessor，最后是after<br>那么我们制造一个异常看看有没有捕获到<br><img src="https://upload-images.jianshu.io/upload_images/12805100-04534ca6b5b0e5b8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="页面输出.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-efe646818fda6ff2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="窗口.png"><br>可以看到，我们的异常已经被捕获了，服务器也没有挂掉,上面的异常页面是默认的，可以看到哪里出错了</p>
+<h2 id="3-自定义异常"><a href="#3-自定义异常" class="headerlink" title="3.自定义异常"></a>3.自定义异常</h2><blockquote>
+<p>当异常发生时，如果你要自己定义异常，我们可以继承一个ErrorWriter抽象类，实现404页面跟500页面的自定义<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RhymeErrorWrite</span> <span class="keyword">extends</span> <span class="title">ErrorWriter</span></span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  FutureOr&lt;<span class="keyword">void</span>&gt; make404(Context ctx) &#123;</span><br><span class="line">    <span class="comment">//找不到页面时返回</span></span><br><span class="line">    <span class="keyword">final</span> resp =</span><br><span class="line">    Response(<span class="string">'''&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;html lang="en"&gt;</span></span><br><span class="line"><span class="string">&lt;head&gt;</span></span><br><span class="line"><span class="string">    &lt;meta charset="UTF-8"&gt;</span></span><br><span class="line"><span class="string">    &lt;title&gt;Title&lt;/title&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">404</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;'''</span>, statusCode: HttpStatus.notFound);</span><br><span class="line">    resp.headers.contentType = ContentType.html;</span><br><span class="line">    ctx.response = resp;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  FutureOr&lt;<span class="keyword">void</span>&gt; make500(Context ctx, <span class="built_in">Object</span> error, [StackTrace stack]) &#123;</span><br><span class="line">    <span class="comment">// 服务器出错返回</span></span><br><span class="line">    <span class="keyword">final</span> resp =</span><br><span class="line">    Response(<span class="string">'''&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;html lang="en"&gt;</span></span><br><span class="line"><span class="string">&lt;head&gt;</span></span><br><span class="line"><span class="string">    &lt;meta charset="UTF-8"&gt;</span></span><br><span class="line"><span class="string">    &lt;title&gt;Title&lt;/title&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">500</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;'''</span>, statusCode: HttpStatus.internalServerError);</span><br><span class="line">    resp.headers.contentType = ContentType.html;</span><br><span class="line">    ctx.response = resp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>在这里也可以将异常信息写入到日志中，当然了，这个自定义肯定是满足不了大部分需求的，如果要查看更多可以看一下DefaultErrorWriter这个类<br>我们现在将这个自定义设置到服务器那里吧！<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">main() =&gt; <span class="keyword">new</span> Jaguar(</span><br><span class="line">      errorWriter: <span class="keyword">new</span> RhymeErrorWrite(),</span><br><span class="line">    )</span><br><span class="line">    ..<span class="keyword">get</span>(<span class="string">'/api/doGet/:ls'</span>, (ctx)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">'发生异常'</span>);</span><br><span class="line">      &#125;)</span><br><span class="line"><span class="comment">//....</span></span><br></pre></td></tr></table></figure></p>
+<p>然后请求一下刚才出异常的页面<br><img src="https://upload-images.jianshu.io/upload_images/12805100-d99636dcb61a8e46.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="500.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-71dc13b5e9039339.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="404.png"><br>可以看到，出现我自定义的页面了！</p>
+<p>ok，今天就到这里了，我们明天见吧！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-12/" class="pre-post btn btn-default" title="DartVM服务器开发（十二）-Jaguar获取请求内容">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十二）-Jaguar获取请求内容</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-10/" class="next-post btn btn-default" title="DartVM服务器开发（十）-Jaguar环境搭建">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十）-Jaguar环境搭建</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-方法请求"><span class="toc-text">1.方法请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-处理请求参数分析"><span class="toc-text">2.处理请求参数分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-自定义异常"><span class="toc-text">3.自定义异常</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

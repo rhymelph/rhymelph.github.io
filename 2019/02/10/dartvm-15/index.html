@@ -1,0 +1,322 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇文章中讲解了如何使用数据库中的增删查改，今天，我们来学习一下如何一对一，学会了一对一之后，就会发现，一对多跟多对多都不在话下，现在我们开始吧!
+
+1.新建需要的实体类
+经过上一篇文章的学...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十五）-Jaguar_ORM一对一 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十五）-Jaguar_ORM一对一">
+            
+	            DartVM服务器开发（十五）-Jaguar_ORM一对一
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇文章中讲解了如何使用数据库中的增删查改，今天，我们来学习一下如何一对一，学会了一对一之后，就会发现，一对多跟多对多都不在话下，现在我们开始吧!</p>
+</blockquote>
+<h2 id="1-新建需要的实体类"><a href="#1-新建需要的实体类" class="headerlink" title="1.新建需要的实体类"></a>1.新建需要的实体类</h2><blockquote>
+<p>经过上一篇文章的学习，我们在此基础上，更改我们的<code>User</code>类，变成下面的形式<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">  <span class="meta">@PrimaryKey</span>()</span><br><span class="line">  <span class="built_in">int</span> id;<span class="comment">//id号</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">20</span>,isNullable: <span class="keyword">false</span>)</span><br><span class="line">  <span class="built_in">String</span> username;<span class="comment">//用户名</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">30</span>,isNullable: <span class="keyword">false</span>)</span><br><span class="line">  <span class="built_in">String</span> password;<span class="comment">//密码</span></span><br><span class="line">  <span class="meta">@Column</span>(isNullable: <span class="keyword">false</span>)</span><br><span class="line">  <span class="built_in">int</span> role;</span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">11</span>,isNullable: <span class="keyword">true</span>)</span><br><span class="line">  <span class="built_in">String</span> phoneNumber;<span class="comment">//电话号码</span></span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">30</span>,isNullable: <span class="keyword">true</span>)</span><br><span class="line">  <span class="built_in">String</span> email;<span class="comment">//邮箱</span></span><br><span class="line">  <span class="meta">@HasOne</span>(AvatarBean)</span><br><span class="line">  Avatar avatar;</span><br><span class="line"></span><br><span class="line"><span class="comment">//表名</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> tableName=<span class="string">'_user'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用于接收json对象</span></span><br><span class="line">  <span class="keyword">static</span> User forMap(<span class="built_in">Map</span> map) =&gt;<span class="keyword">new</span> User()</span><br><span class="line">    ..username=map[<span class="string">'username'</span>]</span><br><span class="line">    ..password=map[<span class="string">'password'</span>]</span><br><span class="line">    ..role=<span class="number">810</span></span><br><span class="line">    ..phoneNumber=map[<span class="string">'phonenumber'</span>]</span><br><span class="line">    ..email=map[<span class="string">'email'</span>].toString().replaceAll(<span class="string">'@'</span>, <span class="string">'#'</span>);<span class="comment">//格式化输入</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt;<span class="string">"User(id:<span class="subst">$id</span>,username:<span class="subst">$username</span>,password:<span class="subst">$password</span>,role:<span class="subst">$role</span>,phoneNumber:<span class="subst">$phoneNumber</span>,email:<span class="subst">$email</span>,avatar:<span class="subst">$&#123;avatar.avatar&#125;</span>,avatarPath:<span class="subst">$&#123;avatar.avatarPath&#125;</span>)"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>上面的<code>@Column</code>中可以设置的参数为<br>|参数|介绍|<br>|-|-|<br>|name|在数据库中的字段名，默认变量名|<br>|isNullable|是否可以为空|<br>|uniqueGroup|唯一组名|<br>|auto| 自动|<br>|length|长度|<br><code>HasBean</code>绑定一个<code>bean</code><br>下面我们来新建<code>Avatar</code>这个类，从意思上，该实体类为用户的头像<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Avatar</span></span>&#123;</span><br><span class="line">  <span class="meta">@PrimaryKey</span>()</span><br><span class="line">  <span class="built_in">int</span> id;<span class="comment">//id</span></span><br><span class="line">  <span class="meta">@BelongsTo</span>(UserBean)</span><br><span class="line">  <span class="built_in">int</span> userId;<span class="comment">//对应的用户id</span></span><br><span class="line">  <span class="meta">@Column</span>(isNullable: <span class="keyword">true</span>,length: <span class="number">100</span>)</span><br><span class="line">  <span class="built_in">String</span> avatar;<span class="comment">//图片地址</span></span><br><span class="line">  <span class="meta">@Column</span>(isNullable: <span class="keyword">true</span>,length: <span class="number">200</span>)</span><br><span class="line">  <span class="built_in">String</span> avatarPath;<span class="comment">//图片路径</span></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> tableName=<span class="string">'_avatar'</span>;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> toString() =&gt;<span class="string">"Avatar(id:<span class="subst">$id</span>,userId:<span class="subst">$userId</span>,avatar:<span class="subst">$avatar</span>,avatarPath<span class="subst">$avatarPath</span>)"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的<code>@belongsTo(Type)</code>表示外键于<code>bean</code>，一般外键到 <code>id</code>字段，可以使用<code>refcol</code>字段设置</p>
+<h2 id="2-新建Bean"><a href="#2-新建Bean" class="headerlink" title="2.新建Bean"></a>2.新建Bean</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GenBean</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AvatarBean</span> <span class="keyword">extends</span> <span class="title">Bean</span>&lt;<span class="title">Avatar</span>&gt; <span class="title">with</span> <span class="title">_AvatarBean</span></span>&#123;</span><br><span class="line">  AvatarBean(Adapter adapter) : <span class="keyword">super</span>(adapter);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> tableName =&gt; Avatar.tableName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后运行脚本命令<code>pub run build_runner build</code><br><img src="https://upload-images.jianshu.io/upload_images/12805100-adbbdf7fc4ef0de2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br>可以看到，我们成功的运行了脚本命令，并且没有任何的异常</p>
+<h2 id="3-修改Bean"><a href="#3-修改Bean" class="headerlink" title="3.修改Bean"></a>3.修改Bean</h2><p>这里介绍一下，脚本命令只是简单的为我们生成了脚本，我们还需要去修改<code>bean</code>,跟<code>xxx.jorm.dart</code><br>我们可以看到运行脚本后，<code>UserBean</code>跟<code>AvatarBean</code>有红色的下划线，我们可以改成这个样子<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GenBean</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBean</span> <span class="keyword">extends</span> <span class="title">Bean</span>&lt;<span class="title">User</span>&gt; <span class="title">with</span> <span class="title">_UserBean</span></span>&#123;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">  UserBean(Adapter adapter) : _avatarBean=<span class="keyword">new</span> AvatarBean(adapter) ,<span class="keyword">super</span>(adapter);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> tableName =&gt; User.tableName;</span><br><span class="line"></span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">  <span class="keyword">final</span> AvatarBean _avatarBean;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  AvatarBean <span class="keyword">get</span> avatarBean =&gt; _avatarBean;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GenBean</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AvatarBean</span> <span class="keyword">extends</span> <span class="title">Bean</span>&lt;<span class="title">Avatar</span>&gt; <span class="title">with</span> <span class="title">_AvatarBean</span></span>&#123;</span><br><span class="line">  AvatarBean(Adapter adapter) : <span class="keyword">super</span>(adapter);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> tableName =&gt; Avatar.tableName;</span><br><span class="line"></span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  UserBean <span class="keyword">get</span> userBean =&gt; <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里，我们可以删除掉<code>AvatarBean下面的userBean</code>,在源码中可以看到，该<code>userBean</code>只是在创建表的时候获取<code>User</code>这个实体类的表名字，直接改成我们需要的就可以了，但是我们也考虑到，当我们再次建立其它表时，<code>xxx.jorm.dart</code>文件会重新复原，所以，我们这里只需要复制<code>xxx.jorm.dart</code>中<code>AvatarBean</code>创建表的方法，然后重写就可以了<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GenBean</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AvatarBean</span> <span class="keyword">extends</span> <span class="title">Bean</span>&lt;<span class="title">Avatar</span>&gt; <span class="title">with</span> <span class="title">_AvatarBean</span></span>&#123;</span><br><span class="line">  AvatarBean(Adapter adapter) : <span class="keyword">super</span>(adapter);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> tableName =&gt; Avatar.tableName;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; createTable() &#123;</span><br><span class="line">    <span class="keyword">final</span> st = Sql.create(tableName);</span><br><span class="line">    st.addInt(id.name, primary: <span class="keyword">true</span>, isNullable: <span class="keyword">false</span>);</span><br><span class="line">    st.addInt(userId.name,</span><br><span class="line"><span class="comment">//更改userBean.tableName为User.tableName</span></span><br><span class="line">        foreignTable: User.tableName, </span><br><span class="line">        foreignCol: <span class="string">'id'</span>, isNullable: <span class="keyword">false</span>);</span><br><span class="line">    st.addStr(avatar.name, length: <span class="number">100</span>, isNullable: <span class="keyword">true</span>);</span><br><span class="line">    st.addStr(avatarPath.name, length: <span class="number">200</span>, isNullable: <span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">return</span> adapter.createTable(st);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  UserBean <span class="keyword">get</span> userBean =&gt; <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-尝试"><a href="#4-尝试" class="headerlink" title="4.尝试"></a>4.尝试</h2><blockquote>
+<p>一切准备就绪，我们添加一条请求地址，然后当请求该地址时，插入相关的数据<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> PgAdapter pgAdapter =</span><br><span class="line"><span class="keyword">new</span> PgAdapter(<span class="string">'rhymedb'</span>, username: <span class="string">'postgres'</span>, password: <span class="string">'123456'</span>);</span><br><span class="line">main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">await</span> pgAdapter.connect();</span><br><span class="line">  UserBean userBean = <span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line">  AvatarBean avatarBean = <span class="keyword">new</span> AvatarBean(pgAdapter);</span><br><span class="line">  <span class="keyword">await</span> avatarBean.drop();</span><br><span class="line">  <span class="keyword">await</span> userBean.drop();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> userBean.createTable();</span><br><span class="line">  <span class="keyword">await</span> avatarBean.createTable();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Jaguar()</span><br><span class="line">    ..<span class="keyword">get</span>(<span class="string">'/api/test/Avatar'</span>, (ctx) <span class="keyword">async</span> &#123;</span><br><span class="line">      UserBean bean = <span class="keyword">new</span> UserBean(pgAdapter);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">await</span> bean.insert(<span class="keyword">new</span> User()</span><br><span class="line">        ..id = <span class="number">3</span></span><br><span class="line">        ..role=<span class="number">810</span></span><br><span class="line">        ..username = <span class="string">'rhyme'</span></span><br><span class="line">        ..password = <span class="string">'123456'</span></span><br><span class="line">        ..phoneNumber = <span class="string">'159xxxxxxxx'</span></span><br><span class="line">        ..email = <span class="string">'rhymelph#gmail.com'</span></span><br><span class="line">        ..avatar = (<span class="keyword">new</span> Avatar()</span><br><span class="line">          ..id = <span class="number">1</span></span><br><span class="line">          ..avatar = <span class="string">'http://localhost:8080/static/admin.png'</span></span><br><span class="line">          ..avatarPath = <span class="string">'static/admin.png'</span>)</span><br><span class="line">      ,cascade: <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> Response(<span class="string">'Success'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    ..serve(logRequests: <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>我们在浏览器上面输入地址:<a href="http://localhost:8080/api/test/Avatar" target="_blank" rel="noopener">http://localhost:8080/api/test/Avatar</a><br>请求一下<br><img src="https://upload-images.jianshu.io/upload_images/12805100-4c35aca77d4c5de9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功.png"><br>我们再来看看数据库<br><img src="https://upload-images.jianshu.io/upload_images/12805100-b88a2838011005d5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="用户表.png"><br>已经成功添加了一条数据,在看看<code>_avatar</code>表<br><img src="https://upload-images.jianshu.io/upload_images/12805100-683b6f92d91d6e2c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="头像表.png"><br>ok，我们是成功的插入了两条数据的！一对一就到这里了，还有一对多，多对多也是同样的操作，大家应该get到吧！好了，今天的内容就到这里了，明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-16/" class="pre-post btn btn-default" title="DartVM服务器开发（十六）-Jaguar使用JWT">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十六）-Jaguar使用JWT</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-14/" class="next-post btn btn-default" title="DartVM服务器开发（十四）-Jaguar_ORM增删查改">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十四）-Jaguar_ORM增删查改</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-新建需要的实体类"><span class="toc-text">1.新建需要的实体类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-新建Bean"><span class="toc-text">2.新建Bean</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-修改Bean"><span class="toc-text">3.修改Bean</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-尝试"><span class="toc-text">4.尝试</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

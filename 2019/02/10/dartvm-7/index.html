@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇文章中我们讲解了如何使用注解去处理请求，感觉是不是很方便呢？现在我们的服务器已经支持了返回html页面，处理移动端发来的请求！今天我们学习一下如何添加一个WebSocket到你的服务器，...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（七）-WebSocket | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（七）-WebSocket">
+            
+	            DartVM服务器开发（七）-WebSocket
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇文章中我们讲解了如何使用注解去处理请求，感觉是不是很方便呢？现在我们的服务器已经支持了返回html页面，处理移动端发来的请求！今天我们学习一下如何添加一个WebSocket到你的服务器，通过该编文章的学习，你将学会如何搭建一个简单的聊天室，有些小伙伴已经等不及了，那我们开始今天的学习吧！</p>
+</blockquote>
+<h2 id="1-建立迷你服务器"><a href="#1-建立迷你服务器" class="headerlink" title="1.建立迷你服务器"></a>1.建立迷你服务器</h2><blockquote>
+<p>在我们写代码之前，我们先了解一下dart能干嘛？<br>下面我打开百度，输入dart，然后点击回车键</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-b1607cb0ed0830bb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="百度一下.png"><br>可以看到我们熟悉的dart介绍，<strong>它被用于web、服务器、移动开发和物联网等领域的开发</strong>，等等，这里有一个目前比较热门的一个名词，<strong>物联网</strong>、对的，dart支持物联网，所以websocket使用非常的简单！</p>
+<blockquote>
+<p>好了我们开始建立一个迷你服务器吧，这个建立迷你服务器，肯定是基于我们之前学习的服务器之上的，我这里会以请求路径为<strong>/mini</strong>去建立<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">staticFiles.errorPageHandler = (request) &#123;</span><br><span class="line">    <span class="keyword">if</span> (request.uri.pathSegments.last.endsWith(<span class="string">'.html'</span>)) &#123;</span><br><span class="line">      staticFiles.serveFile(<span class="keyword">new</span> File(webPath + <span class="string">'/404.html'</span>), request);</span><br><span class="line">    &#125; </span><br><span class="line"><span class="comment">//new</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (request.uri.path == <span class="string">'/mini'</span>) &#123;</span><br><span class="line"><span class="comment">//当请求路径为/mini,判断为进行webScoket连接</span></span><br><span class="line">     WebSocketManager.manager.serveRequest(request).catchError((error)&#123;</span><br><span class="line">          LogUt.log.warning(<span class="string">'webSocket异常'</span>,error,error.stackTrace);</span><br><span class="line">        &#125;);</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        ControllerManager.manager.requestServer(request);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          request.response</span><br><span class="line">            ..statusCode = HttpStatus.internalServerError</span><br><span class="line">            ..close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (_) &#123;&#125;</span><br><span class="line">        LogUt.log.warning(<span class="string">'请求消息发生异常'</span>, e,</span><br><span class="line">            e.runtimeType == ArgumentError ? e.stackTrace : <span class="keyword">null</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>然后我们写一下WebSocketManager这个类,将传递的request请求升级为WebSocket请求<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebSocketManager</span></span>&#123;</span><br><span class="line">  <span class="keyword">static</span> WebSocketManager manager=<span class="keyword">new</span> WebSocketManager();</span><br><span class="line">  <span class="built_in">List</span>&lt;WebSocket&gt; webSockets;</span><br><span class="line"></span><br><span class="line">  WebSocketManager()&#123;</span><br><span class="line">    webSockets=[];</span><br><span class="line">  &#125;</span><br><span class="line">Future serveRequest(HttpRequest request)&#123;</span><br><span class="line"><span class="comment">//判断当前请求是否可以升级为WebSocket</span></span><br><span class="line">    <span class="keyword">if</span>(WebSocketTransformer.isUpgradeRequest(request))&#123;</span><br><span class="line"><span class="comment">//升级为webSocket</span></span><br><span class="line">      <span class="keyword">return</span> WebSocketTransformer</span><br><span class="line">          .upgrade(request)</span><br><span class="line">          .then((webSocket)&#123;</span><br><span class="line"><span class="comment">//添加到ist里面方便维护</span></span><br><span class="line">        webSockets.add(socket);</span><br><span class="line"><span class="comment">//webSocket消息监听</span></span><br><span class="line">        webSocket.listen(handMsg);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      request.response..statusCode=HttpStatus.notAcceptable</span><br><span class="line">      ..writeln(<span class="string">'该请求应为WebSocket连接'</span>)</span><br><span class="line">      ..close();</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> Future(()&#123;&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//处理消息</span></span><br><span class="line">  <span class="keyword">void</span> handMsg(<span class="keyword">dynamic</span> msg)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'收到客户端消息：<span class="subst">$msg</span>'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//给所有客户端回复当前客户端说了什么</span></span><br><span class="line">   <span class="keyword">for</span>(WebSocket webSocket <span class="keyword">in</span> webSockets)&#123;</span><br><span class="line"><span class="comment">//判断是否有关闭代码，如果没有证明客户端当前未关闭，给它回复</span></span><br><span class="line">        <span class="keyword">if</span>(webSocket.closeCode==<span class="keyword">null</span>)&#123;</span><br><span class="line"><span class="comment">//回复客户端一条消息</span></span><br><span class="line">          webSocket.add(<span class="string">'服务器回复: XX:<span class="subst">$msg</span>'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面将请求升级为WebSocket请求，然后监听收到的消息，当收到消息时，返回所有客户端当前客户端说了什么，这个就是一个简单的聊天室了，是不是很简单，那么，服务端有了，我们来弄一个客户端吧！当请求地址为<strong>/mini/client</strong>时开启一个客户端<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//....</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(request.uri.path==<span class="string">'/mini/client'</span>)&#123;</span><br><span class="line">      SocketClient();</span><br><span class="line">    &#125; </span><br><span class="line"><span class="comment">//.....</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> SocketClient() <span class="keyword">async</span>&#123;</span><br><span class="line"><span class="comment">//客户端连接到服务端</span></span><br><span class="line">  WebSocket client=<span class="keyword">await</span> WebSocket.connect(<span class="string">'ws://localhost:8080/mini'</span>);</span><br><span class="line"><span class="comment">//客户端接收消息</span></span><br><span class="line">  client.listen((msg)&#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">'客户端收到消息！'</span>);</span><br><span class="line">      <span class="built_in">print</span>(msg);</span><br><span class="line">    &#125;);</span><br><span class="line"><span class="comment">//客户端发送消息</span></span><br><span class="line">  client.add(<span class="string">'Hello World!'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里可以看到，连接的地址不再是以http开头，而是   ws://地址 的形式<br>下面我们来请求一下吧！<a href="http://localhost:8080/mini/client" target="_blank" rel="noopener">http://localhost:8080/mini/client</a><br><img src="https://upload-images.jianshu.io/upload_images/12805100-7f160729afb540be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="回复.png"><br>可以看到，我们成功的使用了webSocket进行通信</p>
+<p>ok，今天的学习就到这里了，我们明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-8/" class="pre-post btn btn-default" title="DartVM服务器开发（八）-http服务端框架">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（八）-http服务端框架</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-6/" class="next-post btn btn-default" title="DartVM服务器开发（六）-利用注解处理请求">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（六）-利用注解处理请求</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-建立迷你服务器"><span class="toc-text">1.建立迷你服务器</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

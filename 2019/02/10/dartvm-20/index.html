@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+今天，我们来学习一下如何生成HTTPS安全证书以及使用Jaguar配置HTTPS！
+
+1.自签名安全证书生成自签名安全证书可以分为以下三个步骤:
+
+创建RSA私钥和公钥对
+创建证书签名请求（C...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（二十）-jaguar配置HTTPS | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（二十）-jaguar配置HTTPS">
+            
+	            DartVM服务器开发（二十）-jaguar配置HTTPS
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>今天，我们来学习一下如何生成HTTPS安全证书以及使用Jaguar配置HTTPS！</p>
+</blockquote>
+<h2 id="1-自签名安全证书"><a href="#1-自签名安全证书" class="headerlink" title="1.自签名安全证书"></a>1.自签名安全证书</h2><p>生成自签名安全证书可以分为以下三个步骤:</p>
+<ul>
+<li>创建RSA私钥和公钥对</li>
+<li>创建证书签名请求（CSR）</li>
+<li>创建证书</li>
+</ul>
+<p>配置HTTPS证书需要两个文件</p>
+<ul>
+<li>RSA密钥（keys.pem）</li>
+<li>证书（certificate.pem）</li>
+</ul>
+<h3 id="生成RSA密钥对"><a href="#生成RSA密钥对" class="headerlink" title="生成RSA密钥对"></a>生成RSA密钥对</h3><p>以下命令生成2048位RSA密钥对，并将它们放入名为keys.pem的文件中。<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genpkey -algorithm RSA -out keys.pem -pkeyopt rsa_keygen_bits：<span class="number">2048</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="创建CSR"><a href="#创建CSR" class="headerlink" title="创建CSR"></a>创建CSR</h3><p>以下命令创建CSR。在提示中提供适当的详细信息。<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -<span class="keyword">new</span> -key keys.pem -out csr.csr</span><br></pre></td></tr></table></figure></p>
+<h3 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h3><p>以下命令将创建证书certificate.pem。<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -sha256 -days <span class="number">365</span> -<span class="keyword">in</span> csr.csr -signkey keys.pem -out certificate.pem</span><br></pre></td></tr></table></figure></p>
+<p>上面的步骤就是生成自签名证书了，下面，我们将证书导入到项目里面</p>
+<h2 id="2-导入签名证书"><a href="#2-导入签名证书" class="headerlink" title="2.  导入签名证书"></a>2.  导入签名证书</h2><p> 我们可以在项目里面的bin文件夹下面创建一个文件夹叫做<code>ssl</code><br>分别将上面生成的秘钥跟证书放到这个文件夹下面<br><img src="https://upload-images.jianshu.io/upload_images/12805100-ca85b6b52b16a5eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>然后我们可以在<code>main.dart</code>文件中添加下面代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SecurityContext securityContext=<span class="keyword">new</span> SecurityContext()</span><br><span class="line">  ..useCertificateChain(<span class="string">"bin/ssl/certificate.pem"</span>)</span><br><span class="line">  ..usePrivateKey(<span class="string">"bin/ssl/keys.pem"</span>);</span><br><span class="line">main() &#123;</span><br><span class="line">  <span class="keyword">new</span> Jaguar(</span><br><span class="line">    securityContext: securityContext,</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样，我们就可以通过https访问我们的地址了,那么我们现在可以启动服务器了，<br>然后输入<a href="https://localhost:8080" target="_blank" rel="noopener">https://localhost:8080</a><br><img src="https://upload-images.jianshu.io/upload_images/12805100-39101f5385a5a1f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>因为我们是通过自己给自己颁发的证书，所以，互联网上面是不认可的，浏览器会提示不是私密连接，我们可以点击下面的继续前往<br><img src="https://upload-images.jianshu.io/upload_images/12805100-43e00acd9c38ed57.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>ok，可以看到我们是能够访问到了。如果你需要被认可，可以到阿里云ssl证书找找看，因为我申请的域名还没有通过，所以这里先搁置一下，后续或许会继续更新该编文章<br>那么，今天就到这里了，我们明天见!</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-21/" class="pre-post btn btn-default" title="DartVM服务器开发（二十一）-Dart中的Gson(jaguar_serializer)">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十一）-Dart中的Gson(jaguar_serializer)</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-19/" class="next-post btn btn-default" title="DartVM服务器开发（十九）-jaguar_reflect使用Controller">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十九）-jaguar_reflect使用Controller</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-自签名安全证书"><span class="toc-text">1.自签名安全证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成RSA密钥对"><span class="toc-text">生成RSA密钥对</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建CSR"><span class="toc-text">创建CSR</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成证书"><span class="toc-text">生成证书</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-导入签名证书"><span class="toc-text">2.  导入签名证书</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

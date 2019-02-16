@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+今天我们来学习一下如何使用jaguar_serializer包，这里说明一下，该包在三端平台都是可用的(Flutter，dart web ,dart vm)，学习过安卓的，都知道gson吧，该...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（二十一）-Dart中的Gson(jaguar_serializer) | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（二十一）-Dart中的Gson(jaguar_serializer)">
+            
+	            DartVM服务器开发（二十一）-Dart中的Gson(jaguar_serializer)
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>今天我们来学习一下如何使用jaguar_serializer包，这里说明一下，该包在三端平台都是可用的(Flutter，dart web ,dart vm)，学习过安卓的，都知道gson吧，该包类似于gson</p>
+</blockquote>
+<h2 id="1-引入包"><a href="#1-引入包" class="headerlink" title="1.引入包"></a>1.引入包</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#pubspec.yaml</span></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line"><span class="attr">  jaguar_serializer:</span> <span class="string">^2.2.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line"><span class="attr">  build_runner:</span></span><br><span class="line"><span class="attr">  jaguar_serializer_cli:</span></span><br></pre></td></tr></table></figure>
+<p>执行<code>pub get</code>命令<br><img src="https://upload-images.jianshu.io/upload_images/12805100-20bfa9400a7c1972.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="获取成功.png"><br>导包<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_serializer/jaguar_serializer.dart'</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2.初始化"></a>2.初始化</h2><ul>
+<li><p>新增一个实体类</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> name;</span><br><span class="line">  <span class="built_in">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加生成脚本标记</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GenSerializer</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Person</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">PersonSerializer</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行脚本<br>使用脚本命令<code>pub run build_runner build</code><br><img src="https://upload-images.jianshu.io/upload_images/12805100-869519ecea08c782.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+</li>
+<li>导入生成代码<br>回到<code>person</code>这个类的文件中，添加<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">part</span> <span class="string">'person.jser.dart'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>##　3．使用<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">main() <span class="keyword">async</span> &#123;</span><br><span class="line">  Jaguar(port: <span class="number">1000</span>)</span><br><span class="line">    ..<span class="keyword">get</span>(<span class="string">'/person'</span>, (ctx)&#123;</span><br><span class="line">      PersonSerializer personSerializer=<span class="keyword">new</span> PersonSerializer();</span><br><span class="line">      Person person=<span class="keyword">new</span> Person()</span><br><span class="line">      ..name=<span class="string">'rhyme'</span></span><br><span class="line">      ..age=<span class="number">18</span>;</span><br><span class="line"> <span class="comment">//personSerializer.toMap(person)获取到map对象</span></span><br><span class="line">      <span class="keyword">return</span> Response.json( personSerializer.toMap(person));</span><br><span class="line">    &#125;)</span><br><span class="line">    ..log.onRecord.listen(<span class="built_in">print</span>)</span><br><span class="line">    ..serve(logRequests: <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们来请求一下<br><img src="https://upload-images.jianshu.io/upload_images/12805100-ed92fc45adfe3fac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>成功返回了json数据</p>
+<h2 id="4-使用详解"><a href="#4-使用详解" class="headerlink" title="4.使用详解"></a>4.使用详解</h2><ul>
+<li><h3 id="json与对象相互转换"><a href="#json与对象相互转换" class="headerlink" title="json与对象相互转换"></a>json与对象相互转换</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:convert'</span>;</span><br><span class="line">main()&#123;</span><br><span class="line">  <span class="built_in">String</span> jsonString=<span class="string">'&#123;"name":"rhyme","age":18&#125;'</span>;</span><br><span class="line">  PersonSerializer personSerializer=<span class="keyword">new</span> PersonSerializer();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// json to entity</span></span><br><span class="line">  Person person=personSerializer.fromMap(json.decode(jsonString));</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'name:<span class="subst">$&#123;person.name&#125;</span> ,age: <span class="subst">$&#123;person.age&#125;</span>'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//entity to json</span></span><br><span class="line">  <span class="built_in">String</span> toJson= json.encode( personSerializer.toMap(person));</span><br><span class="line">  <span class="built_in">print</span>(toJson);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="json-与对象列相互转换"><a href="#json-与对象列相互转换" class="headerlink" title="json 与对象列相互转换"></a>json 与对象列相互转换</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">main()&#123;</span><br><span class="line">  <span class="built_in">String</span> jsonString=<span class="string">'[&#123;"name":"rhyme","age":18&#125;,&#123;"name":"ben","age":21&#125;]'</span>;</span><br><span class="line">  PersonSerializer personSerializer=<span class="keyword">new</span> PersonSerializer();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// list: json to entity</span></span><br><span class="line">  <span class="comment">//因为目前fromList不支持dynamic的值，所以，我们需要吧json.decode出来的List&lt;dynamic&gt;转化为List&lt;Map&gt;，不然会报异常</span></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; mapList=(json.decode(jsonString) <span class="keyword">as</span> <span class="built_in">List</span>&lt;<span class="keyword">dynamic</span>&gt;).map((dy)=&gt;dy <span class="keyword">as</span> <span class="built_in">Map</span>).toList();</span><br><span class="line">  <span class="built_in">List</span>&lt;Person&gt; persons=personSerializer.fromList(mapList);</span><br><span class="line">  <span class="keyword">for</span>(Person p <span class="keyword">in</span> persons)&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'name:<span class="subst">$&#123;p.name&#125;</span> ,age: <span class="subst">$&#123;p.age&#125;</span>'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//list: entity to json</span></span><br><span class="line">  <span class="built_in">String</span> fromJson=json.encode(personSerializer.toList(persons));</span><br><span class="line">  <span class="built_in">print</span>(fromJson);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="对象内嵌对象与json相互转换"><a href="#对象内嵌对象与json相互转换" class="headerlink" title="对象内嵌对象与json相互转换"></a>对象内嵌对象与json相互转换</h3><p>在对象内添加一个对象</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> name;</span><br><span class="line">  <span class="built_in">int</span> age;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">  Info info;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//new</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Info</span></span>&#123;</span><br><span class="line">   <span class="built_in">String</span> address;</span><br><span class="line">   <span class="built_in">String</span> phoneNumber;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//edit</span></span><br><span class="line"><span class="meta">@GenSerializer</span>( serializers: [ InfoSerializer])</span><br><span class="line"><span class="comment">//edit</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Person</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">PersonSerializer</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//new</span></span><br><span class="line"><span class="meta">@GenSerializer</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InfoSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Info</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">InfoSerializer</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//new</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>运行命令<code>pub run build_runner build</code><br><img src="https://upload-images.jianshu.io/upload_images/12805100-01aa00509b2192cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>转换跟上面相同<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> jsonString=<span class="string">'&#123;"name":"rhyme","age":18,"info":&#123;"address":"广州","phoneNumber":"159xxxxxxxx"&#125;&#125;'</span>;</span><br><span class="line"> PersonSerializer personSerializer=<span class="keyword">new</span> PersonSerializer();</span><br><span class="line"></span><br><span class="line"> <span class="comment">// json to entity</span></span><br><span class="line"> Person person=personSerializer.fromMap(json.decode(jsonString));</span><br><span class="line"> <span class="built_in">print</span>(<span class="string">'name:<span class="subst">$&#123;person.name&#125;</span> ,age: <span class="subst">$&#123;person.age&#125;</span>'</span>);</span><br><span class="line"></span><br><span class="line"> <span class="comment">//entity to json</span></span><br><span class="line"> <span class="built_in">String</span> toJson= json.encode(personSerializer.toMap(person));</span><br><span class="line"> <span class="built_in">print</span>(toJson);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="对象内嵌对象列"><a href="#对象内嵌对象列" class="headerlink" title="对象内嵌对象列"></a>对象内嵌对象列</h3><p>将上面的<code>Info</code>改为<code>List&lt;Info&gt;</code><br>重新运行命令<code>pub run build_runner build</code><br>转换跟上面一样</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> jsonString=<span class="string">'[&#123;"name":"rhyme","age":18,"info":[&#123;"address":"广州","phoneNumber":"159xxxxxxxx"&#125;,&#123;"address":"北京","phoneNumber":"158xxxxxxxx"&#125;]&#125;,&#123;"name":"ben","age":21&#125;]'</span>;</span><br><span class="line">PersonSerializer personSerializer=<span class="keyword">new</span> PersonSerializer();</span><br><span class="line"></span><br><span class="line"><span class="comment">// list: json to entity</span></span><br><span class="line"><span class="comment">//因为目前fromList不支持dynamic的值，所以，我们需要吧json.decode出来的List&lt;dynamic&gt;转化为List&lt;Map&gt;，不然会报异常</span></span><br><span class="line"><span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; mapList=(json.decode(jsonString) <span class="keyword">as</span> <span class="built_in">List</span>&lt;<span class="keyword">dynamic</span>&gt;).map((dy)=&gt;dy <span class="keyword">as</span> <span class="built_in">Map</span>).toList();</span><br><span class="line"><span class="built_in">List</span>&lt;Person&gt; persons=personSerializer.fromList(mapList);</span><br><span class="line"><span class="keyword">for</span>(Person p <span class="keyword">in</span> persons)&#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'name:<span class="subst">$&#123;p.name&#125;</span> ,age: <span class="subst">$&#123;p.age&#125;</span>'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//list: entity to json</span></span><br><span class="line"><span class="built_in">String</span> fromJson=json.encode(personSerializer.toList(persons));</span><br><span class="line"><span class="built_in">print</span>(fromJson);</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="对象内嵌多个对象"><a href="#对象内嵌多个对象" class="headerlink" title="对象内嵌多个对象"></a>对象内嵌多个对象</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> name;</span><br><span class="line">  <span class="built_in">int</span> age;</span><br><span class="line">  <span class="built_in">List</span>&lt;Info&gt; info;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">  Avatar avatar;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Info</span></span>&#123;</span><br><span class="line">   <span class="built_in">String</span> address;</span><br><span class="line">   <span class="built_in">String</span> phoneNumber;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Avatar</span></span>&#123;</span><br><span class="line">  <span class="built_in">String</span> url;</span><br><span class="line">  <span class="built_in">String</span> path;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//edit</span></span><br><span class="line"><span class="meta">@GenSerializer</span>( serializers: [ InfoSerializer,AvatarSerializer])</span><br><span class="line"><span class="comment">//edit</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Person</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">PersonSerializer</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GenSerializer</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InfoSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Info</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">InfoSerializer</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//new</span></span><br><span class="line"><span class="meta">@GenSerializer</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AvatarSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Avatar</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">AvatarSerializer</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//new</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>然后重新运行命令<code>pub run build_runner build</code><br>使用也是跟上面相同<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> jsonString=<span class="string">'[&#123;"name":"rhyme","age":18,"avatar":&#123;"url":"http://www.baidu.com","path":"baidu"&#125;,"info":[&#123;"address":"广州","phoneNumber":"159xxxxxxxx"&#125;,&#123;"address":"北京","phoneNumber":"158xxxxxxxx"&#125;]&#125;,&#123;"name":"ben","age":21&#125;]'</span>;</span><br><span class="line">PersonSerializer personSerializer=<span class="keyword">new</span> PersonSerializer();</span><br><span class="line"></span><br><span class="line"><span class="comment">// list: json to entity</span></span><br><span class="line"><span class="comment">//因为目前fromList不支持dynamic的值，所以，我们需要吧json.decode出来的List&lt;dynamic&gt;转化为List&lt;Map&gt;，不然会报异常</span></span><br><span class="line"><span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; mapList=(json.decode(jsonString) <span class="keyword">as</span> <span class="built_in">List</span>&lt;<span class="keyword">dynamic</span>&gt;).map((dy)=&gt;dy <span class="keyword">as</span> <span class="built_in">Map</span>).toList();</span><br><span class="line"><span class="built_in">List</span>&lt;Person&gt; persons=personSerializer.fromList(mapList);</span><br><span class="line"><span class="keyword">for</span>(Person p <span class="keyword">in</span> persons)&#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'name:<span class="subst">$&#123;p.name&#125;</span> ,age: <span class="subst">$&#123;p.age&#125;</span>'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//list: entity to json</span></span><br><span class="line"><span class="built_in">String</span> fromJson=json.encode(personSerializer.toList(persons));</span><br><span class="line"><span class="built_in">print</span>(fromJson);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h3>有时候，我们的实体类成员变量名跟<code>json</code>数据中对应的字段不相同，可以使用<code>@Alias(&#39;&#39;)</code>对需要的字段进行标记，里面的值为<code>json</code>对应的字段<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Alias</span>(<span class="string">'Name'</span>)</span><br><span class="line">  <span class="built_in">String</span> name;</span><br><span class="line">  <span class="built_in">int</span> age;</span><br><span class="line">  <span class="built_in">List</span>&lt;Info&gt; info;</span><br><span class="line">  Avatar avatar;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>要使上面生效，需要重新运行命令<code>pub run build_runner build</code></p>
+<ul>
+<li><h3 id="Build命令"><a href="#Build命令" class="headerlink" title="Build命令"></a>Build命令</h3>我们可以发现，当我每次做一个修改，都需要执行<code>pub run build_runner build</code>命令，这样是非常容易导致疏忽的，<code>jaguar_serializer</code>已经为我们考虑到了，<br>我们可以使用命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pub run build_runner watch</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>当该命令运行后，我们的每次点击保存，都会重新激活一次脚本，如下图<br><img src="https://upload-images.jianshu.io/upload_images/12805100-a325e3e26fdfd9ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>如果你是Flutter开发，可以使用下面的build命令<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter packages pub run build_runner build</span><br></pre></td></tr></table></figure></p>
+<p>Flutter的监听命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter packages pub run build_runner watch</span><br></pre></td></tr></table></figure></p>
+<p>ok，今天就到这里了，我们明天见!</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-22/" class="pre-post btn btn-default" title="DartVM服务器开发（二十二）-RestfulApi封装">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十二）-RestfulApi封装</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-20/" class="next-post btn btn-default" title="DartVM服务器开发（二十）-jaguar配置HTTPS">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十）-jaguar配置HTTPS</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-引入包"><span class="toc-text">1.引入包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-初始化"><span class="toc-text">2.初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-使用详解"><span class="toc-text">4.使用详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#json与对象相互转换"><span class="toc-text">json与对象相互转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json-与对象列相互转换"><span class="toc-text">json 与对象列相互转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象内嵌对象与json相互转换"><span class="toc-text">对象内嵌对象与json相互转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象内嵌对象列"><span class="toc-text">对象内嵌对象列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象内嵌多个对象"><span class="toc-text">对象内嵌多个对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别名"><span class="toc-text">别名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Build命令"><span class="toc-text">Build命令</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

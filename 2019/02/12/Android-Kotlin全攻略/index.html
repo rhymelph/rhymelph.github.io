@@ -1,0 +1,426 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="kotlin">
+
+
+    <meta name="description" content="
+作为一名Android开发者，觉得很有必要学习Kotlin这门语言，学成之后，希望融入到开发中。
+
+Kotlin是什么？kotlin是一种在Java虚拟机上运行的静态类型编译语言，它也可以编译...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Android-Kotlin全攻略 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android-Kotlin全攻略">
+            
+	            Android-Kotlin全攻略
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Android/">Android</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/kotlin/">kotlin</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/12</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>作为一名Android开发者，觉得很有必要学习Kotlin这门语言，学成之后，希望融入到开发中。</p>
+</blockquote>
+<h2 id="Kotlin是什么？"><a href="#Kotlin是什么？" class="headerlink" title="Kotlin是什么？"></a>Kotlin是什么？</h2><blockquote><p>kotlin是一种在Java虚拟机上运行的静态类型编译语言，它也可以编译成为JavaScript源代码，它主要是由俄罗斯圣彼得堡的<strong>JetBrains</strong>开发团队所发展出来的编程语言，其名称来自于圣彼得堡附近的科特林岛。2012年1月，著名期刊《Dr. Dobb’s Journal》中Kotlin被认定为该月的最佳语言</p>
+<footer><strong>维基百科</strong><cite><a href="https://zh.wikipedia.org/wiki/Kotlin" target="_blank" rel="noopener">详情</a></cite></footer></blockquote>
+<h2 id="在Android中使用"><a href="#在Android中使用" class="headerlink" title="在Android中使用"></a>在Android中使用</h2><h3 id="声明Activity"><a href="#声明Activity" class="headerlink" title="声明Activity"></a>声明Activity</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">    setContentView(R.layout.activity)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建点击事件"><a href="#创建点击事件" class="headerlink" title="创建点击事件"></a>创建点击事件</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> fab = findViewById(R.id.fab) <span class="keyword">as</span> FloatingActionButton</span><br><span class="line">fab.setOnClickListener &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建项目点击事件"><a href="#创建项目点击事件" class="headerlink" title="创建项目点击事件"></a>创建项目点击事件</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">val</span> mOnNavigationItemSelectedListener</span><br><span class="line">    = BottomNavigationView.OnNavigationItemSelectedListener &#123; item -&gt;</span><br><span class="line">  <span class="keyword">when</span> (item.itemId) &#123;</span><br><span class="line">    R.id.navigation_home -&gt; &#123;</span><br><span class="line">      mTextMessage.setText(R.string.title_home)</span><br><span class="line">      <span class="keyword">return</span><span class="symbol">@OnNavigationItemSelectedListener</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    R.id.navigation_dashboard -&gt; &#123;</span><br><span class="line">      mTextMessage.setText(R.string.title_dashboard)</span><br><span class="line">      <span class="keyword">return</span><span class="symbol">@OnNavigationItemSelectedListener</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Kotlin语法大全"><a href="#Kotlin语法大全" class="headerlink" title="Kotlin语法大全"></a>Kotlin语法大全</h2><h3 id="类别属性"><a href="#类别属性" class="headerlink" title="类别属性"></a>类别属性</h3><p>用于控制作用域<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span></span><br><span class="line"><span class="keyword">internal</span></span><br><span class="line"><span class="keyword">protected</span></span><br><span class="line"><span class="keyword">private</span></span><br></pre></td></tr></table></figure></p>
+<p>含义：</p>
+<ul>
+<li>public：全局可见，默认类型</li>
+<li>internal： 在当前模块中可见</li>
+<li>protected： 在当前类的一级子类中可见，如果子类载被继承，不可见</li>
+<li>private： 在当前类中可见<h3 id="常量与变量"><a href="#常量与变量" class="headerlink" title="常量与变量"></a>常量与变量</h3></li>
+<li><p>使用<code>val</code>为常量，定义后<strong>无法修改</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> a: <span class="built_in">Int</span> = <span class="number">1</span> <span class="comment">//定义一个Int类型的常量，值为1</span></span><br><span class="line"><span class="keyword">val</span> b = <span class="number">2</span> <span class="comment">//自动检测类型</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>var</code>为变量，定义后<strong>可修改</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">5</span> <span class="comment">//定义一个Int类型的变量，值为5</span></span><br><span class="line">x = <span class="number">1</span> <span class="comment">//修改值为1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h3><p>字符串不属于数值类型，是一个独立的数据类型</p>
+<ul>
+<li>Double<code>64</code></li>
+<li>Float<code>32</code></li>
+<li>Long<code>64</code></li>
+<li>int<code>32</code></li>
+<li>Short<code>16</code></li>
+<li>Byte<code>8</code></li>
+</ul>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul>
+<li><p>只读list</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> list= listOf(<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可变list</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> mulList= mutableListOf(<span class="string">"a"</span>,<span class="string">"b"</span>)</span><br><span class="line">mulList.add(<span class="string">"c"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只读list转为可变list</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> list= listOf(<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>)</span><br><span class="line"><span class="keyword">val</span> mulList=list.toMutableList()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><ul>
+<li><p>只读map</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"a"</span> to <span class="number">1</span>, <span class="string">"b"</span> to <span class="number">2</span>, <span class="string">"c"</span> to <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可变map</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> mulMap = mutableMapOf(<span class="string">"a"</span> to <span class="number">1</span>,<span class="string">"b"</span> to <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只读map转为可变map</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"a"</span> to <span class="number">1</span>,<span class="string">"b"</span> to <span class="number">2</span>)</span><br><span class="line"><span class="keyword">val</span> mulMap = map.toMutableMap()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问map</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> map = mapOf(<span class="string">"a"</span> to <span class="number">1</span>, <span class="string">"b"</span> to <span class="number">2</span>, <span class="string">"c"</span> to <span class="number">3</span>)</span><br><span class="line">println(map[<span class="string">"a"</span>])</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="位操作符"><a href="#位操作符" class="headerlink" title="位操作符"></a>位操作符</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> a=<span class="number">22</span></span><br><span class="line">a.shl(<span class="number">1</span>)<span class="comment">//左移一位</span></span><br><span class="line">a.shr(<span class="number">1</span>)<span class="comment">//右移一位</span></span><br><span class="line">a.ushr(<span class="number">1</span>)<span class="comment">//无符号右移一位</span></span><br><span class="line">a.and(<span class="number">11</span>)<span class="comment">//与</span></span><br><span class="line">a.or(<span class="number">22</span>)<span class="comment">//或</span></span><br><span class="line">a.xor(<span class="number">23</span>)<span class="comment">//异或</span></span><br><span class="line">a.inv()<span class="comment">//反向</span></span><br></pre></td></tr></table></figure>
+<h3 id="延迟属性"><a href="#延迟属性" class="headerlink" title="延迟属性"></a>延迟属性</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> p: String <span class="keyword">by</span> lazy &#123;</span><br><span class="line">    <span class="comment">//计算该字符串</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建单例"><a href="#创建单例" class="headerlink" title="创建单例"></a>创建单例</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> UserData&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        println(<span class="string">"foo"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="不为空缩写"><a href="#不为空缩写" class="headerlink" title="不为空缩写"></a>不为空缩写</h3><p>只需要添加一个<code>?</code><br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> files=File(<span class="string">"Test"</span>).listFiles()</span><br><span class="line">println(files?.size)</span><br></pre></td></tr></table></figure></p>
+<h3 id="判空执行缩写"><a href="#判空执行缩写" class="headerlink" title="判空执行缩写"></a>判空执行缩写</h3><p>如果非空返回本身，如果空返回默认值，使用<code>?:</code><br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> files=File(<span class="string">"Test"</span>).listFiles()</span><br><span class="line">println(files?.size?:<span class="string">"empty"</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="不为空执行"><a href="#不为空执行" class="headerlink" title="不为空执行"></a>不为空执行</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> value=<span class="string">""</span></span><br><span class="line">value?.let&#123; </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="对象多调"><a href="#对象多调" class="headerlink" title="对象多调"></a>对象多调</h3><p>对于一个对象，可以调用多次该方法，使用<code>with</code><br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span>  <span class="title">Test</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">jump</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">see</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> test=Test()</span><br><span class="line">with(test)&#123;</span><br><span class="line">    run()</span><br><span class="line">    <span class="keyword">val</span> a=<span class="number">1</span></span><br><span class="line">    jump()</span><br><span class="line">    see()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="可空值null检测"><a href="#可空值null检测" class="headerlink" title="可空值null检测"></a>可空值null检测</h3><p>如果需要返回<code>null</code>,要加个<code>?</code>否则会报错<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">sum</span><span class="params">(<span class="keyword">vararg</span> v:<span class="type">Int</span>)</span></span>:<span class="built_in">Int</span>?&#123;</span><br><span class="line">    <span class="keyword">var</span> a=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> (b <span class="keyword">in</span> v)&#123;</span><br><span class="line">        a+=b</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="When表达式"><a href="#When表达式" class="headerlink" title="When表达式"></a>When表达式</h3><p>进行条件判断，也可以用于if多重判断<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">when</span>(a)&#123;</span><br><span class="line">    <span class="number">1</span> -&gt; print(<span class="string">"1"</span>)</span><br><span class="line">    <span class="number">2</span> -&gt; print(<span class="string">"2"</span>)</span><br><span class="line">    <span class="keyword">in</span> <span class="number">3</span>..<span class="number">10</span> -&gt; print(<span class="string">"3~10"</span>)</span><br><span class="line">    !<span class="keyword">in</span> <span class="number">8</span>..<span class="number">9</span> -&gt; print(<span class="string">"no in 8~9"</span>)</span><br><span class="line">    <span class="keyword">is</span> <span class="built_in">Int</span> -&gt; print(<span class="string">"int 类型"</span>)</span><br><span class="line">    <span class="keyword">else</span> -&gt;&#123;</span><br><span class="line">        print(<span class="string">"no"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">when</span>&#123;</span><br><span class="line">    a&lt;<span class="number">10</span> -&gt; print(<span class="string">"&lt;10"</span>)</span><br><span class="line">    a&gt;<span class="number">100</span> -&gt; print(<span class="string">"&gt;100"</span>)</span><br><span class="line">    <span class="keyword">else</span> -&gt;&#123;</span><br><span class="line">        print(<span class="string">"no"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>使用<code>fun</code>定义函数<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">sum</span><span class="params">(a:<span class="type">Int</span> , b:<span class="type">Int</span>)</span></span>: <span class="built_in">Int</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//简写</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">sum</span><span class="params">(a:<span class="type">Int</span> , b:<span class="type">Int</span>)</span></span> = a + b</span><br></pre></td></tr></table></figure></p>
+<h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> c : (<span class="built_in">Int</span>,<span class="built_in">Int</span>) -&gt;<span class="built_in">Int</span> =&#123;a,b -&gt;a+b&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; println(c(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">=====&gt; <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<h3 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h3><p>可变参数可以使用<code>varag</code>关键字<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">sum</span><span class="params">(<span class="keyword">vararg</span> v:<span class="type">Int</span>)</span></span>:<span class="built_in">Int</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> (b <span class="keyword">in</span> v)&#123;</span><br><span class="line">        a+=b</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数扩展"><a href="#函数扩展" class="headerlink" title="函数扩展"></a>函数扩展</h3><p>能够扩展类的新功能，而无需继承该类<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> String.<span class="title">sayHello</span><span class="params">()</span></span>: String&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"<span class="variable">$this</span> Hello"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; println( <span class="string">"Rhyme"</span> . sayHello() )</span><br><span class="line">=====&gt; Rhyme Hello</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数默认值"><a href="#函数默认值" class="headerlink" title="函数默认值"></a>函数默认值</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">sum</span><span class="params">(a:<span class="type">Int</span> = <span class="number">1</span>,b:<span class="type">Int</span> = <span class="number">2</span>)</span></span>:<span class="built_in">Int</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h3><p>能够重写运算符方法<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> x: <span class="built_in">Int</span>? = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">var</span> y: <span class="built_in">Int</span>? = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> <span class="title">plus</span><span class="params">(other: <span class="type">Point</span>)</span></span>: String&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"<span class="subst">$&#123;this.x!! + other.x!!&#125;</span> + <span class="subst">$&#123;this.y!! + other.y!!&#125;</span>"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; <span class="keyword">val</span> point = Point()</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; point.x=<span class="number">1</span></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; point.y=<span class="number">2</span></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; println( point + point )</span><br><span class="line">=====&gt; <span class="number">2</span> + <span class="number">4</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="区间"><a href="#区间" class="headerlink" title="区间"></a>区间</h3><p>区间表达式可以使用<code>..</code>表示<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">for</span>(i <span class="keyword">in</span> <span class="number">0</span>..<span class="number">20</span>) println(i)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 0 2 4 6 ...</span></span><br><span class="line"><span class="keyword">for</span>(i <span class="keyword">in</span> <span class="number">0</span>..<span class="number">20</span> step <span class="number">2</span>) println(i)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 20 19 18 ...</span></span><br><span class="line"><span class="keyword">for</span>(i <span class="keyword">in</span> <span class="number">20</span> downTo <span class="number">1</span>) println(i)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(i <span class="keyword">in</span> <span class="number">20</span> downTo <span class="number">1</span>) println(i)</span><br></pre></td></tr></table></figure></p>
+<h3 id="解包引数"><a href="#解包引数" class="headerlink" title="解包引数"></a>解包引数</h3><p>集合中可以引入另一个集合形成新的集合，只要在另一个集合前面加个<code>*</code>号<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; <span class="keyword">val</span> st= arrayOf(<span class="string">"Hello"</span>,<span class="string">"World"</span>)</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; <span class="keyword">val</span> list = listOf(<span class="string">"args: "</span>, *st)</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; println(list)</span><br><span class="line">=====&gt; args: ,Hello,World</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数嵌套"><a href="#函数嵌套" class="headerlink" title="函数嵌套"></a>函数嵌套</h3><p>一个函数里面可以声明另一个函数<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> String.<span class="title">sayHello</span><span class="params">()</span></span>: String &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">validate</span><span class="params">(value: <span class="type">String</span>)</span></span>:String&#123;</span><br><span class="line">        <span class="keyword">if</span> (value.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"isEmpty"</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"<span class="variable">$value</span> Hello"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> validate(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; println( <span class="string">""</span> . sayHello() )</span><br><span class="line">=====&gt; isEmpty</span><br></pre></td></tr></table></figure></p>
+<h3 id="解构声明"><a href="#解构声明" class="headerlink" title="解构声明"></a>解构声明</h3><p>for遍历中可以获得<code>position</code><br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> string=<span class="string">""</span></span><br><span class="line"><span class="keyword">val</span> list= arrayOf(<span class="string">"Hello"</span>,<span class="string">"World"</span>)</span><br><span class="line">        </span><br><span class="line"><span class="keyword">for</span> ((index,element) <span class="keyword">in</span> list.withIndex())&#123;</span><br><span class="line">            string+=<span class="string">"<span class="variable">$index</span> <span class="variable">$element</span>"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt; println( string )</span><br><span class="line">=====&gt; <span class="number">0</span> Hello1 World</span><br></pre></td></tr></table></figure></p>
+<h3 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h3><p>需要被继承，默认是open的<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">say</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">jump</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Man</span>: <span class="type">Person</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">say</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">//完全重写父类的方法</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.run() <span class="comment">//调用父类的方法</span></span><br><span class="line">        <span class="keyword">super</span>.jump() <span class="comment">//调用父类的方法</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//    jump 重写不了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>kotlin中类可以有一个主构造函数以及多个构造函数，如果主构造函数没有注解或可见性说明，则关键字<code>constructor</code>可省略，如果构造函数没有其它方法，打括号可省略</p>
+<ul>
+<li><p>主构造函数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(</span><br><span class="line">        <span class="keyword">val</span> userId:<span class="built_in">Int</span>,</span><br><span class="line">        <span class="keyword">val</span> userName:String</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>二级构造函数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(</span><br><span class="line">        <span class="keyword">val</span> userId:<span class="built_in">Int</span>,</span><br><span class="line">        <span class="keyword">val</span> userName:String</span><br><span class="line">)&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(userName: String) : <span class="keyword">this</span>(<span class="number">1</span>, userName)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(userId: <span class="built_in">Int</span>):<span class="keyword">this</span>(userId,<span class="string">"rhyme"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="DTOs-POJOs-POCOs"><a href="#DTOs-POJOs-POCOs" class="headerlink" title="DTOs(POJOs/POCOs)"></a>DTOs(POJOs/POCOs)</h3><p>创建数据对象只要简单的一行代码<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(<span class="keyword">val</span> name:String,<span class="keyword">val</span> age:<span class="built_in">Int</span>)</span><br></pre></td></tr></table></figure></p>
+<p>会为User类提供以下的功能</p>
+<ul>
+<li>所有属性的getters（对于var定义还有setters）</li>
+<li>equals()</li>
+<li>hashCode()</li>
+<li>toString()</li>
+<li>copy()</li>
+<li>所有属性的 <code>component1()</code>、 <code>component2()</code>……等等(<code>component</code>为声明属性对应的顺序去获取对应的值，例如：<code>component1()</code>为<code>User.name</code>的值)</li>
+</ul>
+<h2 id="Kotlin编码规范"><a href="#Kotlin编码规范" class="headerlink" title="Kotlin编码规范"></a>Kotlin编码规范</h2><p>Kotlin语言跟java语言的编码规范类似，遵循驼峰命名法</p>
+<ul>
+<li><p>类与对象名称以大写字母开头并使用驼峰：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">DeclarationProcessor</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span> EmptyDeclarationProcessor : DeclarationProcessor()&#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数，属性与局部变量的名称以小写字母开头，使用驼峰而不使用下划线</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processDeclarations</span><span class="params">()</span></span> &#123;  &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> declarationCount = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试方法的名称，可以使用反引号括起来的带空格的方法名（Android中不支持这样的方法，要使用下划线）</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyTestCase</span> </span>&#123;</span><br><span class="line">     <span class="meta">@Test</span> <span class="function"><span class="keyword">fun</span> `ensure everything works`<span class="params">()</span></span> &#123;  &#125;</span><br><span class="line"></span><br><span class="line">     <span class="meta">@Test</span> <span class="function"><span class="keyword">fun</span> <span class="title">ensureEverythingWorks_onAndroid</span><span class="params">()</span></span> &#123;  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>属性名中如果为常量，应使用大些和下划线分割名称：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">val</span> MAX_COUNT = <span class="number">8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> USER_NAME_FIELD = <span class="string">"UserName"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>枚举常量使用大写和下划线分割名称，也可以使用大写字母开头</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span></span>&#123;</span><br><span class="line">    Red,</span><br><span class="line">    Green,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span></span>&#123;</span><br><span class="line">    RED,</span><br><span class="line">    GREEN,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>私有属性应该使用开头下划线</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> _stringList = mutableListOf&lt;String&gt;()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法名称一般都是动词或者动词短语：<code>close</code>,<code>open</code></p>
+</li>
+<li>类的名称一般都是名词或者名词或者名词短语：<code>List</code>,<code>Person</code></li>
+<li>避免在名称中使用无意义的单词：<code>Manager</code>,<code>Wrapper</code></li>
+<li>使用首字母缩写，就将其大写：<code>IOStream</code>,如果缩写较长，只大写其首字母：<code>XmlFormater</code></li>
+<li><p>无参数的注解可以放在同一行</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JsonExclude</span> <span class="meta">@JvmField</span></span><br><span class="line"><span class="keyword">var</span> x: String</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>无参数的单个注解可以与相应的声明放在同一行</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span> <span class="function"><span class="keyword">fun</span> <span class="title">foo</span><span class="params">()</span></span> &#123;  &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2019/02/12/Android-Jetpack全攻略/" class="next-post btn btn-default" title="Android-Jetpack全攻略">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Android-Jetpack全攻略</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Kotlin是什么？"><span class="toc-text">Kotlin是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在Android中使用"><span class="toc-text">在Android中使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#声明Activity"><span class="toc-text">声明Activity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建点击事件"><span class="toc-text">创建点击事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建项目点击事件"><span class="toc-text">创建项目点击事件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kotlin语法大全"><span class="toc-text">Kotlin语法大全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类别属性"><span class="toc-text">类别属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常量与变量"><span class="toc-text">常量与变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数值类型"><span class="toc-text">数值类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List"><span class="toc-text">List</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#位操作符"><span class="toc-text">位操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟属性"><span class="toc-text">延迟属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建单例"><span class="toc-text">创建单例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不为空缩写"><span class="toc-text">不为空缩写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#判空执行缩写"><span class="toc-text">判空执行缩写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不为空执行"><span class="toc-text">不为空执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象多调"><span class="toc-text">对象多调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可空值null检测"><span class="toc-text">可空值null检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#When表达式"><span class="toc-text">When表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数"><span class="toc-text">函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#匿名函数"><span class="toc-text">匿名函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可变参数"><span class="toc-text">可变参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数扩展"><span class="toc-text">函数扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数默认值"><span class="toc-text">函数默认值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运算符重载"><span class="toc-text">运算符重载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#区间"><span class="toc-text">区间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解包引数"><span class="toc-text">解包引数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数嵌套"><span class="toc-text">函数嵌套</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解构声明"><span class="toc-text">解构声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#抽象类"><span class="toc-text">抽象类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造函数"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DTOs-POJOs-POCOs"><span class="toc-text">DTOs(POJOs/POCOs)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kotlin编码规范"><span class="toc-text">Kotlin编码规范</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

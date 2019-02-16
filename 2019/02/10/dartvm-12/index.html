@@ -1,0 +1,337 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇文章中，我们学习了如何处理请求，并当请求发生异常时的处理方式，今天我们来学习一下使用Jaguar获取请求内容 !
+
+1.获取路径参数
+在请求的时候，我们有时候需要获取请求路径上的参数，那...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（十二）-Jaguar获取请求内容 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（十二）-Jaguar获取请求内容">
+            
+	            DartVM服务器开发（十二）-Jaguar获取请求内容
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇文章中，我们学习了如何处理请求，并当请求发生异常时的处理方式，今天我们来学习一下使用Jaguar获取请求内容 !</p>
+</blockquote>
+<h2 id="1-获取路径参数"><a href="#1-获取路径参数" class="headerlink" title="1.获取路径参数"></a>1.获取路径参数</h2><blockquote>
+<p>在请求的时候，我们有时候需要获取请求路径上的参数，那么怎么去获取请求路径上的参数呢？<br>  我们可以通过Context这个类的一个pathParams参数获取，下面是代码！<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//.....</span></span><br><span class="line">      ..<span class="keyword">get</span>(<span class="string">'/api/UserId/:id'</span>, (ctx)&#123;</span><br><span class="line">        <span class="built_in">String</span> id=ctx.pathParams[<span class="string">'id'</span>];s</span><br><span class="line">        ctx.response=Response(<span class="string">'path Id:<span class="subst">$id</span>'</span>);</span><br><span class="line">      &#125;)</span><br><span class="line"><span class="comment">//....</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>当路径上为参数时，我们可以在参数名前添加<code>:</code>符号，表面该路径上有一个是参数，下面我们请求一下这个地址吧！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-44ac565b7bc09714.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="路径参数.png"><br>获取成功！</p>
+<h2 id="2-获取get请求参数-查询参数"><a href="#2-获取get请求参数-查询参数" class="headerlink" title="2.获取get请求参数(查询参数)"></a>2.获取get请求参数(查询参数)</h2><blockquote>
+<p>获取get请求的参数，是我们常见的，请求参数会在地址上面明文显示，获取也非常的简单<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//....</span></span><br><span class="line">      ..<span class="keyword">get</span>(<span class="string">'/api/UserId/get'</span>, (ctx) &#123;</span><br><span class="line">      <span class="built_in">String</span> id=ctx.query.<span class="keyword">get</span>(<span class="string">'id'</span>);</span><br><span class="line">      ctx.response = Response(<span class="string">'query Id:<span class="subst">$id</span>'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>我们来请求一下吧！这里为了方便，我使用<a href="https://www.getpostman.com/" target="_blank" rel="noopener">Postman</a>工具请求<br><img src="https://upload-images.jianshu.io/upload_images/12805100-3f3ea088f92f8fc6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="get请求参数.png"><br>获取成功！<br>这里说一下，我们还可以指定获取的内容类型，并且当没有该参数时，可以指定它的默认值<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//....</span></span><br><span class="line">     <span class="comment">//获取String类型参数</span></span><br><span class="line">      <span class="built_in">String</span> name=ctx.query.<span class="keyword">get</span>(<span class="string">'name'</span>);</span><br><span class="line">      <span class="comment">//获取int类型参数，默认为321</span></span><br><span class="line">      <span class="built_in">int</span> id=ctx.query.getInt(<span class="string">'id'</span>,<span class="number">321</span>);</span><br><span class="line">      <span class="comment">//获取bool类型参数</span></span><br><span class="line">      <span class="built_in">bool</span> boolean=ctx.query.getBool(<span class="string">'boolean'</span>);</span><br><span class="line">      <span class="comment">//获取num类型参数</span></span><br><span class="line">      <span class="built_in">num</span> number=ctx.query.getNum(<span class="string">'number'</span>);</span><br><span class="line">      <span class="comment">//获取double类型参数</span></span><br><span class="line">      <span class="built_in">double</span> float=ctx.query.getDouble(<span class="string">'float'</span>);</span><br><span class="line"><span class="comment">//....</span></span><br></pre></td></tr></table></figure></p>
+<p>你也可以获取不指定类型的参数<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line">      <span class="keyword">dynamic</span> noKnow=ctx.query[<span class="string">'noKnow'</span>];</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="3-获取post请求参数-表单参数"><a href="#3-获取post请求参数-表单参数" class="headerlink" title="3.获取post请求参数(表单参数)"></a>3.获取post请求参数(表单参数)</h2><blockquote>
+<p>获取post请求的参数，也是我们比较常见的与服务器交互方式，请求的参数不会在地址上面明文显示<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line">..post(<span class="string">'/api/User/login'</span>, (ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">        <span class="built_in">Map</span>&lt;<span class="built_in">String</span>,<span class="built_in">String</span>&gt; params=<span class="keyword">await</span> ctx.bodyAsUrlEncodedForm();</span><br><span class="line">        <span class="built_in">String</span> userName=params[<span class="string">'username'</span>];</span><br><span class="line">        <span class="built_in">String</span> passWord=params[<span class="string">'password'</span>];</span><br><span class="line">        ctx.response=Response(<span class="string">'UserName:<span class="subst">$userName</span>\nPassWord:<span class="subst">$passWord</span>'</span>);</span><br><span class="line">      &#125;)</span><br><span class="line"><span class="comment">//....</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>我们获取到一个Map，跟get请求不同，这里需要使用async 异步获取,下面来请求一下吧！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-10aee25c1b4f14db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="post请求参数.png"><br>这里需要注意一下，使用<code>ctx.bodyAsUrlEncodedForm()</code>需要注意请求头为:<code>Content-Type:application/x-www-form-urlencoded</code></p>
+<h2 id="4-获取提交的JSON数据"><a href="#4-获取提交的JSON数据" class="headerlink" title="4.获取提交的JSON数据"></a>4.获取提交的JSON数据</h2><blockquote>
+<p>一般情况下，如果需要提交更多的数据，使用json格式提交再适合不过了，我们接下来接收一个json数据<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">..postJson(<span class="string">'/api/User/json'</span>, (ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">        <span class="built_in">Map</span> content=<span class="keyword">await</span> ctx.bodyAsJson();</span><br><span class="line">        ctx.response=Response(<span class="string">'Json Content:\n<span class="subst">$&#123;content.toString()&#125;</span>'</span>);</span><br><span class="line"></span><br><span class="line">      &#125;)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>我们来请求一下吧！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-cf97cb513f9aa442.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="json数据.png"><br>我们还可以直接把该json内容格式化为一个实体类<br>定义一个实体类<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> username;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> password;</span><br><span class="line">  User(<span class="keyword">this</span>.username, <span class="keyword">this</span>.password);</span><br><span class="line">  <span class="keyword">static</span> User forMap(<span class="built_in">Map</span> map)=&gt; <span class="keyword">new</span> User(map[<span class="string">'username'</span>], map[<span class="string">'password'</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>获取为实体类<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//....</span></span><br><span class="line">      ..postJson(<span class="string">'/api/User/json'</span>, (ctx) <span class="keyword">async</span>&#123;</span><br><span class="line"><span class="comment">//        Map content=await ctx.bodyAsJson();</span></span><br><span class="line">        User user=<span class="keyword">await</span> ctx.bodyAsJson(convert: User.forMap);</span><br><span class="line">        ctx.response=Response(<span class="string">'User\nUserName:<span class="subst">$&#123;user.username&#125;</span>\nPassWord:<span class="subst">$&#123;user.password&#125;</span>'</span>);</span><br><span class="line">      &#125;)</span><br><span class="line"><span class="comment">//....</span></span><br></pre></td></tr></table></figure></p>
+<p>请求json数组，获取多个<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">..postJson(<span class="string">'/api/User/jsons'</span>, (ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">       <span class="built_in">List</span>&lt;User&gt; users=<span class="keyword">await</span> ctx.bodyAsJsonList(convert: User.forMap);</span><br><span class="line">       <span class="built_in">String</span> info=<span class="string">''</span>;</span><br><span class="line">       <span class="keyword">for</span>(User user <span class="keyword">in</span> users)&#123;</span><br><span class="line">         info+=<span class="string">'User\nUserName:<span class="subst">$&#123;user.username&#125;</span>\nPassWord:<span class="subst">$&#123;user.password&#125;</span>\n'</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       ctx.response=Response(info);</span><br><span class="line">     &#125;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/12805100-8bc773fdef550d60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="请求为json数组.png"></p>
+<h2 id="5-获取上传的文件"><a href="#5-获取上传的文件" class="headerlink" title="5.获取上传的文件"></a>5.获取上传的文件</h2><blockquote>
+<p>单独上传一张文件到服务器，这个可以大部分需求都用不上，但是还是需要讲一下，如何上传文件到服务器，并保存到服务器上面<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line">..postJson(<span class="string">'/api/User/avatar'</span>, (ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">        Stream&lt;<span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;&gt; image=<span class="keyword">await</span> ctx.bodyAsStream;</span><br><span class="line">        File file=<span class="keyword">await</span> <span class="keyword">new</span> File(<span class="string">'image.png'</span>).create();</span><br><span class="line">        <span class="keyword">await</span> image.listen(file.writeAsBytes);</span><br><span class="line"></span><br><span class="line">        ctx.response=Response(<span class="string">'Success'</span>);</span><br><span class="line">      &#125;)</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>可以看到我们使用的是<code>ctx.bodyAsStream</code>去获取该文件流，然后将文件流监听到新创建的文件上面并写入<br>我们上传一张图片吧<br><img src="https://upload-images.jianshu.io/upload_images/12805100-71c06ac87131630a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="上传文件请求.png"><br>好，我们成功的返回了一个Success字符串,来看一下项目吧！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-57c7a74f246d38d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片已上传.png"><br><img src="https://upload-images.jianshu.io/upload_images/12805100-03f443cbf3a61319.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"><br>打开了，也是可以看到图片的，所以我们成功的上传了图片了！</p>
+<h2 id="6-获取多表单数据"><a href="#6-获取多表单数据" class="headerlink" title="6.获取多表单数据"></a>6.获取多表单数据</h2><blockquote>
+<p>获取多表单数据是经常使用到的，Jaguar也可以办到获取多表单数据<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">..post(<span class="string">'/api/User/Info'</span>, (ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">        <span class="built_in">Map</span>&lt;<span class="built_in">String</span>,FormField&gt; params=<span class="keyword">await</span> ctx.bodyAsFormData();</span><br><span class="line">        FormField username=params[<span class="string">'username'</span>];</span><br><span class="line"></span><br><span class="line">        FormField userDescript=params[<span class="string">'userdescript'</span>];</span><br><span class="line"></span><br><span class="line">        FormField avatar=params[<span class="string">'useravatar'</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//string类型的数据</span></span><br><span class="line">        <span class="keyword">if</span>(username <span class="keyword">is</span> StringFormField)&#123;</span><br><span class="line">          <span class="keyword">await</span> <span class="keyword">new</span> Directory(username.value).create(recursive: <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//文本文件类型的数据</span></span><br><span class="line">        <span class="keyword">if</span>(userDescript <span class="keyword">is</span> TextFileFormField)&#123;</span><br><span class="line">          Stream&lt;<span class="built_in">String</span>&gt; value=userDescript.value;</span><br><span class="line">          userDescript.writeTo(<span class="string">'<span class="subst">$&#123;username.value&#125;</span>/Descript.txt'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//二进制文件类型的数据</span></span><br><span class="line">        <span class="keyword">if</span>(avatar <span class="keyword">is</span> BinaryFileFormField)&#123;</span><br><span class="line">          Stream&lt;<span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;&gt; value=avatar.value;</span><br><span class="line">          avatar.writeTo(<span class="string">'<span class="subst">$&#123;username.value&#125;</span>/avatar.png'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ctx.response=Response(<span class="string">'Success'</span>);</span><br><span class="line"></span><br><span class="line">      &#125;)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>我们根据当前提交的用户名创建一个文件夹，然后将它的介绍文本和头像保存到该文件夹下面，来看一下请求吧！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-b9f6accf15f404a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="多表单请求.png"><br>可以看到，我们成功的发出了请求，然后看一下项目里的文件<br><img src="https://upload-images.jianshu.io/upload_images/12805100-7013b95f4459f55b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="上传成功.png"><br>ok，没有任何毛病，上面的代码调用<code>FormField.writeTo</code>方法可以直接写入到传入的路径文件中，可以说非常方便，要注意的是请求头为<code>Content-Type=multipart/form-data</code><br>好了，今天就到这里了，我们明天见吧！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-13/" class="pre-post btn btn-default" title="DartVM服务器开发（十三)-Jaguar使用ORM">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十三)-Jaguar使用ORM</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-11/" class="next-post btn btn-default" title="DartVM服务器开发（十一）-Jaguar处理请求">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（十一）-Jaguar处理请求</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-获取路径参数"><span class="toc-text">1.获取路径参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-获取get请求参数-查询参数"><span class="toc-text">2.获取get请求参数(查询参数)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-获取post请求参数-表单参数"><span class="toc-text">3.获取post请求参数(表单参数)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-获取提交的JSON数据"><span class="toc-text">4.获取提交的JSON数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-获取上传的文件"><span class="toc-text">5.获取上传的文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-获取多表单数据"><span class="toc-text">6.获取多表单数据</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

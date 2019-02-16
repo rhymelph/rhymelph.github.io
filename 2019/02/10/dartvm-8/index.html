@@ -1,0 +1,366 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一个篇文章我们学习了如何使用WebSocket去进行通信，今天，我们学习http服务端都有什么框架，下面是我收集的一些框架
+
+1. Aqueduct
+1.介绍Aqueduct是一个HTTP ...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（八）-http服务端框架 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（八）-http服务端框架">
+            
+	            DartVM服务器开发（八）-http服务端框架
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一个篇文章我们学习了如何使用WebSocket去进行通信，今天，我们学习http服务端都有什么框架，下面是我收集的一些框架</p>
+</blockquote>
+<h1 id="1-Aqueduct"><a href="#1-Aqueduct" class="headerlink" title="1. Aqueduct"></a>1. <a href="https://aqueduct.io/docs/tour/" target="_blank" rel="noopener">Aqueduct</a></h1><p><img src="https://upload-images.jianshu.io/upload_images/12805100-b37a0b4784158834.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="这是该框架的标志图.png"></p>
+<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1.介绍"></a>1.介绍</h2><p>Aqueduct是一个HTTP Web服务器框架，用于构建用Dart编写的REST应用程序。</p>
+<h2 id="2-特点"><a href="#2-特点" class="headerlink" title="2.特点"></a>2.特点</h2><ul>
+<li><h3 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h3>资源是应用程序通过其HTTP API公开的内容。资源可以是任何东西 - 应用程序中的用户配置文件，南极洲的温度传感器或游戏的高分。例如，GitHub API公开组织，存储库，问题和拉取请求资源; 社交网络API具有配置文件，帖子和用户关系。</li>
+</ul>
+<p>资源被组织成集合（例如，所有帖子），对于该集合，可以唯一地标识该集合中的各个资源（例如，单个帖子）。向应用程序发出请求以检索资源的状态或提供所需的资源状态。大多数情况下，资源表示为JSON数组和对象。检索资源时，其JSON表示将编码到响应主体中。当提供所需的资源状态时，客户端在请求主体中发送所需资源状态的JSON表示。</p>
+<ul>
+<li><h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3>资源由HTTP请求的路径标识。例如，URL <code>http://example.com/organizations</code>标识服务器上的组织资源集合<code>http://example.com</code>。URL <code>http://example.com/organizations/1</code>标识单个组织。</li>
+</ul>
+<p>应用程序为其管理的每个资源公开<em>路由</em>。路由是与请求路径匹配的字符串。当请求的路径与路由匹配时，将调用关联的处理程序来处理请求。路径看起来像路径，但有一些额外的语法。例如，路由<code>/organizations</code>将匹配具有路径的请求<code>/organizations</code>。路径<code>/organizations/:id</code>将匹配路径<code>/organizations/1</code>，<code>/organizations/2</code>等等。</p>
+<ul>
+<li><h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3>控制器是处理请求的对象。例如，控制器可能从数据库中获取行并将它们发送到响应主体中的客户端。另一个控制器可能会验证请求的授权标头的用户名和密码是否有效。</li>
+</ul>
+<p>控制器链接在一起以形成一系列要为请求采取的操作。这些链接在一起的控制器称为<em>通道</em>。如果将上述示例链接在一起，则通道将在发送包含数据库行的响应之前检查请求是否已获得授权。</p>
+<p>有两种控制器。一个<em>终端控制器</em>上的资源或资源集合执行操作，并且总是发送响应。端点控制器通过返回资源状态或更改资源状态来<em>满足</em>请求。您编写了大多数特定于应用程序的逻辑端点控制器。</p>
+<p>甲<em>中间件控制器</em>花费的请求的动作，但是不负责满足该请求。中间件控制器可以执行许多不同的操作，并且通常可以在许多通道中重用。大多数情况下，中间件控制器会在请求到达端点控制器之前验证某些请求。中间件控制器可以发送请求的响应，这样做可以防止该通道中的任何其他控制器处理请求。</p>
+<ul>
+<li><h3 id="应用渠道"><a href="#应用渠道" class="headerlink" title="应用渠道"></a>应用渠道</h3><p>应用程序通道是包含应用程序中所有控制器的对象。它将一个控制器指定为第一个控制器，以接收称为其<em>入口点的</em>每个请求。控制器链接到入口点（直接或可传递）以形成整个应用程序通道。在几乎每个应用程序中，入口点都是路由器; 该控制器将信道分成给定路由的子信道。</p>
+</li>
+<li><h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><p>服务是一个对象，它封装了复杂的任务或算法，外部通信或将在应用程序中重用的任务。服务对象的目的是为更详细的行为提供简单的界面。例如，数据库连接是服务对象; 数据库连接的用户不知道如何建立连接或如何将查询编码到线路上的详细信息，但它仍然可以执行查询。</p>
+</li>
+</ul>
+<p>服务对象的主要用户是控制器。通过将服务作为参数传递给控制器​​的构造函数，将服务注入控制器。控制器保留对服务的引用，以便在处理请求时可以使用它。</p>
+<ul>
+<li><h3 id="分离"><a href="#分离" class="headerlink" title="分离"></a>分离</h3>隔离是内存隔离的线程; 在一个隔离物上创建的对象不能被另一个隔离物引用。当应用程序启动时，会生成包含应用程序代码副本的一个或多个隔离专区。这种行为可以跨多个线程有效地“平衡”您的应用程序。</li>
+</ul>
+<p>这种结构的好处是每个隔离区都有自己的一组服务，比如数据库连接。这消除了对“数据库连接池”等技术的需求，因为整个应用程序被有效地“合并”。</p>
+<ul>
+<li><h3 id="绑定"><a href="#绑定" class="headerlink" title="绑定"></a>绑定</h3><p>请求可能包含标头，查询参数，需要在控制器代码中解析，验证和使用的正文和路径参数。绑定是添加到自动执行此解析和验证的变量的注释。当绑定值无法解析为预期类型或验证失败时，将发送适当的错误响应。</p>
+</li>
+<li><h3 id="查询和数据模型"><a href="#查询和数据模型" class="headerlink" title="查询和数据模型"></a>查询和数据模型</h3><p>应用程序商店信息在数据库中用于持久性 手动编写数据库查询容易出错，并且不会利用在Dart应用程序中非常有价值的静态分析工具。Aqueduct的ORM（对象关系映射）提供易于编写和测试的静态类型查询。</p>
+</li>
+</ul>
+<p>您的应用程序的数据模型是通过创建Dart类来定义的。每个类都映射到一个数据库表，该类的每个属性都映射到该表中的一列。Aqueduct的命令行工具生成数据库迁移文件，用于检测可应用于实时版本化数据库的数据模型中的更改。数据模型也可以表示为JSON对象，以便在应用程序之上构建工具。</p>
+<ul>
+<li><h3 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h3><p>OAuth 2.0是一个标准化的授权框架。Aqueduct包含符合规范的OAuth 2.0服务器实现，可以直接集成到您的应用程序中，也可以单独站起来为联合服务提供授权服务器。这个实现很容易定制 - 它可以在不同类型的数据库中存储授权工件（如令牌和客户端标识符）或使用JWT等无状态授权机制。默认实现利用Aqueduct ORM在PostgreSQL中存储工件。</p>
+</li>
+<li><h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p>OpenAPI 3.0是HTTP API的标准化文档格式。许多内置的Aqueduct对象支持“自动”文档。特定于您的应用程序的对象可以构建在此之上，以便立即记录您的应用程序以进行每项更改。</p>
+</li>
+</ul>
+<h1 id="2-Jaguar"><a href="#2-Jaguar" class="headerlink" title="2. Jaguar"></a>2. <a href="https://jaguar-dart.github.io/" target="_blank" rel="noopener">Jaguar</a></h1><h2 id="1-介绍-1"><a href="#1-介绍-1" class="headerlink" title="1.介绍"></a>1.介绍</h2><p>Jaguar是一个具有MVC、ORM、序列化、身份验证和安全性的完整堆栈服务端框架</p>
+<h2 id="2-特点-1"><a href="#2-特点-1" class="headerlink" title="2.特点"></a>2.特点</h2><ul>
+<li><h3 id="简洁，简洁，直观"><a href="#简洁，简洁，直观" class="headerlink" title="简洁，简洁，直观"></a>简洁，简洁，直观</h3>编写优雅的REST API。</li>
+<li><h3 id="调节器"><a href="#调节器" class="headerlink" title="调节器"></a>调节器</h3>将相关路线分组到班级。</li>
+<li><h3 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h3>使用简单的类似Map的界面读取和更新会话数据。</li>
+<li><h3 id="JWT代币"><a href="#JWT代币" class="headerlink" title="JWT代币"></a>JWT代币</h3>关于JWT令牌的会话。</li>
+<li><h3 id="身份验证和授权"><a href="#身份验证和授权" class="headerlink" title="身份验证和授权"></a>身份验证和授权</h3>密码验证。<br>基于Oauth的身份验证（Facebook，Google，Twitter）。</li>
+<li><h3 id="静态类型的ORM"><a href="#静态类型的ORM" class="headerlink" title="静态类型的ORM"></a>静态类型的ORM</h3>有了支持<ul>
+<li>关系</li>
+<li>预加载</li>
+<li>级联</li>
+</ul>
+</li>
+<li><h3 id="静态文件"><a href="#静态文件" class="headerlink" title="静态文件"></a>静态文件</h3>提供几乎没有代码的静态文件。</li>
+<li><h3 id="模板引擎-MVC！"><a href="#模板引擎-MVC！" class="headerlink" title="模板引擎= MVC！"></a>模板引擎= MVC！</h3>模板是静态类型，代码完成和可分析的基于Dart的模板引擎</li>
+</ul>
+<p>好了，上面就是当前存在的http服务端框架，后续我会针对这两个框架进行学习，敬请期待！明天见！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-9/" class="pre-post btn btn-default" title="DartVM服务器开发（九）-Aqueduct环境搭建">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（九）-Aqueduct环境搭建</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-7/" class="next-post btn btn-default" title="DartVM服务器开发（七）-WebSocket">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（七）-WebSocket</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Aqueduct"><span class="toc-text">1. Aqueduct</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-介绍"><span class="toc-text">1.介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-特点"><span class="toc-text">2.特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源"><span class="toc-text">资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#路由"><span class="toc-text">路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制器"><span class="toc-text">控制器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用渠道"><span class="toc-text">应用渠道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#服务"><span class="toc-text">服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分离"><span class="toc-text">分离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绑定"><span class="toc-text">绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询和数据模型"><span class="toc-text">查询和数据模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#授权"><span class="toc-text">授权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档"><span class="toc-text">文档</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Jaguar"><span class="toc-text">2. Jaguar</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-介绍-1"><span class="toc-text">1.介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-特点-1"><span class="toc-text">2.特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简洁，简洁，直观"><span class="toc-text">简洁，简洁，直观</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调节器"><span class="toc-text">调节器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#会话管理"><span class="toc-text">会话管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JWT代币"><span class="toc-text">JWT代币</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#身份验证和授权"><span class="toc-text">身份验证和授权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态类型的ORM"><span class="toc-text">静态类型的ORM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态文件"><span class="toc-text">静态文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板引擎-MVC！"><span class="toc-text">模板引擎= MVC！</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

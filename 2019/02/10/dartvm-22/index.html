@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="后端">
+
+
+    <meta name="description" content="
+上一篇，我们讲解了如何使用jaguar_serializer,今天，我们来学习一下如何通过该package，并结合之前的东西，封装起RestfulApi，该封装同样也适合Flutter,dar...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>DartVM服务器开发（二十二）-RestfulApi封装 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DartVM服务器开发（二十二）-RestfulApi封装">
+            
+	            DartVM服务器开发（二十二）-RestfulApi封装
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/后端/">后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>上一篇，我们讲解了如何使用<code>jaguar_serializer</code>,今天，我们来学习一下如何通过该<code>package</code>，并结合之前的东西，封装起<code>RestfulApi</code>，该封装同样也适合<code>Flutter</code>,<code>dart web</code></p>
+</blockquote>
+<p>阅读该文章之前，我会默认的认为你已经看过我之前的文章，并知道如何使用数据库，开启服务器等！<br><img src="https://upload-images.jianshu.io/upload_images/12805100-394b6772b4d3dd90.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片来自网络.jpg"></p>
+<h2 id="1-定义规范"><a href="#1-定义规范" class="headerlink" title="1.定义规范"></a>1.定义规范</h2><ul>
+<li>资源<br>使用<code>JSON</code>的形式表现</li>
+<li>资源格式<br><code>code</code> 表示状态,<code>0</code>表示处理成功，<code>-1</code>表示处理失败<br><code>msg</code> 表示消息，对客户端需要说明的一些信息，如:<code>成功</code>,<code>请求方法不允许</code>等<br><code>data</code>表示数据，返回客户端的数据</li>
+<li>接口<br><code>get</code>获取资源，查询资源<br><code>post</code>新建资源，更新资源，查询资源<br><code>put</code>更新资源<br><code>delete</code>删除资源</li>
+<li>URI<br>请求的地址可以附带id等，例如: Get <a href="http://localhost:8080/user/123" target="_blank" rel="noopener">http://localhost:8080/user/123</a> 查询id为123的用户,Get <a href="http://localhost/user" target="_blank" rel="noopener">http://localhost/user</a> 查询所有用户, Post <a href="http://localhost:8080/user/123" target="_blank" rel="noopener">http://localhost:8080/user/123</a> 修改id为123的的用户等</li>
+</ul>
+<h2 id="2-定义Restful"><a href="#2-定义Restful" class="headerlink" title="2.  定义Restful"></a>2.  定义Restful</h2><blockquote>
+<p>我们新建一个Restful文件,输入下面代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Restful</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> code;</span><br><span class="line">  <span class="built_in">String</span> msg;</span><br><span class="line">  <span class="built_in">Object</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>然后导入<code>jaguar_serializer</code>包，添加下面代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GenSerializer</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RestfulSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Restful</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">RestfulSerializer</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行命令<code>pub run build_runner build</code>，完后继续添加<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">part</span> <span class="string">'Restful.jser.dart'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>ok，我们已经准备好Restful，那怎么把数据放到data里面呢<br>我们先来创建一个<code>user.dart</code>文件，创建一个用户模型,<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> id;</span><br><span class="line">  <span class="built_in">String</span> username;</span><br><span class="line">  <span class="built_in">String</span> password;</span><br><span class="line">  <span class="built_in">int</span> role;</span><br><span class="line">  <span class="built_in">String</span> phoneNumber;</span><br><span class="line">  <span class="built_in">int</span> sex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>与数据库进行关联<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_orm/jaguar_orm.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'dart:async'</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">'user.jorm.dart'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="meta">@PrimaryKey</span>()</span><br><span class="line">  <span class="built_in">String</span> id;</span><br><span class="line">  <span class="built_in">String</span> username;</span><br><span class="line">  <span class="built_in">String</span> password;</span><br><span class="line">  <span class="built_in">int</span> role;</span><br><span class="line">  <span class="meta">@Column</span>(length: <span class="number">11</span>)</span><br><span class="line">  <span class="built_in">String</span> phoneNumber;</span><br><span class="line">  <span class="built_in">int</span> sex;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">String</span> tableName=<span class="string">'_user'</span>;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">    <span class="built_in">String</span> toString()=&gt; <span class="string">'User(id:<span class="subst">$id</span>,username:<span class="subst">$username</span>,password:<span class="subst">$password</span>,role:<span class="subst">$role</span>,phoneNumber:<span class="subst">$phoneNumber</span>,sex:<span class="subst">$sex</span>)'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@GenBean</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserBean</span> <span class="keyword">extends</span> <span class="title">Bean</span>&lt;<span class="title">User</span>&gt; <span class="title">with</span> <span class="title">_UserBean</span> </span>&#123;</span><br><span class="line">  UserBean(Adapter adapter) : <span class="keyword">super</span>(adapter);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> tableName =&gt; User.tableName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>创建一个<code>serializer.dart</code>文件，用于存放所有<code>json_serializer</code>工具文件，添加下面代码<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_serializer/jaguar_serializer.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'user.dart'</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">'serializer.jser.dart'</span>;</span><br><span class="line"><span class="meta">@GenSerializer</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">User</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">UserSerializer</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行<code>pub run build_runner build</code>命令<br>下面是打印一个通过数据库查询<code>id</code>为2的<code>restful api</code>返回数据<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_query_postgres/jaguar_query_postgres.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:TestDB/user.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:TestDB/Restful.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:TestDB/serializer.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'dart:convert'</span>;</span><br><span class="line"><span class="keyword">final</span> PgAdapter pgAdapter =</span><br><span class="line">    <span class="keyword">new</span> PgAdapter(<span class="string">'postgres'</span>, username: <span class="string">'postgres'</span>, password: <span class="string">'123456'</span>);</span><br><span class="line"></span><br><span class="line">main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">await</span> pgAdapter.connect();</span><br><span class="line">  Restful restful = <span class="keyword">new</span> Restful()</span><br><span class="line">    ..code = <span class="number">0</span></span><br><span class="line">    ..msg = <span class="string">'success'</span></span><br><span class="line">    ..data = <span class="keyword">new</span> UserSerializer().toMap((<span class="keyword">await</span> <span class="keyword">new</span> UserBean(pgAdapter).find(<span class="string">"2"</span>)));</span><br><span class="line">  <span class="built_in">print</span>(json.encode(<span class="keyword">new</span> RestfulSerializer().toMap(restful)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们可以简单的知道，一个模型转换为json数据需要经过两步操作</p>
+<ul>
+<li><code>模型</code>转换为<code>Map</code></li>
+<li><code>map</code>经过 <code>json.encode</code> 编码为<code>字符串</code></li>
+</ul>
+<p>相反的，json数据转换为模型也是两步</p>
+<ul>
+<li><code>字符串</code>经过<code>json.decode</code>译码为<code>map</code></li>
+<li><code>map</code>转换为<code>模型</code><br>所以，我们可以结合<code>jaguar_serializer</code>封装一下Restful，封装如下<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:convert'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_serializer/jaguar_serializer.dart'</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">'Restful.jser.dart'</span>;</span><br><span class="line">RestfulSerializer serializer = <span class="keyword">new</span> RestfulSerializer();</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Restful</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> code;</span><br><span class="line">  <span class="built_in">String</span> msg;</span><br><span class="line">  <span class="built_in">Object</span> data;</span><br><span class="line">  Restful();</span><br><span class="line">  <span class="built_in">Map</span> toMap([Serializer dataSerializer]) &#123;</span><br><span class="line">    <span class="keyword">if</span>(dataSerializer==<span class="keyword">null</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> serializer.toMap(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (data <span class="keyword">is</span> <span class="built_in">List</span>) &#123;</span><br><span class="line">      <span class="built_in">List</span> list =data;</span><br><span class="line">      <span class="keyword">if</span>(list.length!=<span class="number">0</span>&amp;&amp; list[<span class="number">0</span>] <span class="keyword">is</span> <span class="built_in">Map</span>)&#123;</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(list.length!=<span class="number">0</span>)&#123;</span><br><span class="line">      data = dataSerializer.toList(data);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (data <span class="keyword">is</span> <span class="built_in">Map</span>) &#123;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      data = dataSerializer.toMap(data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> serializer.toMap(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> toJson([Serializer dataSerializer]) &#123;</span><br><span class="line">    <span class="keyword">return</span> json.encode(toMap(dataSerializer));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">factory</span> Restful.fromMap(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>,<span class="keyword">dynamic</span>&gt; map, [Serializer dataSerializer]) &#123;</span><br><span class="line">    Restful api = serializer.fromMap(map);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(dataSerializer==<span class="keyword">null</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> api;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (api.data <span class="keyword">is</span> <span class="built_in">List</span>) &#123;</span><br><span class="line">       <span class="built_in">List</span>&lt;<span class="built_in">Map</span>&lt;<span class="keyword">dynamic</span>,<span class="keyword">dynamic</span>&gt;&gt; data=(api.data <span class="keyword">as</span> <span class="built_in">List</span>&lt;<span class="keyword">dynamic</span>&gt;).map((d)=&gt;d <span class="keyword">as</span> <span class="built_in">Map</span>&lt;<span class="keyword">dynamic</span>,<span class="keyword">dynamic</span>&gt;).toList();</span><br><span class="line">      api.data = dataSerializer.fromList(data);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (api.data == <span class="keyword">null</span>) &#123;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      api.data = dataSerializer.fromMap(api.data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> api;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">factory</span> Restful.fromJson(<span class="built_in">String</span> Json, [Serializer dataSerializer]) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Restful.fromMap(json.decode(Json),dataSerializer);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  T fromJsonToData&lt;T&gt;(<span class="built_in">String</span> Json,Serializer dataSerializer) &#123;</span><br><span class="line">    Restful api = serializer.fromMap(json.decode(Json));</span><br><span class="line">    <span class="keyword">if</span> (api.data <span class="keyword">is</span> <span class="built_in">List</span>) &#123;</span><br><span class="line">      <span class="comment">// throw ArgumentError('data is List');</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (api.data == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> dataSerializer.fromMap(api.data);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">List</span>&lt;T&gt; fromJsonToListData&lt;T&gt;(<span class="built_in">String</span> Json, [Serializer dataSerializer]) &#123;</span><br><span class="line">    Restful restful = <span class="keyword">new</span> Restful.fromJson(Json, dataSerializer);</span><br><span class="line">    <span class="keyword">if</span> (restful.data <span class="keyword">is</span> <span class="built_in">List</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span>(dataSerializer==<span class="keyword">null</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> restful.data;</span><br><span class="line">    &#125;</span><br><span class="line">      <span class="keyword">return</span> restful.data;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (restful.data == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@GenSerializer</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RestfulSerializer</span> <span class="keyword">extends</span> <span class="title">Serializer</span>&lt;<span class="title">Restful</span>&gt; <span class="title">with</span> <span class="title">_</span>$<span class="title">RestfulSerializer</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面主要有6个方法</p>
+<ul>
+<li><code>toMap([Serializer dataSerializer])</code>将<code>Restful</code>转换为<code>map</code>，传入的是data对应的类型序列化工具<code>[]</code>表示非必填，如果<code>data</code>是基本类型，可不填</li>
+<li><code>toJson([Serializer dataSerializer])</code> 将<code>Restful</code>转换为<code>字符串</code></li>
+<li><code>Restful.fromMap(Map&lt;String,dynamic&gt; map, [Serializer dataSerializer])</code>将<code>map</code>转换为<code>Restful</code></li>
+<li><code>Restful.fromJson(String Json, [Serializer dataSerializer])</code>将<code>字符串</code>转换为<code>Restful</code></li>
+<li><code>fromJsonToData&lt;T&gt;(String Json,Serializer dataSerializer)</code>将<code>字符串</code>直接转换为<code>data</code>(<code>T</code>为泛型)</li>
+<li><code>fromJsonToListData&lt;T&gt;(String Json, [Serializer dataSerializer])</code>将<code>字符串</code>直接转换为<code>List&lt;T&gt;</code></li>
+</ul>
+<h2 id="3-定制接口"><a href="#3-定制接口" class="headerlink" title="3.定制接口"></a>3.定制接口</h2><p>工具已经有了，数据也有了，那么我们现在就开始着手写接口了<br><code>main.dart</code><br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_query_postgres/jaguar_query_postgres.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar/jaguar.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_reflect/jaguar_reflect.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:TestDB/UserController.dart'</span>;</span><br><span class="line"><span class="keyword">final</span> PgAdapter pgAdapter =</span><br><span class="line">    <span class="keyword">new</span> PgAdapter(<span class="string">'postgres'</span>, username: <span class="string">'postgres'</span>, password: <span class="string">'123456'</span>);</span><br><span class="line"></span><br><span class="line">main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">await</span> pgAdapter.connect();</span><br><span class="line">  <span class="keyword">new</span> Jaguar( port: <span class="number">1000</span>)</span><br><span class="line">  ..add(reflect(<span class="keyword">new</span> UserController(pgAdapter)))</span><br><span class="line">  ..serve();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>UserController.dart</code><br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar/jaguar.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_orm/jaguar_orm.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'serializer.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'Restful.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'user.dart'</span>;</span><br><span class="line"> <span class="meta">@Controller</span>(path: <span class="string">'/user'</span>)</span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">   <span class="keyword">final</span> UserBean userBean;</span><br><span class="line">   UserController(Adapter adapter):userBean=<span class="keyword">new</span> UserBean(adapter);</span><br><span class="line">   <span class="meta">@Get</span>( path: <span class="string">'/:id'</span>)</span><br><span class="line">    user(Context ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">      <span class="built_in">String</span> id=ctx.pathParams[<span class="string">'id'</span>];</span><br><span class="line">      Restful restful=<span class="keyword">new</span> Restful()</span><br><span class="line">      ..code=<span class="number">0</span></span><br><span class="line">      ..msg=<span class="string">'success'</span></span><br><span class="line">      ..data=<span class="keyword">await</span> userBean.find(id);</span><br><span class="line">      <span class="keyword">return</span> Response.json( restful.toMap(<span class="keyword">new</span>  UserSerializer()));</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们来请求一下数据看看<a href="http://localhost:1000/user/1" target="_blank" rel="noopener">http://localhost:1000/user/1</a><br><img src="https://upload-images.jianshu.io/upload_images/12805100-c2dda79aa6d3de4b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="user.png"><br>可以看到，我们成功的在数据库中查找到一条记录，然后以json的形式传递给客户端<br>下面就是写其他的增删查改接口了<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar/jaguar.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:jaguar_orm/jaguar_orm.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'serializer.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'Restful.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'user.dart'</span>;</span><br><span class="line"> <span class="meta">@Controller</span>(path: <span class="string">'/user'</span>)</span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">   <span class="keyword">final</span> UserBean userBean;</span><br><span class="line"></span><br><span class="line">   UserController(Adapter adapter):userBean=<span class="keyword">new</span> UserBean(adapter);</span><br><span class="line">   </span><br><span class="line">   <span class="meta">@Get</span>( path: <span class="string">'/:id'</span>)</span><br><span class="line">    user(Context ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">      <span class="built_in">String</span> id=ctx.pathParams[<span class="string">'id'</span>];</span><br><span class="line">      Restful restful=<span class="keyword">new</span> Restful()</span><br><span class="line">      ..code=<span class="number">0</span></span><br><span class="line">      ..msg=<span class="string">'success'</span></span><br><span class="line">      ..data=<span class="keyword">await</span> userBean.find(id);</span><br><span class="line">      <span class="keyword">return</span> Response.json( restful.toMap(<span class="keyword">new</span>  UserSerializer()));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Post</span>(path: <span class="string">'/:id'</span>)</span><br><span class="line">   userEdit(Context ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">     <span class="built_in">String</span> id=ctx.pathParams[<span class="string">'id'</span>];</span><br><span class="line">     User user=<span class="keyword">await</span> ctx.bodyAsJson(convert: <span class="keyword">new</span> UserSerializer().fromMap);</span><br><span class="line">     user.id=id;</span><br><span class="line">     <span class="keyword">await</span> userBean.update(user);</span><br><span class="line">     <span class="keyword">return</span> Response.json((<span class="keyword">new</span> Restful()</span><br><span class="line">     ..code=<span class="number">0</span></span><br><span class="line">     ..msg=<span class="string">'ok'</span>).toMap());</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Put</span>(path: <span class="string">'/'</span>)</span><br><span class="line">    userAdd(Context ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">     User user=<span class="keyword">await</span> ctx.bodyAsJson(convert: <span class="keyword">new</span> UserSerializer().fromMap);</span><br><span class="line">      <span class="keyword">await</span> userBean.insert(user);</span><br><span class="line">      <span class="keyword">return</span> Response.json((<span class="keyword">new</span> Restful()</span><br><span class="line">     ..code=<span class="number">0</span></span><br><span class="line">     ..msg=<span class="string">'ok'</span>).toMap());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Delete</span>(path: <span class="string">'/:id'</span>)</span><br><span class="line">    userDelete(Context ctx) <span class="keyword">async</span>&#123;</span><br><span class="line">     <span class="built_in">String</span> id=ctx.pathParams[<span class="string">'id'</span>];</span><br><span class="line">      <span class="keyword">await</span> userBean.remove(id);</span><br><span class="line">      <span class="keyword">return</span> Response.json((<span class="keyword">new</span> Restful()</span><br><span class="line">     ..code=<span class="number">0</span></span><br><span class="line">     ..msg=<span class="string">'ok'</span>).toMap());</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>ok,上面就是今天的全部内容，我们明天见!</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/reward-wepay.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">你的鼓励，是我创作的源泉</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/10/dartvm-23/" class="pre-post btn btn-default" title="DartVM服务器开发（二十三）-缓存层(jaguar_cache)">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十三）-缓存层(jaguar_cache)</span>
+        </a>
+    
+    
+        <a href="/2019/02/10/dartvm-21/" class="next-post btn btn-default" title="DartVM服务器开发（二十一）-Dart中的Gson(jaguar_serializer)">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">DartVM服务器开发（二十一）-Dart中的Gson(jaguar_serializer)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-定义规范"><span class="toc-text">1.定义规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-定义Restful"><span class="toc-text">2.  定义Restful</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-定制接口"><span class="toc-text">3.定制接口</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
