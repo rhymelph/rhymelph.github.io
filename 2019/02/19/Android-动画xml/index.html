@@ -1,0 +1,446 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="动画">
+
+
+    <meta name="description" content="动画分为两种：
+
+属性动画-通过一段时间修改对象的属性值来创建的动画
+视图动画-分为补间动画、帧动画
+
+属性动画
+以xml定义的动画,用于在设定的时间类修改目标对象的属性，例如背景色
+
+文件存放...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Android-动画xml | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android-动画xml">
+            
+	            Android-动画xml
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Android/">Android</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/动画/">动画</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/19</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>动画分为两种：</p>
+<ul>
+<li>属性动画-<code>通过一段时间修改对象的属性值来创建的动画</code></li>
+<li>视图动画-<code>分为补间动画、帧动画</code></li>
+</ul>
+<h2 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h2><blockquote>
+<p>以xml定义的动画,用于在设定的时间类修改目标对象的属性，例如背景色</p>
+</blockquote>
+<p>文件存放目录：<em>res/animator/filename.xml</em><br>xml中的格式如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">set</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:ordering</span>=<span class="string">[</span>"<span class="attr">together</span>" | "<span class="attr">sequentially</span>"]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">objectAnimator</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:propertyName</span>=<span class="string">"string"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:duration</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:valueFrom</span>=<span class="string">"float | int | color"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:valueTo</span>=<span class="string">"float | int | color"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:startOffset</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:repeatCount</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:repeatMode</span>=<span class="string">[</span>"<span class="attr">repeat</span>" | "<span class="attr">reverse</span>"]</span></span><br><span class="line"><span class="tag">    <span class="attr">android:valueType</span>=<span class="string">[</span>"<span class="attr">intType</span>" | "<span class="attr">floatType</span>"]/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">animator</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:duration</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:valueFrom</span>=<span class="string">"float | int | color"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:valueTo</span>=<span class="string">"float | int | color"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:startOffset</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:repeatCount</span>=<span class="string">"int"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:repeatMode</span>=<span class="string">[</span>"<span class="attr">repeat</span>" | "<span class="attr">reverse</span>"]</span></span><br><span class="line"><span class="tag">    <span class="attr">android:valueType</span>=<span class="string">[</span>"<span class="attr">intType</span>" | "<span class="attr">floatType</span>"]/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">set</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><ul>
+<li><code>&lt;set&gt;</code>代表一个AnimatorSet<ul>
+<li><code>android:ordering</code></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sequentially</td>
+<td>顺序播放</td>
+</tr>
+<tr>
+<td>together（默认）</td>
+<td>同时播放</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>&lt;objectAnimator&gt;</code> 代表一个ObjectAnimator<ul>
+<li><code>android:propertyName</code> 对象的动画属性，View中的属性，例如：<code>alpha</code>、<code>backgroundColor</code></li>
+<li><code>android:valueTo</code> 动画属性结束的值</li>
+<li><code>android:valueFrom</code> 动画属性开始的值</li>
+<li><code>android:duration</code> 动画的持续时间</li>
+<li><code>android:startOffset</code> 调用动画延迟后的毫秒数</li>
+<li><code>android:repeatCount</code>重复动画的次数，<code>-1</code>为无限循环,<code>1</code>为重复一次</li>
+<li><code>android:repeatMode</code>动画结束时的行为方式，<code>reverse</code>表示反向,<code>repeat</code>为从头开始，<strong>当且仅当<code>repeatCount</code>为<code>-1</code>时有效</strong></li>
+<li><code>android:valueType</code>指定动画值</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>intType</td>
+<td>指定动画值是整数</td>
+</tr>
+<tr>
+<td>floatType （默认）</td>
+<td>指定动画值为浮点数</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>&lt;animator&gt;</code> 代表一个ValueAnimator，属性与<code>&lt;objectAnimator&gt;</code>类似,少了<code>android:propertyName</code></li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> <span class="keyword">set</span>: AnimatorSet = AnimatorInflater.loadAnimator(<span class="keyword">this</span>, R.animator.animator)</span><br><span class="line">    .apply &#123;</span><br><span class="line">        setTarget(myTarger)</span><br><span class="line">        start()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="视图动画"><a href="#视图动画" class="headerlink" title="视图动画"></a>视图动画</h2><blockquote>
+<p>视图动画框架支持补间动画和逐帧动画</p>
+</blockquote>
+<h3 id="补间动画"><a href="#补间动画" class="headerlink" title="补间动画"></a>补间动画</h3><p>文件存放位置：<em>res/anim/filename.xml</em><br>xml中的格式如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">set</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:interpolator</span>=<span class="string">"@[package:]anim/interpolator_resource"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:shareInterpolator</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"] &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">alpha</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:fromAlpha</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:toAlpha</span>=<span class="string">"float"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scale</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:fromXScale</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:toXScale</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:fromYScale</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:toYScale</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:pivotX</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:pivotY</span>=<span class="string">"float"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">translate</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:fromXDelta</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:toXDelta</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:fromYDelta</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:toYDelta</span>=<span class="string">"float"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">rotate</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:fromDegrees</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:toDegrees</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:pivotX</span>=<span class="string">"float"</span></span></span><br><span class="line"><span class="tag"><span class="attr">android:pivotY</span>=<span class="string">"float"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">set</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="关键字-1"><a href="#关键字-1" class="headerlink" title="关键字"></a>关键字</h4><ul>
+<li><p><code>&lt;set&gt;</code>代表一个AnimatorSet</p>
+<ul>
+<li><code>android:interpolator</code> 插值资源，例如：<code>@android:anim/accelerate_interpolator</code></li>
+<li><code>android:shareInterpolator</code> 插值器是否应用所有子元素</li>
+</ul>
+</li>
+<li><p><code>&lt;alpha&gt;</code> 淡入淡出动画，代表一个AlphaAnimation</p>
+<ul>
+<li><code>android:fromAlpha</code>开始的不透明值</li>
+<li><code>android:toAlpha</code> 结束的不透明值</li>
+</ul>
+</li>
+<li><code>&lt;scale&gt;</code> 调整大小的动画，代表一个ScaleAnimation，其中pivotX，pivotY的值为0,0时代表左上角，所有增长代表向右和向下<ul>
+<li><code>android:fromXScale</code> 开始x的大小偏移</li>
+<li><code>android:toXScale</code>结束x的大小偏移</li>
+<li><code>android:fromYScale</code>开始y的大小偏移</li>
+<li><code>android:toYScale</code>结束y的大小偏移</li>
+<li><code>android:pivotX</code> 缩放对象时，x坐标保持固定，百分比</li>
+<li><code>android:pivotY</code> 缩放对象时，y坐标保持固定，百分比</li>
+</ul>
+</li>
+<li><code>&lt;translate&gt;</code>垂直和/或水平运动的动画,代表一个TranslateAnimation<ul>
+<li><code>android:fromXDelta</code>开始X偏移,浮点<code>5</code>表正常像素值，百分比表当前元素的宽高百分比</li>
+<li><code>android:toXDelta</code>结束X偏移</li>
+<li><code>android:fromYDelta</code>开始Y偏移</li>
+<li><code>android:toYDelta</code>结束Y偏移</li>
+</ul>
+</li>
+<li><code>&lt;rotate&gt;</code> 旋转动画，代表一个RotateAnimation<ul>
+<li><code>android:fromDegrees</code>起始角度</li>
+<li><code>android:toDegrees</code>结束角度</li>
+<li><code>android:pivotX</code>旋转中心X坐标</li>
+<li><code>android:pivotY</code>旋转中心Y坐标</li>
+</ul>
+</li>
+</ul>
+<h4 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">animatorStart</span><span class="params">(view: <span class="type">View</span>)</span></span>&#123;</span><br><span class="line">        <span class="keyword">val</span> animation = AnimationUtils.loadAnimation(<span class="keyword">this</span>,R.anim.animation)</span><br><span class="line">        view.startAnimation(animation)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="帧动画"><a href="#帧动画" class="headerlink" title="帧动画"></a>帧动画</h3><p>按顺序显示一系列图像(如电影)，代表一个AnimationDrawable<br>文件存放目录：<em>res/drawable/filename.xml</em><br>xml格式如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">animation-list</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:oneshot</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"] &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:drawable</span>=<span class="string">"@[package:]drawable/drawable_resource_name"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:duration</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">animation-list</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="关键字-2"><a href="#关键字-2" class="headerlink" title="关键字"></a>关键字</h4><ul>
+<li><code>&lt;animation-list&gt;</code>必须为根元素，包含一个或多个<code>&lt;item&gt;</code>元素<ul>
+<li><code>android:oneshot</code>是否执行一次，如果false，会循环播放</li>
+</ul>
+</li>
+<li><code>&lt;item&gt;</code> 单帧动画<ul>
+<li><code>android:drawable</code>可绘制的资源</li>
+<li><code>android:duration</code>持续时间</li>
+</ul>
+</li>
+</ul>
+<h4 id="使用-2"><a href="#使用-2" class="headerlink" title="使用"></a>使用</h4><p>res/drawable/idea_drawable.xml<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">animation-list</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:oneshot</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/rocket_thrust1"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/rocket_thrust2"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/rocket_thrust3"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">animation-list</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tv.setBackgroundResource(R.drawable.idea_drawable)</span><br><span class="line"><span class="keyword">val</span> rocketImage=tv.background</span><br><span class="line"><span class="keyword">if</span>(rocketImage <span class="keyword">is</span> Animatable)&#123;</span><br><span class="line">    rocketImage.start()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="插值器"><a href="#插值器" class="headerlink" title="插值器"></a>插值器</h2><blockquote>
+<p>插值器影响动画中的变化速率，允许现有的动画效果加速，减速，重复，反弹等，使用<code>android:interpolator</code>属性引用插值器</p>
+</blockquote>
+<p>文件存放目录：<em>res/anim/filename.xml</em></p>
+<h3 id="关键字-3"><a href="#关键字-3" class="headerlink" title="关键字"></a>关键字</h3><ul>
+<li><code>&lt;accelerateDecelerateInterpolator&gt;</code>变化率开始和结束缓慢，中间加速</li>
+<li><code>&lt;accelerateInterpolator&gt;</code>变化速率开始缓慢，然后加速<ul>
+<li><code>android:factor</code>变化速率，默认为1</li>
+</ul>
+</li>
+<li><code>&lt;anticipateInterpolator&gt;</code>变化开始然后向前飞<ul>
+<li><code>android:tension</code>要应用的张力量，默认为2</li>
+<li><code>android:extraTension</code>增加张力的量，默认为1.5</li>
+</ul>
+</li>
+<li><code>&lt;anticipateOvershootInterpolator&gt;</code>变化向后开始，向前掠过并超过目标值，然后稳定再最终值</li>
+<li><code>&lt;bounceInterpolator&gt;</code>变化后反弹</li>
+<li><code>&lt;cycleInterpolator&gt;</code>重复动画指定的循环次数<ul>
+<li><code>android:cycles</code> 循环次数,默认为1</li>
+</ul>
+</li>
+<li><code>&lt;decelerateInterpolator&gt;</code> 变化很快开始，然后减速<ul>
+<li><code>android:factor</code> 减速率，默认为1</li>
+</ul>
+</li>
+<li><code>&lt;linearInterpolator&gt;</code>变化率不变</li>
+<li><code>&lt;overshootInterpolator&gt;</code>变化向前掠过并超出最大值后返回<ul>
+<li><code>android:tension</code>要应用的张力量，默认为2<h3 id="使用-3"><a href="#使用-3" class="headerlink" title="使用"></a>使用</h3>my_overshoot_interpolator.xml<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">overshootInterpolator</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:tension</span>=<span class="string">"7.0"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">scale</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:interpolator</span>=<span class="string">"@anim/my_overshoot_interpolator"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fromXScale</span>=<span class="string">"1.0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:toXScale</span>=<span class="string">"3.0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fromYScale</span>=<span class="string">"1.0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:toYScale</span>=<span class="string">"3.0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:pivotX</span>=<span class="string">"50%"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:pivotY</span>=<span class="string">"50%"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:duration</span>=<span class="string">"700"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2019/02/12/Android-Kotlin全攻略/" class="next-post btn btn-default" title="Android-Kotlin全攻略">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Android-Kotlin全攻略</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#属性动画"><span class="toc-text">属性动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关键字"><span class="toc-text">关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#视图动画"><span class="toc-text">视图动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#补间动画"><span class="toc-text">补间动画</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#关键字-1"><span class="toc-text">关键字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用-1"><span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#帧动画"><span class="toc-text">帧动画</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#关键字-2"><span class="toc-text">关键字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用-2"><span class="toc-text">使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插值器"><span class="toc-text">插值器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关键字-3"><span class="toc-text">关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-3"><span class="toc-text">使用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
