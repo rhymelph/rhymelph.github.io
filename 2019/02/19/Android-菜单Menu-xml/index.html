@@ -1,0 +1,464 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="菜单">
+
+
+    <meta name="description" content="介绍
+菜单资源定义了可以弹出的应用程序菜单，使用MenuInflater载入
+
+文件存放位置：res/menu/filename.xmlxml中的格式如下：1234567891011121314...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Android-菜单Menu.xml | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android-菜单Menu.xml">
+            
+	            Android-菜单Menu.xml
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Android/">Android</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/菜单/">菜单</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/19</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
+<p>菜单资源定义了可以弹出的应用程序菜单，使用<code>MenuInflater</code>载入</p>
+</blockquote>
+<p>文件存放位置：<em>res/menu/filename.xml</em><br>xml中的格式如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:id</span>=<span class="string">"@[+][package:]id/resource_name"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:title</span>=<span class="string">"string"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:titleCondensed</span>=<span class="string">"string"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:icon</span>=<span class="string">"@[package:]drawable/drawable_resource_name"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:onClick</span>=<span class="string">"method name"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:showAsAction</span>=<span class="string">[</span>"<span class="attr">ifRoom</span>" | "<span class="attr">never</span>" | "<span class="attr">withText</span>" | "<span class="attr">always</span>" | "<span class="attr">collapseActionView</span>"]</span></span><br><span class="line"><span class="tag">          <span class="attr">android:actionLayout</span>=<span class="string">"@[package:]layout/layout_resource_name"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:actionViewClass</span>=<span class="string">"class name"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:actionProviderClass</span>=<span class="string">"class name"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:alphabeticShortcut</span>=<span class="string">"string"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:alphabeticModifiers</span>=<span class="string">[</span>"<span class="attr">META</span>" | "<span class="attr">CTRL</span>" | "<span class="attr">ALT</span>" | "<span class="attr">SHIFT</span>" | "<span class="attr">SYM</span>" | "<span class="attr">FUNCTION</span>"]</span></span><br><span class="line"><span class="tag">          <span class="attr">android:numericShortcut</span>=<span class="string">"string"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:numericModifiers</span>=<span class="string">[</span>"<span class="attr">META</span>" | "<span class="attr">CTRL</span>" | "<span class="attr">ALT</span>" | "<span class="attr">SHIFT</span>" | "<span class="attr">SYM</span>" | "<span class="attr">FUNCTION</span>"]</span></span><br><span class="line"><span class="tag">          <span class="attr">android:checkable</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"]</span></span><br><span class="line"><span class="tag">          <span class="attr">android:visible</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"]</span></span><br><span class="line"><span class="tag">          <span class="attr">android:enabled</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"]</span></span><br><span class="line"><span class="tag">          <span class="attr">android:menuCategory</span>=<span class="string">[</span>"<span class="attr">container</span>" | "<span class="attr">system</span>" | "<span class="attr">secondary</span>" | "<span class="attr">alternative</span>"]</span></span><br><span class="line"><span class="tag">          <span class="attr">android:orderInCategory</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">android:id</span>=<span class="string">"@[+][package:]id/resource name"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">android:checkableBehavior</span>=<span class="string">[</span>"<span class="attr">none</span>" | "<span class="attr">all</span>" | "<span class="attr">single</span>"]</span></span><br><span class="line"><span class="tag">           <span class="attr">android:visible</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"]</span></span><br><span class="line"><span class="tag">           <span class="attr">android:enabled</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"]</span></span><br><span class="line"><span class="tag">           <span class="attr">android:menuCategory</span>=<span class="string">[</span>"<span class="attr">container</span>" | "<span class="attr">system</span>" | "<span class="attr">secondary</span>" | "<span class="attr">alternative</span>"]</span></span><br><span class="line"><span class="tag">           <span class="attr">android:orderInCategory</span>=<span class="string">"integer"</span> &gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> &gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">menu</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">item</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><ul>
+<li><code>&lt;menu&gt;</code> 根节点包含<code>&lt;item&gt;</code>和/或 <code>&lt;group&gt;</code>元素<ul>
+<li><code>xmlns:android</code> 命名空间，必须为<code>&quot;http://schemas.android.com/apk/res/android&quot;</code></li>
+</ul>
+</li>
+<li><code>&lt;item&gt;</code> 菜单项，可以包含一个<code>&lt;menu&gt;</code>元素<ul>
+<li><code>android:id</code> 资源id</li>
+<li><code>android:title</code> 菜单标题</li>
+<li><code>android:titleCondensed</code> 原始标题，用于标题过长</li>
+<li><code>android:icon</code> 菜单图标</li>
+<li><code>android:onClick</code> 点击菜单调用的方法</li>
+<li><code>android:showAsAction</code> 菜单如何显示</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ifRoom</td>
+<td>如果有空间，则菜单显示在标题栏中</td>
+</tr>
+<tr>
+<td>witchText</td>
+<td>包括标题文本，可以使用管道符号分割</td>
+</tr>
+<tr>
+<td>never</td>
+<td>从不显示在标题栏，需要点击下拉</td>
+</tr>
+<tr>
+<td>always</td>
+<td>总是放在标题栏中</td>
+</tr>
+<tr>
+<td>collapseActionView</td>
+<td>与layout联动（用于Material Design）与<code>android:actionLayoutor</code>和<code>android:actionViewClass</code>一起使用</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>android:actionLayout</code> 布局资源，用作动作视图的布局</li>
+<li><code>android:actionViewClass</code> 作为动作视图的View名，例如：<code>android.widget.SearchView</code></li>
+<li><code>android:actionProviderClass</code> 代替操作项的限定类名，例如：<code>android.widget.ShareActionProvider</code></li>
+<li><code>android:alphabeticShortcut</code> 字母快捷键</li>
+<li><code>android:numericShortcut</code> 数字快捷键</li>
+<li><code>android:alphabeticModifiers</code> 菜单项的字母快捷键修饰符</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>META</td>
+<td>对应Meta元键</td>
+</tr>
+<tr>
+<td>CTRL</td>
+<td>对应Control元键</td>
+</tr>
+<tr>
+<td>ALT</td>
+<td>对应Alt元键</td>
+</tr>
+<tr>
+<td>SHIFT</td>
+<td>对应Shift元键</td>
+</tr>
+<tr>
+<td>SYM</td>
+<td>对应Sym元键</td>
+</tr>
+<tr>
+<td>FUNCTIN</td>
+<td>对应Function元键</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>android:numericModifiers</code> 菜单项数字快捷键修饰符号，同上</li>
+<li><code>android:checkable</code> 是否可选中</li>
+<li><code>android:checked</code> 是否选中</li>
+<li><code>android:visible</code> 是否可见</li>
+<li><code>android:enabled</code> 是否启用</li>
+<li><code>android:menuCategory</code> 优先级</li>
+<li><code>android:orderInCategory</code> 组内的重要性顺序</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>container</td>
+<td>对于属于容器的项目。</td>
+</tr>
+<tr>
+<td>system</td>
+<td>对于系统提供的项目。</td>
+</tr>
+<tr>
+<td>secondary</td>
+<td>对于用户提供的辅助（不经常使用）选项的项目。</td>
+</tr>
+<tr>
+<td>alternative</td>
+<td>对于对当前显示的数据执行备用操作的项目。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>&lt;group&gt;</code> 菜单组包含一个或多个的<code>&lt;item&gt;</code><ul>
+<li><code>android:id</code> 资源id</li>
+<li><code>android:checkableBehavior</code> 可选中的行为</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>不可选中</td>
+</tr>
+<tr>
+<td>all</td>
+<td>可以选中所有项目（使用复选框）</td>
+</tr>
+<tr>
+<td>single</td>
+<td>只能选中一个项目（使用单选按钮）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>android:visible</code> 是否可见</li>
+<li><code>android:enabled</code> 是否启用</li>
+<li><code>android:menuCategory</code>定义组优先级</li>
+<li><code>android:orderInCategory</code> 组内的重要性顺序</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>在<code>res/menu/</code>文件夹下面新建一个<code>idea_menu.xml</code><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:title</span>=<span class="string">"分享"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:showAsAction</span>=<span class="string">"always"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:orderInCategory</span>=<span class="string">"2"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:title</span>=<span class="string">"查看"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:menuCategory</span>=<span class="string">"container"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:orderInCategory</span>=<span class="string">"1"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>回到你要添加菜单的Activity中加入如下代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">       getMenuInflater().inflate(R.menu.idea_menu,menu);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">super</span>.onCreateOptionsMenu(menu);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>即可</p>
+<blockquote>
+<p>关于参数 <code>app:actionViewClass</code> 可扩展的菜单按钮，如果你点击该按钮，会显示出一个视图<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:title</span>=<span class="string">"搜索"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:actionViewClass</span>=<span class="string">"android.support.v7.widget.SearchView"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:showAsAction</span>=<span class="string">"always"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:orderInCategory</span>=<span class="string">"2"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:title</span>=<span class="string">"查看"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:menuCategory</span>=<span class="string">"container"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:orderInCategory</span>=<span class="string">"1"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>效果如下：<br>正常情况下：<br><img src="https://upload-images.jianshu.io/upload_images/12805100-dea4acc746569d7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>点击放大镜后：<br><img src="https://upload-images.jianshu.io/upload_images/12805100-7f4a85e98250c0a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>上面的这个操作，归根到底，其实<code>SearchView</code>实现了一个接口<code>CollapsibleActionView</code>,那么，我们来学习以下<code>SearchView</code>相关的参数吧。</p>
+<h2 id="SearchView"><a href="#SearchView" class="headerlink" title="SearchView"></a>SearchView</h2><blockquote>
+<p>SearchView所有参数<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">        getMenuInflater().inflate(R.menu.idea_menu,menu);</span><br><span class="line">        MenuItem searchItem=menu.findItem(R.id.search);</span><br><span class="line"></span><br><span class="line">        SearchView searchView= (SearchView) searchItem.getActionView();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//false 为直接展开</span></span><br><span class="line"><span class="comment">//        searchView.setIconified(false);</span></span><br><span class="line">        <span class="comment">//无法关闭，搜索框外有放大镜</span></span><br><span class="line"><span class="comment">//        searchView.setIconifiedByDefault(false);</span></span><br><span class="line">        <span class="comment">//无法关闭</span></span><br><span class="line"><span class="comment">//        searchView.onActionViewExpanded();</span></span><br><span class="line">        <span class="comment">//最大宽度</span></span><br><span class="line"><span class="comment">//        searchView.setMaxWidth(500);</span></span><br><span class="line">        <span class="comment">//提交按钮</span></span><br><span class="line"><span class="comment">//        searchView.setSubmitButtonEnabled(true);</span></span><br><span class="line">        <span class="comment">//搜索提示语</span></span><br><span class="line"><span class="comment">//        searchView.setQueryHint("请输入你要搜索的内容");</span></span><br><span class="line">        <span class="comment">//点击关闭的监听</span></span><br><span class="line">        searchView.setOnCloseListener(<span class="keyword">new</span> SearchView.OnCloseListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onClose</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                Toast.makeText(getApplicationContext()</span><br><span class="line">                        ,<span class="string">"点击关闭"</span></span><br><span class="line">                        ,Toast.LENGTH_SHORT)</span><br><span class="line">                        .show();</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">//点击搜索的按钮打开搜索框</span></span><br><span class="line">        searchView.setOnSearchClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                Toast.makeText(getApplicationContext()</span><br><span class="line">                        ,<span class="string">"点击按钮打开搜索框"</span></span><br><span class="line">                        ,Toast.LENGTH_SHORT)</span><br><span class="line">                        .show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">//文字输入监听</span></span><br><span class="line">        searchView.setOnQueryTextListener(<span class="keyword">new</span> SearchView.OnQueryTextListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onQueryTextSubmit</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//输入内容提交</span></span><br><span class="line">                Toast.makeText(getApplicationContext()</span><br><span class="line">                        ,<span class="string">"提交内容为："</span>+s</span><br><span class="line">                        ,Toast.LENGTH_SHORT)</span><br><span class="line">                        .show();</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onQueryTextChange</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//输入内容改变</span></span><br><span class="line">                Log.d(TAG, <span class="string">"输入文字改变: "</span>+s);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onCreateOptionsMenu(menu);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="ShareActionProvider"><a href="#ShareActionProvider" class="headerlink" title="ShareActionProvider"></a>ShareActionProvider</h2><blockquote>
+<p>使用分享下拉菜单<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:title</span>=<span class="string">"分享"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/share"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:actionProviderClass</span>=<span class="string">"android.support.v7.widget.ShareActionProvider"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:showAsAction</span>=<span class="string">"always"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">    getMenuInflater().inflate(R.menu.idea_menu,menu);</span><br><span class="line">    MenuItem searchItem=menu.findItem(R.id.share);</span><br><span class="line">    ShareActionProvider provider= (ShareActionProvider) MenuItemCompat.getActionProvider(searchItem);</span><br><span class="line">    Intent share_intent = <span class="keyword">new</span> Intent();</span><br><span class="line">    share_intent.setAction(Intent.ACTION_SEND);<span class="comment">//设置分享行为</span></span><br><span class="line">    share_intent.setType(<span class="string">"text/plain"</span>);<span class="comment">//设置分享内容的类型</span></span><br><span class="line">    share_intent.putExtra(Intent.EXTRA_SUBJECT, <span class="string">"标题"</span>);<span class="comment">//添加分享内容标题</span></span><br><span class="line">    share_intent.putExtra(Intent.EXTRA_TEXT, <span class="string">"内容"</span>);<span class="comment">//添加分享内容</span></span><br><span class="line">    provider.setShareIntent(share_intent);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.onCreateOptionsMenu(menu);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/03/02/Android-设计模式/" class="pre-post btn btn-default" title="Android-设计模式">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Android-设计模式</span>
+        </a>
+    
+    
+        <a href="/2019/02/19/Android-动画xml/" class="next-post btn btn-default" title="Android-动画xml">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Android-动画xml</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关键字"><span class="toc-text">关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SearchView"><span class="toc-text">SearchView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ShareActionProvider"><span class="toc-text">ShareActionProvider</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
