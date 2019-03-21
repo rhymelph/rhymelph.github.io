@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="李鹏辉的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://rhyme95.win">
+    <!--SEO-->
+
+    <meta name="keywords" content="语法">
+
+
+    <meta name="description" content="1.基础篇dart:core
+打印到控制台
+1print('Hello World!');
+
+定义数值  int（整数64位2^63）、double（浮点数64位）、num（整数或浮点数）这些类...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Dart语法大全 | 李鹏辉的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="李鹏辉的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+<div class="hide">
+	<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1276113474 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1276113474%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</div>
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class>
+    <!-- <header class="main-header"  >  -->
+    <!-- <div class="main-header-box">
+        <a class="header-avatar" href="/" title='Rhyme'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+    </div> -->
+    
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://rhyme95.win">李鹏辉的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa fa-home"></i> 李鹏辉的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Dart"><i class="fa fa-dart"></i> Dart</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Android/"><i class="fa fa-android"></i> Android</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa fa-clock-o"></i> 时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Dart语法大全">
+            
+	            Dart语法大全
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Dart/">Dart</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/语法/">语法</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/03/18</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="1-基础篇"><a href="#1-基础篇" class="headerlink" title="1.基础篇"></a>1.基础篇</h2><h3 id="dart-core"><a href="#dart-core" class="headerlink" title="dart:core"></a>dart:core</h3><ul>
+<li><p>打印到控制台</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">'Hello World!'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义数值<br>  <code>int</code>（整数64位2^63）、<code>double</code>（浮点数64位）、<code>num</code>（整数或浮点数）这些类都可以定义数值，<strong>注意这是类，若没有初始化将=null</strong></p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">double</span> b = <span class="number">1.2</span>;</span><br><span class="line"><span class="built_in">num</span> c = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>  定义16进制</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> d = <span class="number">0xff</span>; <span class="comment">// ==255</span></span><br></pre></td></tr></table></figure>
+<p>  定义双精度浮点数</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">double</span> e = <span class="number">1.23e9</span>; <span class="comment">// ==1230000000.0</span></span><br></pre></td></tr></table></figure>
+<p>  dart2.1开始，整数会自动转换为浮点数</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">double</span> f = <span class="number">1</span>; <span class="comment">// ==1.0</span></span><br></pre></td></tr></table></figure>
+<p>  字符串与数值互转</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//String 2 int</span></span><br><span class="line"><span class="built_in">int</span> g = <span class="built_in">int</span>.parse(<span class="string">'1'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//String 2 double</span></span><br><span class="line"><span class="built_in">double</span> h = <span class="built_in">double</span>.parse(<span class="string">'1.22'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// int 2 String</span></span><br><span class="line"><span class="built_in">String</span> i = <span class="number">234.</span>toString();</span><br><span class="line"></span><br><span class="line"><span class="comment">// double 2 String 保留两位</span></span><br><span class="line"><span class="built_in">String</span> j = <span class="number">12.445</span>.toStringAsFixed(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p>  位运算右移<code>&lt;&lt;</code>、左移<code>&gt;&gt;</code>，或<code>|</code>、与<code>&amp;</code></p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> k = <span class="number">3</span> &lt;&lt; <span class="number">1</span>; <span class="comment">// 0011 &lt;&lt; 1 == 0110</span></span><br><span class="line"><span class="built_in">int</span> l = <span class="number">3</span> &gt;&gt; <span class="number">1</span>; <span class="comment">// 0011 &gt;&gt; 1 == 0001</span></span><br><span class="line"><span class="built_in">int</span> m = <span class="number">3</span> | <span class="number">4</span>; <span class="comment">// 0011 | 0100 == 0111</span></span><br><span class="line"><span class="built_in">int</span> n = <span class="number">3</span> &amp; <span class="number">4</span>; <span class="comment">// 0011 &amp; 0100 == 0000</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义字符串<br>  是一系列UTF-16代码单元，可以使用单引号<code>&#39;</code>、双引号<code>&quot;</code>来创建字符串</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> s1 = <span class="string">'Hello World'</span>;</span><br><span class="line"><span class="built_in">String</span> s2 = <span class="string">"Hello rhyme"</span>;</span><br><span class="line"><span class="built_in">String</span> s3 = <span class="string">'I\'m a man'</span>;</span><br><span class="line"><span class="built_in">String</span> s4 = <span class="string">"You talk about \"Dart lang\""</span>;</span><br></pre></td></tr></table></figure>
+<p>  可以使用<code>==</code>进行字符串对比</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(s1 == s2); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>  可以使用<code>$</code>或<code>${}</code>插入表达式的值到字符串</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">'s1 = <span class="subst">$s1</span>'</span>);<span class="comment">// s1 = Hello World</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'s1 = <span class="subst">$&#123;s1.toString()&#125;</span>'</span>);<span class="comment">// s1 = Hello World</span></span><br></pre></td></tr></table></figure>
+<p>  可以用<code>+</code>号进行字符串拼接</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(s1 + <span class="string">' '</span> + s2);<span class="comment">//Hello World Hello rhyme</span></span><br></pre></td></tr></table></figure>
+<p>  可以使用<code>&#39;&#39;&#39;</code>或<code>&quot;&quot;&quot;</code>创建多行字符串</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> s5 = <span class="string">'''My name is</span></span><br><span class="line"><span class="string">rhyme'''</span>;</span><br><span class="line"><span class="built_in">print</span>(s5);</span><br><span class="line"><span class="comment">//My name is</span></span><br><span class="line"><span class="comment">//rhyme</span></span><br><span class="line"><span class="built_in">String</span> s6 = <span class="string">"""My age is</span></span><br><span class="line"><span class="string">24"""</span>;</span><br><span class="line"><span class="built_in">print</span>(s6);</span><br><span class="line"><span class="comment">//My age is</span></span><br><span class="line"><span class="comment">//24</span></span><br></pre></td></tr></table></figure>
+<p>  可以添加<code>r</code>创建原始字符串</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> s7 = <span class="string">r'In a raw string, not even \n gets special treatment.'</span>;</span><br><span class="line"><span class="built_in">print</span>(s7);</span><br><span class="line"><span class="comment">//In a raw string, not even \n gets special treatment.</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>const关键字<br>定义一个编译时常量</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cNum = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// const cNum; //这种会报错</span></span><br><span class="line"><span class="comment">// const cNum = null; //这种编译通过</span></span><br></pre></td></tr></table></figure>
+<p>必须声明初始值</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cNum; <span class="comment">//这种会报错</span></span><br><span class="line"><span class="keyword">const</span> cNum = <span class="keyword">null</span>; <span class="comment">//这种编译通过</span></span><br></pre></td></tr></table></figure>
+<p>初始值若是另一个常量，必须也是编译时常量</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cNum = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> cString = <span class="string">'cNum is <span class="subst">$cNum</span>'</span>;<span class="comment">//编译通过</span></span><br><span class="line"><span class="comment">// final fNum = 1;</span></span><br><span class="line"><span class="comment">// const cString = 'fNum is $fNum'; 编译不通过</span></span><br><span class="line"><span class="comment">// var vNum = 1;  </span></span><br><span class="line"><span class="comment">// const cString = 'vNum is $vNum'; 编译不通过</span></span><br><span class="line"><span class="comment">// int num = 1;</span></span><br><span class="line"><span class="comment">// const cString = 'num is $num'; 编译不通过</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">rhyme_lph</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/03/19/Flutter中的垃圾回收/" class="pre-post btn btn-default" title="Flutter中的垃圾回收">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Flutter中的垃圾回收</span>
+        </a>
+    
+    
+        <a href="/2019/03/07/面向对象的6大原则/" class="next-post btn btn-default" title="面向对象的6大原则">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">面向对象的6大原则</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+   <p>评论系统未开启，无法评论！</p>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-基础篇"><span class="toc-text">1.基础篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#dart-core"><span class="toc-text">dart:core</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2019
+                </span> 
+                <!-- <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
